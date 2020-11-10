@@ -21,7 +21,7 @@ Route::get('/', function () {
 Auth::routes();
 
 // Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/home', 'ChatController@index')->name('home'); 
+Route::get('/chat', 'ChatController@index')->name('home'); 
 Route::get('/halchat/{id}', 'ChatController@getMessage');
 Route::post('/halchat', 'ChatController@sendMessage');
 
