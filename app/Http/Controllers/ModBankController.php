@@ -65,7 +65,6 @@ class ModBankController extends Controller
         $request->validate([
             'name_bank' => 'required',
             'rekening_number' => 'required',
-            'image' => 'required',
         ]);
 
         $imgName = $request->image->getClientOriginalName() . '-' . time() . '.' . $request->image->extension();
@@ -77,8 +76,6 @@ class ModBankController extends Controller
             $mbank = new mod_banks;
             $mbank->name_bank = $request->name_bank;
             $mbank->rekening_number = $request->rekening_number;
-            $mbank->id_user = $request->id_user;
-            $mbank->image = $imgName;
             $mbank->save();
             if (!$mbank) {
                 return response([
@@ -140,8 +137,6 @@ class ModBankController extends Controller
         $request->validate([
             'name_bank' => 'required', 
             'rekening_number' => 'required', 
-            'id_user' => 'required', 
-            'image' => 'required',
         ]);
 
         $imgName = $request->old_image;
@@ -156,8 +151,6 @@ class ModBankController extends Controller
             $mbank = mod_banks::find($id);
             $mbank->name_bank = $request->name_bank;
             $mbank->rekening_number = $request->rekening_number;
-            $mbank->id_user = $request->id_user;
-            $mbank->image = $imgName;
             $mbank->save();
             if (!$mbank) {
                 return response([

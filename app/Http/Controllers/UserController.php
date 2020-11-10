@@ -46,11 +46,7 @@ class UserController extends Controller
             'password' => Hash::make($request->get('password')),
             'avatar' => 'https://via.placeholder.com/150',
             'alamat' => $request->get('alamat'),
-            'phone_number' => $request->get('phone_number'),
-            'id_kota' => $request->id_kota,
-            'id_produk' => $request->id_produk,
-            'id_kategori' => $request->id_kategori,
-    
+            'phone_number' => $request->get('phone_number'),    
         ]);
  
         $token = JWTAuth::fromUser($user);
@@ -124,9 +120,6 @@ class UserController extends Controller
            $user->password = $request->password;
            $user->alamat = $request->alamat;
            $user->phone_number = $request->phone_number;
-           $user->id_kota = $request->id_kota;
-           $user->id_produk = $request->id_produk;
-           $user->id_kategori = $request->id_kategori;
            $user->save();
            if (!$user) {
                return response([

@@ -61,7 +61,6 @@ class KategoriController extends Controller
     {
         $request->validate([
             'name_kategori' => 'required',
-            'id_main' => 'required',
             'keterangan' => 'required',
             'image' => 'required',
             'tgl_posting' => 'required',
@@ -75,7 +74,6 @@ class KategoriController extends Controller
         try {
             $kategori = new kategoris();
             $kategori->name_kategori = $request->name_kategori;
-            $kategori->id_main = $request->id_main;
             $kategori->keterangan = $request->keterangan;
             $kategori->tgl_posting = $request->tgl_posting;
             $kategori->image = $imgName;

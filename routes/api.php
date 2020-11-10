@@ -27,22 +27,22 @@ Route::post('login', 'UserController@login');
 Route::get('/chat', 'ChatController@index')->name('home');
 Route::resource('/Produk', 'ProdukController');
 
-Route::group(['middleware' => 'jwt.verify'], function (){
-    Route::post('/user', 'UserController@update');
+Route::group(['middleware' => 'jwt.verify'], function() {
     Route::resource('/modeank', 'ModBankController');
     Route::resource('/kota', 'KotaController');
-    Route::resource('/hubungi', 'HubungiController');
+    Route::resource('hubungi', 'HubungiController');
     Route::resource('/kategori', 'KategoriController');
     Route::resource('/keranjang', 'KeranjangController');
     Route::resource('/mainMenu', 'MainMenuController');
     Route::resource('/orderdetail', 'OrderDetailController');
-    Route::resource('/order', 'OrderController');
+    Route::resource('order', 'OrderController');
     // Route::resource('/Pembeli', 'PembeliController');
     // Route::resource('/Penjual', 'PenjualController');
-
+    
     // -----------------------------------------------------> chet
     
     Route::get('/message/{id}', 'ChatController@getMessage');
     Route::post('/message', 'ChatController@sendMessage');
-
 });
+    
+    

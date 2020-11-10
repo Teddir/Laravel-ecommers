@@ -58,15 +58,11 @@ class OrderDetailController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'id_order' => 'required',
-            'id_produk' => 'required',
             'jumlah' => 'required',
         ]);
 
         try {
             $orderdetail = new orderdetails;
-            $orderdetail->id_order = $request->id_order;
-            $orderdetail->id_produk = $request->id_produk;
             $orderdetail->jumlah = $request->jumlah;
             $orderdetail->save();
             if (!$orderdetail) {

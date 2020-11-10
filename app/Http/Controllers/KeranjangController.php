@@ -66,9 +66,6 @@ class KeranjangController extends Controller
             $keranjang = new keranjangs;
             $keranjang->jumlah = $request->jumlah;
             $keranjang->date = $request->date;
-            $keranjang->id_kategori = $request->id_kategori;
-            $keranjang->id_pembeli = $request->id_pembeli;
-
             $keranjang->save();
             if (!$keranjang) {
                 return response([

@@ -172,7 +172,7 @@ class ProdukController extends Controller
             $produk->tgl_masuk = $request->tgl_masuk;
             $produk->image = $imgName;
             $produk->terjual = $request->terjual;
-            $produk->diskon = $request->terjual;
+            $produk->diskon = $request->diskon;
             $produk->save();
             if (!$produk) {
                 return response([

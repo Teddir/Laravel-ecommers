@@ -67,7 +67,6 @@ class OrderController extends Controller
             'status_order' => 'required',
             'tgl_order' => 'required',
             'time' => 'required',
-            'id_pembeli' => 'required',
         ]);
 
         try {
@@ -75,7 +74,6 @@ class OrderController extends Controller
             $orderaja->status_order = $request->status_order;
             $orderaja->tgl_order = $request->tgl_order;
             $orderaja->time = $request->time;
-            $orderaja->id_pembeli = $request->id_pembeli;
             $orderaja->save();
             if (!$orderaja) {
                 return response([

@@ -139,6 +139,7 @@ class PenjualController extends Controller
     {
         $request->validate([
             'name_penjual' => 'required',
+            'avatar' => 'required',
             'email' => 'required',
             'password' => 'required',
             'alamat' => 'required',

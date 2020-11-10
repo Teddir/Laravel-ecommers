@@ -63,7 +63,6 @@ class HubungiController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required',
             'email' => 'required',
             'subjek' => 'required',
             'message' => 'required',
@@ -72,7 +71,6 @@ class HubungiController extends Controller
 
         try {
             $hubungi = new hubungis;
-            $hubungi->name= $request->name;
             $hubungi->email = $request->email;
             $hubungi->subjek = $request->subjek;
             $hubungi->message = $request->message;
@@ -136,7 +134,6 @@ class HubungiController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required',
             'email' => 'required',
             'subjek' => 'required',
             'message' => 'required',
@@ -145,7 +142,6 @@ class HubungiController extends Controller
 
         try {
             $hubungi = hubungis::find($id);
-            $hubungi->name= $request->name;
             $hubungi->email = $request->email;
             $hubungi->subjek = $request->subjek;
             $hubungi->message = $request->message;
