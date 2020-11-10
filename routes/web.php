@@ -26,7 +26,7 @@ Route::get('/halchat/{id}', 'ChatController@getMessage');
 Route::post('/halchat', 'ChatController@sendMessage');
 
 
-// Route::group(['middleware' => 'jwt-verify'], function() {
+Route::group(['middleware' => 'jwt-verify'], function() {
 Route::resource('/ModeBank', 'ModBankController');
 Route::resource('/Kota', 'KotaController');
 Route::resource('/Hubungi', 'HubungiController');
@@ -37,4 +37,4 @@ Route::resource('/Order', 'OrderController');
 Route::resource('/Penjual', 'PenjualController');
 Route::resource('/Produk', 'ProdukController');
     
-// });
+});
