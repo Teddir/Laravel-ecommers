@@ -8,6 +8,7 @@ use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use phpDocumentor\Reflection\Types\Null_;
 
 class RegisterController extends Controller
 {
@@ -71,9 +72,9 @@ class RegisterController extends Controller
             'alamat' => $data['alamat'],
             'phone_number' => $data['phone_number'],
             'password' => Hash::make($data['password']),
-            'id_produk' => $data['id_produk'],
-            'id_kategori' => $data['id_kategori'],
-            'id_kota' => $data['id_kota'],
+            'id_produk' => NULL,
+            'id_kategori' => NULL,
+            'id_kota' => NULL,
             
         ]);
     }
