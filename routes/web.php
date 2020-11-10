@@ -20,21 +20,21 @@ Route::get('/', function () {
 
 Auth::routes();
 
-// Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/home', 'ChatController@index')->name('home');
-Route::get('/halchat/{id}', 'ChatController@getMessage');
-Route::post('/halchat', 'ChatController@sendMessage');
+// // Route::get('/home', 'HomeController@index')->name('home');
+// Route::get('/home', 'ChatController@index')->name('home');
+// Route::get('/halchat/{id}', 'ChatController@getMessage');
+// Route::post('/halchat', 'ChatController@sendMessage');
 
 
-// Route::group(['middleware' => 'jwt-verify'], function() {
-Route::resource('/ModeBank', 'ModBankController');
-Route::resource('/Kota', 'KotaController');
-Route::resource('/Hubungi', 'HubungiController');
-Route::resource('/Kategori', 'KategoriController');
-Route::resource('/Keranjang', 'KeranjangController');
-Route::resource('/MainMenu', 'MainMenuController');
-Route::resource('/Order', 'OrderController');
-Route::resource('/Penjual', 'PenjualController');
-Route::resource('/Produk', 'ProdukController');
+// // Route::group(['middleware' => 'jwt-verify'], function() {
+// Route::resource('/ModeBank', 'ModBankController');
+// Route::resource('/Kota', 'KotaController');
+// Route::resource('/Hubungi', 'HubungiController');
+// Route::resource('/Kategori', 'KategoriController');
+// Route::resource('/Keranjang', 'KeranjangController');
+// Route::resource('/MainMenu', 'MainMenuController');
+// Route::resource('/Order', 'OrderController');
+// Route::resource('/Penjual', 'PenjualController');
+// Route::resource('/Produk', 'ProdukController');
     
 // });

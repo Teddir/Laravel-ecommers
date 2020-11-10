@@ -72,9 +72,9 @@ class RegisterController extends Controller
             'alamat' => $data['alamat'],
             'phone_number' => $data['phone_number'],
             'password' => Hash::make($data['password']),
-            'id_produk' => null,
-            'id_kategori' => null,
-            'id_kota' => null,
+            // 'id_produk' => null,
+            // 'id_kategori' => null,
+            // 'id_kota' => null,
             
         ]);
     }
