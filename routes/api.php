@@ -25,7 +25,7 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('register', 'UserController@register');
 Route::post('login', 'UserController@login');
 Route::get('/chat', 'ChatController@index')->name('home');
-Route::resource('/Produk', 'ProdukController');
+Route::resource('/produk', 'ProdukController');
 
 Route::group(['middleware' => 'jwt.verify'], function() {
     Route::resource('/modeank', 'ModBankController');
