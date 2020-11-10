@@ -8,6 +8,7 @@ use App\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use SebastianBergmann\Type\NullType;
 
 class RegisterController extends Controller
 {
@@ -71,9 +72,9 @@ class RegisterController extends Controller
             'alamat' => $data['alamat'],
             'phone_number' => $data['phone_number'],
             'password' => Hash::make($data['password']),
-            'id_produk' => $data['id_produk'],
-            'id_kategori' => $data['id_kategori'],
-            'id_kota' => $data['id_kota'],
+            'id_produk' => null,
+            'id_kategori' => null,
+            'id_kota' => null,
             
         ]);
     }
