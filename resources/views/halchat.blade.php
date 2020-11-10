@@ -35,14 +35,4 @@
         </div>
     </div>
 </div>
-<form action="">
-<div class="col-lg-6">
-<div class="input-group ">
-    <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="button-addon2">
-    <div class="input-group-append">
-      <button class="btn btn-outline-secondary" type="button" id="button-addon2">Button</button>
-    </div>
-  </div>
-</div>
-</form>
 @endsection

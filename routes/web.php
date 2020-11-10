@@ -21,20 +21,30 @@ Route::get('/', function () {
 Auth::routes();
 
 // Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/chat', 'ChatController@index')->name('home'); 
-Route::get('/halchat/{id}', 'ChatController@getMessage');
-Route::post('/halchat', 'ChatController@sendMessage');
+        //route Chat
+Route::get('/home', 'ChatController@index')->name('home'); 
+Route::get('/message/{id}', 'ChatController@getMessage');
+Route::post('/message', 'ChatController@sendMessage');
 
 
 Route::group(['middleware' => 'jwt-verify'], function() {
+    //route mod bank
 Route::resource('/ModeBank', 'ModBankController');
+    //route kota
 Route::resource('/Kota', 'KotaController');
+    //route hubungi
 Route::resource('/Hubungi', 'HubungiController');
+    //route kategori
 Route::resource('/Kategori', 'KategoriController');
+    //route keranjang
 Route::resource('/Keranjang', 'KeranjangController');
+    //route mainmenu
 Route::resource('/MainMenu', 'MainMenuController');
+    //route order
 Route::resource('/Order', 'OrderController');
+    //route penjual
 Route::resource('/Penjual', 'PenjualController');
+    //route produk
 Route::resource('/Produk', 'ProdukController');
     
 });

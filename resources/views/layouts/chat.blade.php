@@ -228,7 +228,7 @@
 
             var channel = pusher.subscribe('my-channel');
             channel.bind('my-event', function (data) {
-                // alert(JSON.stringify(data));
+                alert(JSON.stringify(data));
                 if (my_id == data.from) {
                     $('#' + data.to).click();
                 } else if (my_id == data.to) {
