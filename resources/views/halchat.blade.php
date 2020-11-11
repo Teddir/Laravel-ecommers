@@ -11,9 +11,9 @@
                         @if ($user->unread)
                     
                         <span class="pending">{{ $user->unread }}</span>
-
                         @endif
 
+                        
                         <div class="media">
                             <div class="media-left">
                                 <img src="{{ $user->avatar }}" alt="" class="media-project">

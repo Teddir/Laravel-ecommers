@@ -18,33 +18,43 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/home', function () {
+    return view('home');
+});
+
+
 Auth::routes();
 
 // Route::get('/home', 'HomeController@index')->name('home');
-        //route Chat
-Route::get('/home', 'ChatController@index')->name('home'); 
+
+
+//route Chat
+Route::get('/chat', 'ChatController@index'); 
 Route::get('/message/{id}', 'ChatController@getMessage');
 Route::post('/message', 'ChatController@sendMessage');
 
-
-Route::group(['middleware' => 'jwt-verify'], function() {
+Route::group(['middleware' => 'auth'], function() {
+    
     //route mod bank
-Route::resource('/ModeBank', 'ModBankController');
+    Route::resource('/modeBank', 'ModBankController');
     //route kota
-Route::resource('/Kota', 'KotaController');
+    Route::resource('/kota', 'KotaController');
     //route hubungi
-Route::resource('/Hubungi', 'HubungiController');
+    Route::resource('/hubungi', 'HubungiController');
     //route kategori
-Route::resource('/Kategori', 'KategoriController');
+    Route::resource('/kategori', 'KategoriController');
     //route keranjang
-Route::resource('/Keranjang', 'KeranjangController');
+    Route::resource('/keranjang', 'KeranjangController');
     //route mainmenu
-Route::resource('/MainMenu', 'MainMenuController');
+    Route::resource('/mainMenu', 'MainMenuController');
     //route order
-Route::resource('/Order', 'OrderController');
+    Route::resource('/order', 'OrderController');
     //route penjual
-Route::resource('/Penjual', 'PenjualController');
+    Route::resource('/penjual', 'PenjualController');
     //route produk
-Route::resource('/Produk', 'ProdukController');
+    Route::resource('/produk', 'ProdukController');
+    
+    //route Admin
+    Route::get('/dashbord', 'ProdukController@index1'); 
     
 });

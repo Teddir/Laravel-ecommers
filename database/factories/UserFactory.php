@@ -65,9 +65,8 @@ $factory->define(hubungis::class, function (Faker $faker) {
 });
 $factory->define(produks::class, function (Faker $faker) {
     return [
-        'id_produk' => $faker->buildingNumber,
-        'id_kategori' => $faker->buildingNumber,
-        'name' => $faker->name,
+        // 'id_kategori' => $faker->buildingNumber,
+        'name_produk' => $faker->name,
         'desc' => $faker->dateTimeThisCentury,
         'harga' => $faker->buildingNumber,
         'stok' => $faker->buildingNumber,

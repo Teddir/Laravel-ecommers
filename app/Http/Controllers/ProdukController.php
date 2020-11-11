@@ -12,6 +12,15 @@ class ProdukController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    //-------------------------------------------------------------->WEB
+
+    public function index1()
+    {
+        $produk = produks::get();
+        return view('Tampilan.Produk.produk', compact('produk'));
+    }
+
+    //-------------------------------------------------------------->API
     public function index()
     {
         $produk = produks::get();
@@ -90,7 +99,7 @@ class ProdukController extends Controller
             if (!$produk) {
                 return response([
                     'status' => 'error',
-                    'message' => 'Invalid Credentials',
+                    'message' => 'Gagal Di Tambah',
                     'data' => NULL, 404
                 ]);
             }
