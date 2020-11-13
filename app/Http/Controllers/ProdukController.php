@@ -18,7 +18,9 @@ class ProdukController extends Controller
         // $produk = produks::get();
         // $produk = kategoris::with(['kategoris'])->orderBy('created_at', 'asc')->get();
         // $kategori = kategoris::get();
-        $produk = produks::with(['kategoris'])->orderBy('created_at', 'asc')->get();
+        // $produk = produks::with(['kategoris'])->orderBy('created_at', 'asc')->get();
+        $produk = produks::get();
+
         //-------------------------------------------------------------->WEB
 
         return view('Tampilan.Produk.produk', compact('produk'));
