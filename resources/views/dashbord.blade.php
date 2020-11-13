@@ -294,16 +294,20 @@
               </div>
 
               <div class="title_right">
+                <form action="/cari">
                 <div class="col-md-5 col-sm-5  form-group pull-right top_search">
                   <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search for...">
-                    <span class="input-group-btn">
-                      <button class="btn btn-default" type="button">Go!</button>
-                    </span>
+                      
+                      <input type="text" class="form-control" name="cari" placeholder="Search for...">
+                      <span class="input-group-btn">
+                        <button class="btn btn-default" type="button">Go!</button>
+                      
+                      </span>
+                    </div>
                   </div>
+                </form>
                 </div>
               </div>
-            </div>
             
             <div class="clearfix"></div>
 

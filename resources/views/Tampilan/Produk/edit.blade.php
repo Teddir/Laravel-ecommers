@@ -18,23 +18,30 @@
         <p class="text-danger">{{ $errors->first('name_produk') }}</p>
     </div>
     <div class="form-group">
-        <label for="tgl_masuk">tgl_masuk</label>
-        <input type="date" name="tgl_masuk" class="form-control" value="{{$produk->tgl_masuk}}" required>
-        <p class="text-danger">{{ $errors->first('tgl_masuk') }}</p>
-    </div>
-    <div class="form-group">
-        <label for="terjual">terjual</label>
-        <input type="text" name="terjual" class="form-control" value="{{$produk->terjual}}" required>
-        <p class="text-danger">{{ $errors->first('terjual') }}</p>
+        <label for="status">status</label>
+        <input type="text" name="status" class="form-control" value="{{$produk->status}}" required>
+        <p class="text-danger">{{ $errors->first('status') }}</p>
     </div>
     <div class="form-group">
       <label for="diskon">diskon</label>
       <input type="text" name="diskon" class="form-control"  value="{{$produk->diskon}}" required>
       <p class="text-danger">{{ $errors->first('diskon') }}</p>
   </div>
+  <div class="form-group">
+    <label for="kategori_id">Kategori</label>
+    
+    <!-- DATA KATEGORI DIGUNAKAN DISINI, SEHINGGA SETIAP PRODUK USER BISA MEMILIH KATEGORINYA -->
+    <select name="kategori_id" class="form-control">
+        <option value="">Pilih</option>
+        @foreach ($kategori as $row)
+        <option value="{{ $row->id }}" {{ old('kategori_id') == $row->id ? 'selected':'' }}>{{ $row->name_kategori }}</option>
+        @endforeach
+    </select>
+    <p class="text-danger">{{ $errors->first('kategori_id') }}</p>
+</div>
     <div class="form-group">
       <label for="harga">harga</label>
-      <input type="text" name="harga" class="form-control" value="{{$produk->harga}}" required>
+      <input type="number" name="harga" class="form-control" value="{{$produk->harga}}" required>
       <p class="text-danger">{{ $errors->first('harga') }}</p>
   </div>
   <div class="form-group">

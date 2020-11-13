@@ -17,7 +17,7 @@
       <th scope="col">Name Produk</th>
       <th scope="col">Keterangan</th>
       <th scope="col">Stok</th>
-      <th scope="col">Terjual</th>
+      <th scope="col">Status</th>
       <th scope="col">Diskon</th>
       <th scope="col">harga</th>
       <th scope="col">Tanggal Masuk</th>
@@ -32,10 +32,10 @@
       <td>{{ $item->name_produk }}</td>
       <td>{{ $item->desc }}</td>
       <td>{{ $item->stok }}</td>
-      <td>{{ $item->terjual }}</td>
+      <td>{{ $item->status }}</td>
       <td>{{ $item->diskon }}</td>
-      <td>{{ $item->tgl_masuk }}</td>
       <td>{{ $item->harga }}</td>
+      <td>{{ $item->Created_at }}</td>
       <td><img class="card-img-top" src="image/{{ $item->image }}" alt="{{ $item->image }}" height="200" widht="40"></td>
       <td>
         <a href="{{ route('produk.create') }}"><button class="btn btn-primary"><i class="fa fa-plus-square" aria-hidden="true"></i></button></a>     

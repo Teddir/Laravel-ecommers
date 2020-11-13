@@ -63,6 +63,7 @@ Route::post('/message', 'ChatController@sendMessage');
 // });
 Route::get('/dashbord', 'ProdukController@index'); 
 // Route::get('/create', 'ProdukController@index1'); 
+Route::get('/cari', 'ProdukController@render'); 
 
 Route::get('/login/facebook', 'Auth\LoginController@redirectToProvider');
 Route::get('/login/facebook/callback', 'Auth\LoginController@handleProviderCallback');

@@ -19,7 +19,6 @@ class Produk extends Migration
             $table->text('desc');
             $table->integer('harga');
             $table->integer('stok');
-            $table->date('tgl_masuk');
             $table->string('image');
             $table->integer('status');
             $table->integer('diskon');

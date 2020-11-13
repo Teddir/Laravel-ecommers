@@ -24,8 +24,8 @@
     <div class="form-group">
         <label for="status">Status</label>
         <select name="status" class="form-control" required>
-            <option value="1" {{ old('status') == '1' ? 'selected':'' }}>Publish</option>
-            <option value="0" {{ old('status') == '0' ? 'selected':'' }}>Draft</option>
+            <option value="Publish" {{ old('status') == 'Publish' ? 'selected':'' }}>Publish</option>
+            <option value="Draft" {{ old('status') == 'Draft' ? 'selected':'' }}>Draft</option>
         </select>
         <p class="text-danger">{{ $errors->first('status') }}</p>
     </div>

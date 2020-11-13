@@ -23,7 +23,7 @@ class ProdukController extends Controller
 
         //-------------------------------------------------------------->WEB
 
-        return view('Tampilan.Produk.produk', compact('produk'));
+        // return view('Tampilan.Produk.produk', compact('produk'));
         //-------------------------------------------------------------->API    
         if (!$produk) {
             # code...
@@ -80,7 +80,6 @@ class ProdukController extends Controller
             'harga' => 'required',
             'stok' => 'required',
             'tgl_masuk' => 'required',
-            // 'image' => 'required',
             'status' => 'required',
             'diskon' => 'required',
         ]);
@@ -89,10 +88,9 @@ class ProdukController extends Controller
 
         $request->image->move(public_path('image'), $imgName);
 
-        // try {
+        try {
             $produk = new produks;
             $produk->name_produk = $request->name_produk;
-            // $produk->id_kategori = $request->id_kategori;
             $produk->desc = $request->desc;
             $produk->harga = $request->harga;
             $produk->stok = $request->stok;
@@ -102,21 +100,22 @@ class ProdukController extends Controller
             $produk->diskon = $request->diskon;
             $produk->save();
             return redirect('/dashbord')->with(['success' => 'Kategori Diperbaharui!']);
-        //     if (!$produk) {
-        //         return response([
-        //             'status' => 'error',
-        //             'message' => 'Gagal Di Tambah',
-        //             'data' => NULL, 404
-        //         ]);
-        //     }
-        // } catch (\Throwable $th) {
-        //     $th->getMessage();
-        // }
-        // return response([
-        //     'status' => 'succes',
-        //     'message' => 'Berhasil Di Tambah',
-        //     'data' => $produk, 200
-        // ]);
+            if (!$produk) {
+                return response([
+                    'status' => 'error',
+                    'message' => 'Gagal Di Tambah',
+                    'data' => NULL, 404
+                ]);
+            }
+        } catch (\Throwable $th) {
+            $th->getMessage();
+        }
+        return response([
+            'status' => 'succes',
+            'message' => 'Berhasil Di Tambah',
+            'data' => $produk, 200
+        ]);
+        
     }
 
     /**
@@ -138,9 +137,9 @@ class ProdukController extends Controller
      */
     public function edit($id)
     {
-        $produk = produks::find($id);
-        // $kategori = kategoris::find($id);
-        return view('Tampilan.Produk.edit', compact('produk'));
+        $produk = produks::with(['kategoris'])->orderBy('created_at', 'asc')->find($id);
+        $kategori = kategoris::with(['produk'])->orderBy('created_at', 'asc')->get();
+        return view('Tampilan.Produk.edit', compact('kategori','produk'));
         if (!$produk) {
             # code...
             return response()->json([
@@ -166,9 +165,7 @@ class ProdukController extends Controller
             'desc' => 'required',
             'harga' => 'required',
             'stok' => 'required|integer',
-            'tgl_masuk' => 'required',
-            // 'image' => 'required',
-            'terjual' => 'required',
+            'status' => 'required',
             'diskon' => 'required',
         ]);
 
@@ -179,34 +176,32 @@ class ProdukController extends Controller
             $request->image->move(public_path('image'), $imgName);
         }
 
-        // try {
+        try {
         $produk = produks::find($id);
         $produk->name_produk = $request->name_produk;
-        // $produk->id_kategori = $request->id_kategori;
         $produk->desc = $request->desc;
         $produk->harga = $request->harga;
         $produk->stok = $request->stok;
-        $produk->tgl_masuk = $request->tgl_masuk;
         $produk->image = $imgName;
-        $produk->terjual = $request->terjual;
+        $produk->status = $request->status;
         $produk->diskon = $request->diskon;
         $produk->save();
         return redirect('/dashbord')->with(['success' => 'Kategori Diperbaharui!']);
-        //     if (!$produk) {
-        //         return response([
-        //             'status' => 'error',
-        //             'message' => 'Invalid Credentials',
-        //             'data' => NULL, 404
-        //         ]);
-        //     }
-        // } catch (\Throwable $th) {
-        //     $th->getMessage();
-        // }
-        // return response([
-        //     'status' => 'succes',
-        //     'message' => 'Berhasil Di update',
-        //     'data' => $produk, 200
-        // ]);    // 
+            if (!$produk) {
+                return response([
+                    'status' => 'error',
+                    'message' => 'Invalid Credentials',
+                    'data' => NULL, 404
+                ]);
+            }
+        } catch (\Throwable $th) {
+            $th->getMessage();
+        }
+        return response([
+            'status' => 'succes',
+            'message' => 'Berhasil Di update',
+            'data' => $produk, 200
+        ]);    
     }
 
     /**
@@ -233,9 +228,11 @@ class ProdukController extends Controller
         ]);
     }
 
-    public function render($cari)
+    public function render(Request $request, $cari)
     {
-        $produk = produks::WHERE('name', 'like', '%' . $cari . '%');
+        $produk =  produks::WHERE('name', 'like', '%' . $cari . '%');
+        $produk->cari = $request->cari;
+        return view('dashbord', compact('kategori','produk'));
         if (!$produk) {
             # code...
             return response()->json([
