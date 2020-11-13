@@ -22,6 +22,10 @@ Route::get('/home', function () {
     return view('home');
 });
 
+Route::get('/create', function () {
+    return view('Tampilan.Produk.create');
+});
+
 
 Auth::routes();
 
@@ -33,10 +37,10 @@ Route::get('/chat', 'ChatController@index');
 Route::get('/message/{id}', 'ChatController@getMessage');
 Route::post('/message', 'ChatController@sendMessage');
 
-Route::group(['middleware' => 'auth'], function() {
+// Route::group(['middleware' => 'auth'], function() {
     
     //route mod bank
-    Route::resource('/modeBank', 'ModBankController');
+    Route::resource('/modeBank', 'ModBankController')->except('create','show');
     //route kota
     Route::resource('/kota', 'KotaController');
     //route hubungi
@@ -55,6 +59,10 @@ Route::group(['middleware' => 'auth'], function() {
     Route::resource('/produk', 'ProdukController');
     
     //route Admin
-    Route::get('/dashbord', 'ProdukController@index1'); 
     
-});
+// });
+Route::get('/dashbord', 'ProdukController@index'); 
+// Route::get('/create', 'ProdukController@index1'); 
+
+Route::get('/login/facebook', 'Auth\LoginController@redirectToProvider');
+Route::get('/login/facebook/callback', 'Auth\LoginController@handleProviderCallback');

@@ -15,7 +15,7 @@ class Kategori extends Migration
     {
         Schema::create('kategoris', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name_kategori');
+            $table->string('name_kategori')->unique();
             $table->string('keterangan');
             $table->string('image');
             $table->date('tgl_posting');

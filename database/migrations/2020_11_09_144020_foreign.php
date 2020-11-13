@@ -15,42 +15,49 @@ class Foreign extends Migration
     public function up()
     {
         Schema::table('kategoris', function (Blueprint $table) {
-            $table->foreignId('id_main')->nullable()->constrained('mainmenus');
+            $table->foreignId('main_id')->nullable()->constrained('mainmenus');
+            $table->foreignId('parent_id')->nullable()->constrained('produks');
+
         }); 
         Schema::table('users', function (Blueprint $table) {
-            $table->foreignId('id_produk')->nullable()->constrained('produks');
-            $table->foreignId('id_kategori')->nullable()->constrained('kategoris');
-            $table->foreignId('id_kota')->nullable()->constrained('kotas');
+            $table->foreignId('produk_id')->nullable()->constrained('produks');
+            $table->foreignId('kategori_id')->nullable()->constrained('kategoris');
+            $table->foreignId('kota_id')->nullable()->constrained('kotas');
         });
 
         Schema::table('mod_banks', function (Blueprint $table) {
-            $table->foreignId('id_user')->nullable()->constrained('users');
+            $table->foreignId('user_id')->nullable()->constrained('users');
         });
         
         Schema::table('keranjangs', function (Blueprint $table) {
-            $table->foreignId('id_kategori')->nullable()->constrained('kategoris')->cascedeOnDelete();
-            $table->foreignId('id_user')->nullable()->constrained('users');
+            $table->foreignId('kategori_id')->nullable()->constrained('kategoris')->cascedeOnDelete();
+            $table->foreignId('user_id')->nullable()->constrained('users');
         });  
 
         Schema::table('orders', function (Blueprint $table) {
-            $table->foreignId('id_user')->nullable()->constrained('users');
+            $table->foreignId('user_id')->nullable()->constrained('users');
+            $table->foreignId('user_name')->nullable()->constrained('users');
+            $table->foreignId('user_phone')->nullable()->constrained('users');
+            $table->foreignId('user_alamat')->nullable()->constrained('users');
+            $table->foreignId('kota_id')->nullable()->constrained('kotas'); //field ini akan merujuk ke table districts
+    
         });   
 
         Schema::table('produks', function (Blueprint $table) {
-            $table->foreignId('id_kategori')->nullable()->constrained('kategoris');
+            $table->foreignId('kategori_id')->nullable()->constrained('kategoris');
         });   
 
         Schema::table('orderdetails', function (Blueprint $table) {
-            $table->foreignId('id_order')->nullable()->constrained('orders');
-            $table->foreignId('id_produk')->nullable()->constrained('produks');
+            $table->foreignId('order_id')->nullable()->constrained('orders');
+            $table->foreignId('produk_id')->nullable()->constrained('produks');
         });   
 
         Schema::table('penjuals', function (Blueprint $table) {
-            $table->foreignId('id_message')->constrained('hubungis');
+            $table->foreignId('message_id')->nullable()->constrained('hubungis');
         });   
 
         Schema::table('hubungis', function (Blueprint $table) {
-            $table->foreignId('id_hubungi')->nullable()->constrained('users');
+            $table->foreignId('hubungi_id')->nullable()->constrained('users');
         });   
 
 

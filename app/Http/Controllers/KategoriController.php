@@ -5,9 +5,16 @@ namespace App\Http\Controllers;
 use App\hubungis;
 use App\kategoris;
 use Illuminate\Http\Request;
+use Kategori;
 
 class KategoriController extends Controller
 {
+    
+        //-------------------------------------------------------------->WEB
+
+    
+        //-------------------------------------------------------------->API
+    
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +22,10 @@ class KategoriController extends Controller
      */
     public function index()
     {
-        $kategori = kategoris::get();
+        // $kategori = kategoris::get();
+        $kategori = kategoris::with(['produk'])->orderBy('created_at', 'asc')->get();
+        // return response()->json(['data' => $kategori]);
+            return view('Tampilan.Kategori.create', compact('kategori'));
         if (! $kategori) {
             # code...
             return response()->json([
@@ -39,6 +49,7 @@ class KategoriController extends Controller
     public function create()
     {
         $kategori = kategoris::get();
+        // return view('Tampilan.Kategori.create', compact('kategori'));
         if (!$kategori) {
             # code...
             return response()->json([
@@ -60,39 +71,30 @@ class KategoriController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name_kategori' => 'required',
-            'keterangan' => 'required',
-            'image' => 'required',
+            // 'name_kategori' => 'required',
             'tgl_posting' => 'required',
         ]);
 
-        $imgName = $request->image->getClientOriginalName() . '-' . time() . '.' . $request->image->extension();
-
-        $request->image->move(public_path('image'), $imgName);
-        
-
-        try {
             $kategori = new kategoris();
             $kategori->name_kategori = $request->name_kategori;
-            $kategori->keterangan = $request->keterangan;
             $kategori->tgl_posting = $request->tgl_posting;
-            $kategori->image = $imgName;
             $kategori->save();
-            if (!$kategori) {
-                return response([
-                    'status' => 'error',
-                    'message' => 'Invalid Credentials',
-                    'data' => NULL, 404
-                ]);
-            }
-        } catch (\Throwable $th) {
-            $th->getMessage();
-        }
-        return response([
-            'status' => 'succes',
-            'message' => 'Berhasil Di Tambah',
-            'data' => $kategori, 200
-        ]);
+            return redirect('/dashbord')->with(['success' => 'Kategori Diperbaharui!']);
+        //     if (!$kategori) {
+        //         return response([
+        //             'status' => 'error',
+        //             'message' => 'Invalid Credentials',
+        //             'data' => NULL, 404
+        //         ]);
+        //     }
+        // } catch (\Throwable $th) {
+        //     $th->getMessage();
+        // }
+        // return response([
+        //     'status' => 'succes',
+        //     'message' => 'Berhasil Di Tambah',
+        //     'data' => $kategori, 200
+        // ]);
     }
 
     /**

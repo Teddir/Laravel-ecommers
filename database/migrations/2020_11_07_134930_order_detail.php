@@ -15,7 +15,9 @@ class OrderDetail extends Migration
     {
         Schema::create('orderdetails', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('jumlah');
+            $table->integer('price');
+            $table->integer('qty');
+            $table->integer('weight'); //JUGA BERLAKU DENGAN BERAT BARANG, UNTUK MENGHINDARI PERUBAHAN DATA PRODUK
             $table->timestamps();
         });
     }

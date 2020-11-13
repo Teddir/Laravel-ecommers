@@ -11,27 +11,37 @@
     <title>@yield('title')</title>
 
     <!-- Bootstrap -->
+    
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-    <link href="..vendors/bootstrap/dist/css/bootstrap.min.css">
+    {{-- <link href="{{ asset('assets/vendors/bootstrap/dist/css/bootstrap.min.css') }}"> --}}
     <!-- Font Awesome -->
-    <link href="vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="{{ asset('assets/vendors/font-awesome/css/font-awesome.min.css') }}" >
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <!-- NProgress -->
-    <link rel="stylesheet" href="..vendors/nprogress/nprogress.css">
+    {{-- <link rel="stylesheet" href="{{ asset('assets/vendors/nprogress/nprogress.css') }}">
+    <script src="{{ asset('assets/vendors/nprogress/nprogress.css') }}"></script> --}}
+
     <!-- iCheck -->
-    <link rel="stylesheet" href="..vendors/iCheck/skins/flat/green.css">
+    
+    <link rel="stylesheet" href="{{ asset('../vendors/font-awesome/css/font-awesome.min.css') }}">
 	
     <!-- bootstrap-progressbar -->
-    <link rel="stylesheet" href="..vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css">
+    
+    <link rel="stylesheet" href="{{ asset('assets/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css') }}">
     <!-- JQVMap -->
-    <link rel="stylesheet" href="..vendors/jqvmap/dist/jqvmap.min.css"/>
+    
+    <link rel="stylesheet" href="{{ asset('assets/vendors/jqvmap/dist/jqvmap.min.css') }}"/>
     <!-- bootstrap-daterangepicker -->
-    <link rel="stylesheet" href="..vendors/bootstrap-daterangepicker/daterangepicker.css">
+    
+    <link rel="stylesheet" href="{{ asset('vendors/bootstrap-daterangepicker/daterangepicker.css') }}">
 
     <!-- Custom Theme Style -->
-    <link rel="stylesheet" href="css/custom.min.css">
+    
+    <link rel="stylesheet" href="{{ asset('css/custom.min.css') }}">
     
   </head>
+
 
   <body class="nav-md">
     <div class="container body">
@@ -47,11 +57,11 @@
             <!-- menu profile quick info -->
             <div class="profile clearfix">
               <div class="profile_pic">
-                <img src="images/img.jpg" alt="..." class="img-circle profile_img">
+                <img src="image/teddi.jpeg" alt="..." class="img-circle profile_img">
               </div>
               <div class="profile_info">
                 <span>Welcome,</span>
-                <h2>John Doe</h2>
+                <h2>Teddi</h2>
               </div>
             </div>
             <!-- /menu profile quick info -->
@@ -65,14 +75,14 @@
                 <ul class="nav side-menu">
                   <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="index.html">Dashboard</a></li>
-                      <li><a href="index2.html">Dashboard2</a></li>
-                      <li><a href="index3.html">Dashboard3</a></li>
+                      <li><a href="">Dashboard</a></li>
+                      <li><a href="/produk">Dashboard2</a></li>
+                      <li><a href="/">Dashboard3</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-edit"></i> Forms <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="form.html">General Form</a></li>
+                      <li><a href="/kategori">Form Kategori</a></li>
                       <li><a href="form_advanced.html">Advanced Components</a></li>
                       <li><a href="form_validation.html">Form Validation</a></li>
                       <li><a href="form_wizards.html">Form Wizard</a></li>
@@ -191,7 +201,7 @@
                 <ul class=" navbar-right">
                   <li class="nav-item dropdown open" style="padding-left: 15px;">
                     <a href="javascript:;" class="user-profile dropdown-toggle" aria-haspopup="true" id="navbarDropdown" data-toggle="dropdown" aria-expanded="false">
-                      <img src="images/img.jpg" alt="">John Doe
+                      <img src="image/teddi.jpeg" alt="">Teddi Rahman
                     </a>
                     <div class="dropdown-menu dropdown-usermenu pull-right" aria-labelledby="navbarDropdown">
                       <a class="dropdown-item"  href="javascript:;"> Profile</a>
@@ -318,6 +328,11 @@
                     <div class="clearfix"></div>
                   </div>
                   <div class="x_content">
+                    @if (session('status'))
+                    <div class="alert alert-success">
+                        {{ session('status') }}
+                    </div>
+                @endif                
 
                     
           @yield('dashbord1')
@@ -335,15 +350,16 @@
     </div>
 
     <!-- jQuery -->
-    <script src="js/jquery.min.js"></script>
+    
+    <script src="{{ asset('js/jquery.min.js') }}"></script>
     <!-- Bootstrap -->
-   <script src="../vendors/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+   <script src="{{asset('js/bootstrap.bundle.min.js') }}"></script>
     <!-- FastClick -->
-    <script src="../vendors/fastclick/lib/fastclick.js"></script>
+    <script src="{{asset('assets/vendors/fastclick/lib/fastclick.js')}}"></script>
     <!-- NProgress -->
-    <script src="../vendors/nprogress/nprogress.js"></script>
+    <script src="{{asset('assets/vendors/nprogress/nprogress.js')}}"></script>
 
     <!-- Custom Theme Scripts -->
-    <script src="../build/js/custom.min.js"></script>
+    <script src="{{asset('js/custom.min.js')}}"></script>
   </body>
 </html>

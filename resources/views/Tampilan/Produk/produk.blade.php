@@ -36,8 +36,9 @@
       <td>{{ $item->diskon }}</td>
       <td>{{ $item->tgl_masuk }}</td>
       <td>{{ $item->harga }}</td>
+      <td><img class="card-img-top" src="image/{{ $item->image }}" alt="{{ $item->image }}" height="200" widht="40"></td>
       <td>
-        <a href="{{ route('produk.store', $item->id) }}"><button class="btn btn-primary"><i class="fa fa-plus-square" aria-hidden="true"></i></button></a>     
+        <a href="{{ route('produk.create') }}"><button class="btn btn-primary"><i class="fa fa-plus-square" aria-hidden="true"></i></button></a>     
         <a href="{{ route('produk.edit', $item->id) }}"><button class="btn btn-primary"><i class="fa fa-wrench" aria-hidden="true"></i></button></a>
         {{-- <td><form action="{{ route('produk.destroy', $item->id) }}" method="post">@method('delete') @csrf --}}
         <a href=""><button class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button></a>
@@ -47,7 +48,6 @@
     @endforeach
     </tbody>
 </table>
-
 
  {{-- ------------------------------------------------------------------------------------------------- create --}}
 

@@ -15,9 +15,10 @@ class Order extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('status_order');
+            $table->string('invoice')->unique();
             $table->date('tgl_order');
             $table->time('time');
+            $table->integer('subtotal');
             $table->timestamps();
         });
     }

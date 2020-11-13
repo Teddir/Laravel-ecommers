@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\keranjangs;
 use Illuminate\Http\Request;
+use Produk;
 
 class KeranjangController extends Controller
 {
