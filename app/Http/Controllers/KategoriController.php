@@ -80,21 +80,21 @@ class KategoriController extends Controller
             $kategori->tgl_posting = $request->tgl_posting;
             $kategori->save();
             return redirect('/dashbord')->with(['success' => 'Kategori Diperbaharui!']);
-            if (!$kategori) {
-                return response([
-                    'status' => 'error',
-                    'message' => 'Invalid Credentials',
-                    'data' => NULL, 404
-                ]);
-            }
-        } catch (\Throwable $th) {
-            $th->getMessage();
-        }
-        return response([
-            'status' => 'succes',
-            'message' => 'Berhasil Di Tambah',
-            'data' => $kategori, 200
-        ]);
+        //     if (!$kategori) {
+        //         return response([
+        //             'status' => 'error',
+        //             'message' => 'Invalid Credentials',
+        //             'data' => NULL, 404
+        //         ]);
+        //     }
+        // } catch (\Throwable $th) {
+        //     $th->getMessage();
+        // }
+        // return response([
+        //     'status' => 'succes',
+        //     'message' => 'Berhasil Di Tambah',
+        //     'data' => $kategori, 200
+        // ]);
     }
 
     /**
