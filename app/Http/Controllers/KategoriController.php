@@ -80,21 +80,21 @@ class KategoriController extends Controller
             $kategori->tgl_posting = $request->tgl_posting;
             $kategori->save();
             return redirect('/dashbord')->with(['success' => 'Kategori Diperbaharui!']);
-        //     if (!$kategori) {
-        //         return response([
-        //             'status' => 'error',
-        //             'message' => 'Invalid Credentials',
-        //             'data' => NULL, 404
-        //         ]);
-        //     }
-        // } catch (\Throwable $th) {
-        //     $th->getMessage();
-        // }
-        // return response([
-        //     'status' => 'succes',
-        //     'message' => 'Berhasil Di Tambah',
-        //     'data' => $kategori, 200
-        // ]);
+            if (!$kategori) {
+                return response([
+                    'status' => 'error',
+                    'message' => 'Invalid Credentials',
+                    'data' => NULL, 404
+                ]);
+            }
+        } catch (\Throwable $th) {
+            $th->getMessage();
+        }
+        return response([
+            'status' => 'succes',
+            'message' => 'Berhasil Di Tambah',
+            'data' => $kategori, 200
+        ]);
     }
 
     /**
@@ -139,8 +139,6 @@ class KategoriController extends Controller
     {
         $request->validate([
             'name_kategori' => 'required',
-            'keterangan' => 'required',
-            'image' => 'required',
             'tgl_posting' => 'required',
         ]);
 
@@ -155,10 +153,7 @@ class KategoriController extends Controller
             //code...
             $kategori = kategoris::find($id);
             $kategori->name_kategori = $request->name_kategori;
-            $kategori->id_main = $request->id_main;
-            $kategori->keterangan = $request->keterangan;
             $kategori->tgl_posting = $request->tgl_posting;
-            $kategori->image = $imgName;
             $kategori->save();
             if (!$kategori) {
                 return response([

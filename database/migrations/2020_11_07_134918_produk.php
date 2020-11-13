@@ -21,7 +21,7 @@ class Produk extends Migration
             $table->integer('stok');
             $table->date('tgl_masuk');
             $table->string('image');
-            $table->integer('terjual');
+            $table->integer('status');
             $table->integer('diskon');
             $table->timestamps();
         });
