@@ -69,7 +69,6 @@ class KategoriController extends Controller
     {
         $request->validate([
             // 'name_kategori' => 'required',
-            'tgl_posting' => 'required',
         ]);
             try {
             $kategori = new kategoris();
