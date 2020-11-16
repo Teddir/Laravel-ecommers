@@ -68,22 +68,21 @@ class KategoriController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            // 'name_kategori' => 'required',
+            'name_kategori' => 'required',
         ]);
             try {
             $kategori = new kategoris();
             $kategori->name_kategori = $request->name_kategori;
             $kategori->save();
-            return redirect('/dashbord')->with(['success' => 'Kategori Diperbaharui!']);
-            if (!$kategori) {
-                return response([
-                    'status' => 'error',
-                    'message' => 'Invalid Credentials',
-                    'data' => NULL, 404
-                ]);
-            }
+            // return redirect('/dashbord')->with(['success' => 'Kategori Diperbaharui!']);
         } catch (\Throwable $th) {
-            $th->getMessage();
+
+            return response([
+                'status' => 'error',
+                'message' => $th->getMessage(),
+                'data' => NULL, 404
+            ]);
+            ;
         }
         return response([
             'status' => 'succes',
@@ -153,15 +152,14 @@ class KategoriController extends Controller
             $kategori = kategoris::find($id);
             $kategori->name_kategori = $request->name_kategori;
             $kategori->save();
-            if (!$kategori) {
-                return response([
-                    'status' => 'error',
-                    'message' => 'Invalid Credentials',
-                    'data' => NULL, 404
-                ]);
-            }
         } catch (\Throwable $th) {
-            $th->getMessage();
+
+            return response([
+                'status' => 'error',
+                'message' => $th->getMessage(),
+                'data' => NULL, 404
+            ]);
+            ;
         }
         return response([
             'status' => 'succes',
