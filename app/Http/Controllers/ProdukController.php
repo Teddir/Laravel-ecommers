@@ -69,9 +69,6 @@ class ProdukController extends Controller
             'diskon' => 'required',
         ]);
 
-        $imgName = $request->image->getClientOriginalName() . '-' . time() . '.' . $request->image->extension();
-
-        $request->image->move(public_path('image'), $imgName);
             // dd($imgName);
         try {
             $produk = new produks;
@@ -81,7 +78,7 @@ class ProdukController extends Controller
             $produk->desc = $request->desc;
             $produk->harga = $request->harga;
             $produk->stok = $request->stok;
-            $produk->image = $imgName;
+            // $produk->image = $imgName;
             $produk->status = $request->status;
             $produk->diskon = $request->diskon;
             $produk->save();
