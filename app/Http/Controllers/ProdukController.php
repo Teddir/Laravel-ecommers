@@ -138,6 +138,7 @@ class ProdukController extends Controller
     public function edit($id)
     {
         $produk = produks::with(['kategoris'])->orderBy('created_at', 'asc')->find($id);
+        $produk = produks::find($id);
         if (!$produk) {
             return response()->json([
                 'data' => NULL, 402
@@ -173,7 +174,7 @@ class ProdukController extends Controller
             $request->image->move(public_path('image'), $imgName);
         }
 
-        try {
+        try {   
         $produk = produks::find($id);
         $produk->name_produk = $request->name_produk;
         $produk->desc = $request->desc;
@@ -186,14 +187,15 @@ class ProdukController extends Controller
         $produk->kategori_id = $request->kategori_id;
         $produk->save();
             if (!$produk) {
-                return response([
-                    'status' => 'error',
-                    'message' => 'Invalid Credentials',
-                    'data' => NULL, 404
-                ]);
+                
             }
         } catch (\Throwable $th) {
-            $th->getMessage();
+            return response([
+                'status' => 'error',
+                'message' => $th->getMessage(),
+                'data' => NULL, 404
+            ]);
+            
         }
         return response([
             'status' => 'succes',
