@@ -6,6 +6,7 @@ use App\produks;
 use Illuminate\Http\Request;
 use App\kategoris;
 use App\User;
+use illuminate\support\Str;
 
 class ProdukController extends Controller
 {
@@ -69,21 +70,24 @@ class ProdukController extends Controller
             'diskon' => 'required',
         ]);
 
-            // dd($imgName);
-        try {
-            $produk = new produks;
-            $produk->name_produk = $request->name_produk;
-            $produk->user_id = auth()->user()->id;
-            $produk->kategori_id = $request->kategori_id;
-            $produk->desc = $request->desc;
-            $produk->harga = $request->harga;
-            $produk->stok = $request->stok;
-            // $produk->image = $imgName;
-            $produk->status = $request->status;
-            $produk->diskon = $request->diskon;
-            $produk->save();
+        $produk = new produks;
+        $produk->name_produk = $request->name_produk;
+        $produk->user_id = auth()->user()->id;
+        $produk->kategori_id = $request->kategori_id;
+        $produk->desc = $request->desc;
+        $produk->harga = $request->harga;
+        $produk->stok = $request->stok;
+        $produk->status = $request->status;
+        $produk->diskon = $request->diskon;
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $image = Str::slug($file->getClientOriginalName(), '-'). time() . '-' . $file->getClientOriginalExtension();
 
-        
+            $file->move(public_path('upload/produk'). $image);
+            $produk->image = $image;
+        }
+        try {
+            $produk->save();
         } catch (\Throwable $th) {
                 
                 return response([
