@@ -44,8 +44,7 @@ $factory->define(User::class, function (Faker $faker) {
     ];
 });
 $factory->define(messages::class, function (Faker $faker) {
-    do
-    {
+    do {
         $from = 1;
         $to = 2;
         $is_read = rand(0, 1);

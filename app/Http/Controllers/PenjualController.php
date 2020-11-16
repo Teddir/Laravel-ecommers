@@ -8,6 +8,7 @@ use App\User;
 use GuzzleHttp\Psr7\Message;
 use Illuminate\Http\Request;
 use Penjual;
+use illuminate\Support\Str;
 
 class PenjualController extends Controller
 {
@@ -66,7 +67,7 @@ class PenjualController extends Controller
             'phone_number' => 'required:unique:penjuals',
 
         ]);
-        
+
         try {
             $penjual = new penjuals;
             $penjual->penjual_id = auth()->user()->id;
@@ -151,7 +152,6 @@ class PenjualController extends Controller
             $penjual->penjual_id = auth()->user()->id;
 
             $penjual->save();
-
         } catch (\Throwable $th) {
             return response([
                 'status' => 'error',
@@ -192,7 +192,7 @@ class PenjualController extends Controller
 
     //----------------------------------------------------Web
 
-      /**
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -202,7 +202,6 @@ class PenjualController extends Controller
         // $penjual = penjuals::where('penjual_id', auth()->user()->id)->with('users', 'penjuals')->get(); --->user
         $penjual = penjuals::get();
         return view('Tampilan.Penjual.penjual', compact('penjual'));
-    
     }
 
     /**
@@ -218,15 +217,13 @@ class PenjualController extends Controller
             'phone_number' => 'required',
 
         ]);
-            $penjual = new penjuals;
-            $penjual->penjual_id = auth()->user()->id;
-            $penjual->name_toko = $request->name_toko;
-            $penjual->phone_number = $request->phone_number;
-            $penjual->save();
+        $penjual = new penjuals;
+        $penjual->penjual_id = auth()->user()->id;
+        $penjual->name_toko = $request->name_toko;
+        $penjual->phone_number = $request->phone_number;
+        $penjual->save();
 
-            return redirect('/admin/index2')->with(['success' => 'Kategori DiTambah!']);
-
-         
+        return redirect('/admin/index2')->with(['success' => 'Kategori DiTambah!']);
     }
 
     /**
@@ -255,7 +252,6 @@ class PenjualController extends Controller
         $user = User::get();
         $penjual = penjuals::find($id);
         return view('Tampilan.Penjual.edit', compact('penjual', 'user'));
-       
     }
 
     /**
@@ -272,14 +268,12 @@ class PenjualController extends Controller
             'phone_number' => 'required:unique:penjuals',
         ]);
 
-            $penjual = penjuals::find($id);
-            $penjual->name_toko = $request->name_toko;
-            $penjual->phone_number = $request->phone_number;
-            $penjual->save();
+        $penjual = penjuals::find($id);
+        $penjual->name_toko = $request->name_toko;
+        $penjual->phone_number = $request->phone_number;
+        $penjual->save();
 
-            return redirect('/admin/index2')->with(['success' => 'Kategori Diperbaharui!']);
-
-           
+        return redirect('/admin/index2')->with(['success' => 'Kategori Diperbaharui!']);
     }
 
     /**
@@ -292,6 +286,5 @@ class PenjualController extends Controller
     {
         $penjual = penjuals::destroy($id);
         return redirect('/admin/index2')->with(['success' => 'Kategori Diperbaharui!']);
-    
     }
 }

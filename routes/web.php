@@ -33,15 +33,13 @@ Auth::routes();
 
 
 //route Chat
-Route::group(['middleware' => 'auth'], function() {
-Route::get('/chat', 'ChatController@index'); 
-Route::get('/message/{id}', 'ChatController@getMessage');
-Route::post('/message', 'ChatController@sendMessage');
+Route::group(['middleware' => 'auth'], function () {
+    Route::get('/chat', 'ChatController@index');
+    Route::get('/message/{id}', 'ChatController@getMessage');
+    Route::post('/message', 'ChatController@sendMessage');
 });
 // Route::get('/create', 'ProdukController@index1'); 
 
-Route::get('/cari', 'ProdukController@render'); 
+Route::get('/cari', 'ProdukController@render');
 Route::get('/login/facebook', 'Auth\LoginController@redirectToProvider');
 Route::get('/login/facebook/callback', 'Auth\LoginController@handleProviderCallback');
-
-

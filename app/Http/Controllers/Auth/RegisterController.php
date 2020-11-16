@@ -71,7 +71,7 @@ class RegisterController extends Controller
             'avatar' => 'https://via.placeholder.com/150',
             'alamat' => $data['alamat'],
             'password' => Hash::make($data['password']),
-            
+
         ]);
     }
 }

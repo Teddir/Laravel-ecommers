@@ -30,7 +30,7 @@ class ChatController extends Controller
     {
         // $users = User::where('id', '!=', Auth::id())->get();
         // return view('home', ['users' => $users ]);
-        
+
         $users =  DB::select('SELECT users.id, users.name, users.image, users.email, 
         count(is_read) as unread FROM users LEFT JOIN messages ON users.id = messages.from AND is_read = 0  
         WHERE users.id <>  messages.to   GROUP BY users.id, users.name, users.image, users.email');

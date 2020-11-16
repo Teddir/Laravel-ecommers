@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
+use illuminate\Support\Str;
 
 class UserController extends Controller
 {
@@ -95,11 +96,11 @@ class UserController extends Controller
     }
 
     /**
-        * Show the form for editing the specified resource.
-        *
-        * @param  \App\User  $User
-        * @return \Illuminate\Http\Response
-        */
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\User  $User
+     * @return \Illuminate\Http\Response
+     */
     public function edit($id)
     {
         $produk = User::find($id);
@@ -123,32 +124,29 @@ class UserController extends Controller
             'alamat' => 'required|string|max:255',
         ]);
 
-        $imgName = $request->old_image;
-        if ($request->avatar) {
-            $imgName = $request->avatar->getClientOriginalName() . '-' . time() . '.' . $request->avatar->extension();
-
-            $request->avatar->move(public_path('image'), $imgName);
-        }
-
         try {
             $produk = User::find($id);
             $produk->name = $request->name;
             $produk->email = $request->email;
             $produk->password = $request->password;
             $produk->alamat = $request->alamat;
-            $produk->avatar = $imgName;
             $produk->produk_id = $request->produk_id;
             $produk->kategori_id = $request->kategori_id;
             $produk->kota_id = $request->kota_id;
+            if ($request->hasFile('image')) {
+                $file = $request->file('image');
+                $image = Str::slug($file->getClientOriginalName(), '-') . time() . '-' . $file->getClientOriginalExtension();
+
+                $file->move(public_path('upload/produk') . $image);
+                $produk->image = $image;
+            }
             $produk->save();
-        
         } catch (\Throwable $th) {
             return response([
                 'status' => 'error',
                 'message' => $th->getMessage(),
                 'data' => NULL, 404
             ]);
-            
         }
         return response([
             'status' => 'succes',
@@ -182,13 +180,13 @@ class UserController extends Controller
         ]);
     }
 
-    public function index1(){
+    public function index1()
+    {
 
         // $produk = User::get();
         // $penjual = penjuals::get();
         $user = User::get();
         return view('Tampilan.Pembeli.pembeli', compact('user'));
-
     }
 
     public function show1(User $User)
@@ -198,7 +196,6 @@ class UserController extends Controller
         $penjual = penjuals::get();
         $user = User::get();
         return view('Tampilan.Pembeli.create', compact('penjual', 'user'));
-
     }
 
 
@@ -224,8 +221,7 @@ class UserController extends Controller
         $user->avatar = $imgName;
         $user->save();
 
-            return redirect('/admin/index4')->with(['success' => 'Kategori Diperbaharui!']);
-        
+        return redirect('/admin/index4')->with(['success' => 'Kategori Diperbaharui!']);
     }
 
     public function edit1($id)
@@ -266,8 +262,5 @@ class UserController extends Controller
     {
         $produk = User::destroy($id);
         return redirect('/admin/index4')->with(['success' => 'Kategori Diperbaharui!']);
-    
     }
-    
-    
 }

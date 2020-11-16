@@ -168,28 +168,24 @@ class ProdukController extends Controller
             'diskon' => 'required',
         ]);
 
-        $imgName = $request->old_image;
-        if ($request->image) {
-            $imgName = $request->image->getClientOriginalName() . '-' . time() . '.' . $request->image->extension();
-
-            $request->image->move(public_path('image'), $imgName);
-        }
-
         try {   
         $produk = produks::find($id);
         $produk->name_produk = $request->name_produk;
         $produk->desc = $request->desc;
         $produk->harga = $request->harga;
         $produk->stok = $request->stok;
-        $produk->image = $imgName;
         $produk->status = $request->status;
         $produk->diskon = $request->diskon;
         $produk->user_id = auth()->user()->id;
         $produk->kategori_id = $request->kategori_id;
+        if ($request->hasFile('image')) {
+            $file = $request->file('image');
+            $image = Str::slug($file->getClientOriginalName(), '-'). time() . '-' . $file->getClientOriginalExtension();
+
+            $file->move(public_path('upload/produk'). $image);
+            $produk->image = $image;
+        }
         $produk->save();
-            if (!$produk) {
-                
-            }
         } catch (\Throwable $th) {
             return response([
                 'status' => 'error',
