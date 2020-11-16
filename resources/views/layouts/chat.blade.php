@@ -56,9 +56,10 @@
 
         .pending {
             position: absolute;
-            left: 13px;
-            top: 9px;
+            text-align: left;
+            align-items: flex-end;
             background: #bE00ff;
+            text-align-last: left;
             margin: 0;
             border-radius: 50%;
             width: 18px;
@@ -85,7 +86,7 @@
         .message-wrapper {
             padding: 10px;
             height: 526px;
-            background-image: url(image/foto.jpg);
+            background-image: url(/image/faedah.gif);
         }
 
         .messages .message {
@@ -228,7 +229,7 @@
 
             var channel = pusher.subscribe('my-channel');
             channel.bind('my-event', function (data) {
-                alert(JSON.stringify(data));
+                // alert(JSON.stringify(data));
                 if (my_id == data.from) {
                     $('#' + data.to).click();
                 } else if (my_id == data.to) {

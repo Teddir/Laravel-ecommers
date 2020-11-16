@@ -29,12 +29,11 @@ use Illuminate\Support\Str;
 
 $factory->define(User::class, function (Faker $faker) {
     return [
-        'id' => $faker->buildingNumber,
+        'id' => 1,
         'name' => $faker->name,
         'avatar' => 'https://via.placeholder.com/150',
         'email' => $faker->unique()->safeEmail,
         'email_verified_at' => now(),
-        'phone_number' => $faker->phoneNumber,
         'alamat' => $faker->streetAddress,
         // 'id_kota' => $faker->buildingNumber,
         // 'id_produk' => $faker->buildingNumber,
@@ -46,8 +45,8 @@ $factory->define(User::class, function (Faker $faker) {
 $factory->define(messages::class, function (Faker $faker) {
     do
     {
-        $from = rand(1, 30);
-        $to = rand(1, 30);
+        $from = 1;
+        $to = 2;
         $is_read = rand(0, 1);
     } while ($from === $to);
 
@@ -60,71 +59,50 @@ $factory->define(messages::class, function (Faker $faker) {
 });
 $factory->define(hubungis::class, function (Faker $faker) {
     return [
+        'hubungi_id' => 1,
         'email' => $faker->unique()->safeEmail,
         'subjek' => $faker->slug,
         'message' => $faker->sentence,
-        'date' => $faker->date,
 
     ];
 });
 $factory->define(produks::class, function (Faker $faker) {
     return [
         // 'id_kategori' => $faker->buildingNumber,
+        'user_id' => 1,
         'name_produk' => $faker->name,
-        'desc' => $faker->dateTimeThisCentury,
-        'harga' => $faker->buildingNumber,
-        'stok' => $faker->buildingNumber,
+        'desc' => $faker->text,
+        'harga' => 7800,
+        'stok' => 8,
         'image' => 'https://via.placeholder.com/150',
-        'terjual' => $faker->buildingNumber,
-        'diskon' => $faker->buildingNumber,
-        'tgl_masuk' => $faker->date,
-    ];
-});
-$factory->define(orderdetails::class, function (Faker $faker) {
-    return [
-        'id_produk' => $faker->buildingNumber,
-        'jumlah' => $faker->buildingNumber,
+        'status' => 0,
+        'diskon' => 12,
     ];
 });
 $factory->define(orders::class, function (Faker $faker) {
     return [
-        'status_order' => $faker->state,
-        'tgl_order' => $faker->date,
-        'time' => $faker->time,
-    ];
-});
-$factory->define(mod_banks::class, function (Faker $faker) {
-    return [
-        // 'id_kategori' => $faker->buildingNumber,
-        'name_bank' => $faker->name,
-        'rekening_number' => $faker->bankAccountNumber,
-        'image' => 'https://via.placeholder.com/150',
+        'user_id' => 1,
+        'produk_id' => 1,
+        'pesan' => $faker->text,
+        'pengiriman' => 1,
+        'subtotal' => $faker->buildingNumber,
+        'invoice' => $faker->text,
+        'status' => 1,
     ];
 });
 $factory->define(keranjangs::class, function (Faker $faker) {
     return [
-        // 'id_kategori' => $faker->buildingNumber,
-        'jumlah' => $faker->buildingNumber,
-        'date' => $faker->date,
-    ];
-});
-$factory->define(mainmenus::class, function (Faker $faker) {
-    return [
-        // 'id_kategori' => $faker->buildingNumber,
-        'name_menu' => $faker->name,
-        'link' => $faker->link,
-        'aktif' => $faker->date,
+        'user_id' => 1,
+        'produk_id' => 1,
+        'qty' => $faker->buildingNumber,
+
     ];
 });
 $factory->define(penjuals::class, function (Faker $faker) {
     return [
-        // 'id_kategori' => $faker->buildingNumber,
-        'name_penjual' => $faker->name,
-        'avatar' => 'https://via.placeholder.com/150',
-        'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi',
-        'email' => $faker->buildingNumber,
-        'alamat' => $faker->streetAddress,
-        'phone_number' => $faker->buildingNumber,
+        'penjual_id' => 1,
+        'name_toko' => $faker->name,
+        'phone_number' => 756876725,
     ];
 });
 $factory->define(kotas::class, function (Faker $faker) {
@@ -136,10 +114,7 @@ $factory->define(kotas::class, function (Faker $faker) {
 });
 $factory->define(kategoris::class, function (Faker $faker) {
     return [
-        // 'id_kategori' => $faker->buildingNumber,
+        'produk_id' => 1,
         'name_kategori' => $faker->name,
-        'keterangan' => $faker->sentence,
-        'image' => 'https://via.placeholder.com/150',
-        'tgl_posting' => $faker->date,
     ];
 });

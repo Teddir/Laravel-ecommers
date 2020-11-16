@@ -7,6 +7,28 @@ use Illuminate\Database\Eloquent\Model;
 class orders extends Model
 {
     protected $fillable = [
-        'status_order', 'tgl_order', 'time', 'id_user',
+        'invoice', 'subtotal', 'status','pengiriman','pesan',
+        'user_id','produk_id'
     ];
+
+
+    public function orders()
+    {
+        return $this->hasMany(orders::class, 'id');
+    }
+
+    public function users()
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
+    }
+
+    public function produks()
+    {
+        return $this->hasOne(produks::class, 'id', 'produk_id');
+    }
+
+    public function keranjangs()
+    {
+        return $this->hasOne(keranjangs::class, 'id', 'produk_id');
+    }
 }

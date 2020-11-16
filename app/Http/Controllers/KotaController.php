@@ -74,15 +74,14 @@ class KotaController extends Controller
             $kota->name_kota = $request->name_kota;
             $kota->onkos_kirim = $request->onkos_kirim;
             $kota->save();
-            if (!$kota) {
-                return response([
-                    'status' => 'error',
-                    'message' => 'Invalid Credentials',
-                    'data' => NULL, 404
-                ]);
-            }
+           
         } catch (\Throwable $th) {
-            $th->getMessage();
+            return response([
+                'status' => 'error',
+                'message' => $th->getMessage(),
+                'data' => NULL, 404
+            ]);
+            
         }
         return response([
             'status' => 'succes',
@@ -141,19 +140,17 @@ class KotaController extends Controller
             $kota->name_kota = $request->name_kota;
             $kota->onkos_kirim = $request->onkos_kirim;
             $kota->save();
-            if (!$kota) {
-                return response([
-                    'status' => 'error',
-                    'message' => 'Invalid Credentials',
-                    'data' => NULL, 404
-                ]);
-            }
         } catch (\Throwable $th) {
-            $th->getMessage();
+            return response([
+                'status' => 'error',
+                'message' => $th->getMessage(),
+                'data' => NULL, 404
+            ]);
+            
         }
         return response([
             'status' => 'succes',
-            'message' => 'Berhasil Di Update',
+            'message' => 'Berhasil Di Tambah',
             'data' => $kota, 200
         ]);
     }

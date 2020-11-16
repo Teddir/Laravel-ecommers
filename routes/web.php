@@ -22,8 +22,8 @@ Route::get('/home', function () {
     return view('home');
 });
 
-Route::get('/create', function () {
-    return view('Tampilan.Produk.create');
+Route::get('/dashbord', function () {
+    return view('dashbord');
 });
 
 
@@ -33,37 +33,15 @@ Auth::routes();
 
 
 //route Chat
+Route::group(['middleware' => 'auth'], function() {
 Route::get('/chat', 'ChatController@index'); 
 Route::get('/message/{id}', 'ChatController@getMessage');
 Route::post('/message', 'ChatController@sendMessage');
-
-// Route::group(['middleware' => 'auth'], function() {
-    
-    //route mod bank
-    Route::resource('/modeBank', 'ModBankController')->except('create','show');
-    //route kota
-    Route::resource('/kota', 'KotaController');
-    //route hubungi
-    Route::resource('/hubungi', 'HubungiController');
-    //route kategori
-    Route::resource('/kategori', 'KategoriController');
-    //route keranjang
-    Route::resource('/keranjang', 'KeranjangController');
-    //route mainmenu
-    Route::resource('/mainMenu', 'MainMenuController');
-    //route order
-    Route::resource('/order', 'OrderController');
-    //route penjual
-    Route::resource('/penjual', 'PenjualController');
-    //route produk
-    Route::resource('/produk', 'ProdukController');
-    
-    //route Admin
-    
-// });
-Route::get('/dashbord', 'ProdukController@index'); 
+});
 // Route::get('/create', 'ProdukController@index1'); 
-Route::get('/cari', 'ProdukController@render'); 
 
+Route::get('/cari', 'ProdukController@render'); 
 Route::get('/login/facebook', 'Auth\LoginController@redirectToProvider');
 Route::get('/login/facebook/callback', 'Auth\LoginController@handleProviderCallback');
+
+

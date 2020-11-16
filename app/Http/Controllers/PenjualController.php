@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\messages;
 use App\penjuals;
+use App\User;
+use GuzzleHttp\Psr7\Message;
 use Illuminate\Http\Request;
+use Penjual;
 
 class PenjualController extends Controller
 {
@@ -58,37 +62,24 @@ class PenjualController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name_penjual' => 'required',
-            'email' => 'required',
-            'password' => 'required',
-            'alamat' => 'required',
-            'phone_number' => 'required',
+            'name_toko' => 'required:unique:penjuals',
+            'phone_number' => 'required:unique:penjuals',
 
         ]);
-
-        $imgName = $request->avatar->getClientOriginalName() . '-' . time() . '.' . $request->avatar->extension();
-
-        $request->avatar->move(public_path('image'), $imgName);
         
-
         try {
             $penjual = new penjuals;
-            $penjual->name_penjual = $request->name_penjual;
-            $penjual->avatar = $imgName;
-            $penjual->email = $request->email;
-            $penjual->password = $request->password;
-            $penjual->alamat = $request->alamat;
+            $penjual->penjual_id = auth()->user()->id;
+            $penjual->message_id = $request->message_id;
+            $penjual->name_toko = $request->name_toko;
             $penjual->phone_number = $request->phone_number;
             $penjual->save();
-            if (!$penjual) {
-                return response([
-                    'status' => 'error',
-                    'message' => 'Invalid Credentials',
-                    'data' => NULL, 404
-                ]);
-            }
         } catch (\Throwable $th) {
-            $th->getMessage();
+            return response([
+                'status' => 'error',
+                'message' => $th->getMessage(),
+                'data' => NULL, 404
+            ]);
         }
         return response([
             'status' => 'succes',
@@ -103,9 +94,18 @@ class PenjualController extends Controller
      * @param  \App\penjuals  $penjuals
      * @return \Illuminate\Http\Response
      */
-    public function show(penjuals $penjuals)
+    public function show($id)
     {
-        //
+        $penjual = penjuals::find($id);
+        if (!$penjual) {
+            # code...
+            return response()->json([
+                'data' => NULL, 402
+            ]);
+        }
+        return response()->json([
+            'data' => $penjual, 200
+        ]);
     }
 
     /**
@@ -138,40 +138,26 @@ class PenjualController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name_penjual' => 'required',
-            'avatar' => 'required',
-            'email' => 'required',
-            'password' => 'required',
-            'alamat' => 'required',
+            'name_toko' => 'required',
             'phone_number' => 'required',
         ]);
-
-        $imgName = $request->old_avatar;
-        if ($request->avatar) {
-            $imgName = $request->avatar->getClientOriginalName() . '-' . time() . '.' . $request->avatar->extension();
-
-            $request->avatar->move(public_path('image'), $imgName);
-        }
-
 
         try {
             $penjual = penjuals::find($id);
             $penjual->name_penjual = $request->name_penjual;
-            $penjual->avatar = $imgName;
-            $penjual->email = $request->email;
-            $penjual->password = $request->password;
-            $penjual->alamat = $request->alamat;
+            $penjual->name_toko = $request->name_toko;
             $penjual->phone_number = $request->phone_number;
+            $penjual->message_id = $request->message_id;
+            $penjual->penjual_id = auth()->user()->id;
+
             $penjual->save();
-            if (!$penjual) {
-                return response([
-                    'status' => 'error',
-                    'message' => 'Invalid Credentials',
-                    'data' => NULL, 404
-                ]);
-            }
+
         } catch (\Throwable $th) {
-            $th->getMessage();
+            return response([
+                'status' => 'error',
+                'message' => $th->getMessage(),
+                'data' => NULL, 404
+            ]);
         }
         return response([
             'status' => 'succes',
@@ -202,5 +188,110 @@ class PenjualController extends Controller
             'Message' => 'Data Berhasil Di Hapus',
             'data' => $penjual, 200,
         ]);
+    }
+
+    //----------------------------------------------------Web
+
+      /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index1()
+    {
+        // $penjual = penjuals::where('penjual_id', auth()->user()->id)->with('users', 'penjuals')->get(); --->user
+        $penjual = penjuals::get();
+        return view('Tampilan.Penjual.penjual', compact('penjual'));
+    
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store1(Request $request)
+    {
+        $request->validate([
+            'name_toko' => 'required:unique:penjuals',
+            'phone_number' => 'required',
+
+        ]);
+            $penjual = new penjuals;
+            $penjual->penjual_id = auth()->user()->id;
+            $penjual->name_toko = $request->name_toko;
+            $penjual->phone_number = $request->phone_number;
+            $penjual->save();
+
+            return redirect('/admin/index2')->with(['success' => 'Kategori DiTambah!']);
+
+         
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\penjuals  $penjuals
+     * @return \Illuminate\Http\Response
+     */
+    public function show1(penjuals $penjuals)
+    {
+        $message = messages::get();
+        $user = User::get();
+        $penjual = penjuals::with(['messages'])->orderBy('created_at', 'asc')->get();
+        return view('Tampilan.Penjual.create', compact('penjual', 'message', 'user'));
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\penjuals  $penjuals
+     * @return \Illuminate\Http\Response
+     */
+    public function edit1($id)
+    {
+        // $penjual = penjuals::where('penjual_id', auth()->user()->id)->with('users', 'penjuals')->find($id);  ---->user
+        $user = User::get();
+        $penjual = penjuals::find($id);
+        return view('Tampilan.Penjual.edit', compact('penjual', 'user'));
+       
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\penjuals  $penjuals
+     * @return \Illuminate\Http\Response
+     */
+    public function update1(Request $request, $id)
+    {
+        $request->validate([
+            'name_toko' => 'required:unique:penjuals',
+            'phone_number' => 'required:unique:penjuals',
+        ]);
+
+            $penjual = penjuals::find($id);
+            $penjual->name_toko = $request->name_toko;
+            $penjual->phone_number = $request->phone_number;
+            $penjual->save();
+
+            return redirect('/admin/index2')->with(['success' => 'Kategori Diperbaharui!']);
+
+           
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\penjuals  $penjuals
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy1($id)
+    {
+        $penjual = penjuals::destroy($id);
+        return redirect('/admin/index2')->with(['success' => 'Kategori Diperbaharui!']);
+    
     }
 }

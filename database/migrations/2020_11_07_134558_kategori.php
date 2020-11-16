@@ -16,8 +16,8 @@ class Kategori extends Migration
         Schema::create('kategoris', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name_kategori')->unique();
-            $table->date('tgl_posting');
             $table->timestamps();
+            // ngilangin tgl post di ganti dengan created_at jumat
         });
     }
 

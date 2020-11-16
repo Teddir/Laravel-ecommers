@@ -16,9 +16,10 @@ class Order extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('invoice')->unique();
-            $table->date('tgl_order');
-            $table->time('time');
             $table->integer('subtotal');
+            $table->integer('status')->default(0)->comment('0 = confirm, 1 = prosses, 2 = finish');
+            $table->integer('pengiriman')->default(0)->comment('0 = standar, 1 = kilat');;
+            $table->string('pesan')->nullable();            
             $table->timestamps();
         });
     }

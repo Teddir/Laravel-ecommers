@@ -18,7 +18,6 @@ class Hubungi extends Migration
             $table->string('email');
             $table->string('subjek');
             $table->string('message');
-            $table->date('date');
             $table->timestamps();
         });
     }

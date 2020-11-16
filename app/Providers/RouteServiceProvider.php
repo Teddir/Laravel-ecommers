@@ -46,6 +46,12 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapWebRoutes();
 
+
+        //PANGGIL FUNGSI YANG SUDAH DIBUAT SEBELUMNYA
+        $this->mapBackendRoutes();
+    
+        //JIKA ADA ROUTE BARU PANGGIL FUNGSINYA PADA METHOD INI
+
         //
     }
 
@@ -77,4 +83,21 @@ class RouteServiceProvider extends ServiceProvider
             ->namespace($this->namespace)
             ->group(base_path('routes/api.php'));
     }
+
+    //route Backend
+    protected function mapBackendRoutes()
+    {
+        //MIDDLEWA YANG DIGUNAKAN KITA SAMAKAN SAJA DENGAN ROUTE DEFAULT WEB.PHP YANG AKAN MENGGUNAKAN MIDDLEWARE ROUTE
+        //KARENA FUNGSINYA SAMA HANYA SAJA DIPISAHKAN FILENYA
+        Route::prefix('admin')
+        //BAGIAN YANG BERBEDA HANYA PENAMBAHAN PREFIX ADMINISTRATOR
+        //DIMANA ROUTE YANG ADA DIDALAM FILE /BACKEND/WEB.PHP
+        ->middleware('web')
+            //URLNYA AKAN DIMULAI DENGAN /ADMINISTRATOR
+            ->namespace($this->namespace)
+            //ARAHKAN KE FILE YANG DITUJU, YAKNI ROUTES/BACKEND/WEB.PHP
+            ->group(base_path('routes/backend/web.php'));
+    }
+
+    
 }

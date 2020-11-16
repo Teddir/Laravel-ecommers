@@ -1,24 +1,23 @@
 @extends('dashbord')
 
-@section('title', 'Data produk')
+@section('title', 'Data Produk')
 
 @section('dashbord1')
     
 @if (session('status'))
-    <div class="alert alert-success">
-        {{ session('status') }}
-    </div>
+<div class="alert alert-success">
+  {{ session('status') }}
+</div>
 @endif
 
+<a href="{{ url('/admin/tambah1') }}"><button class="btn btn-warning"><i class="fa fa-plus-square" aria-hidden="true"></i></button></a>        
 <table class="table table-striped mt-1">
   <thead>
     <tr>
       <th scope="col">No</th>
       <th scope="col">Name Produk</th>
-      <th scope="col">Keterangan</th>
       <th scope="col">Stok</th>
       <th scope="col">Status</th>
-      <th scope="col">Diskon</th>
       <th scope="col">harga</th>
       <th scope="col">Tanggal Masuk</th>
       <th scope="col">image</th>
@@ -26,74 +25,37 @@
     </tr>
   </thead>
   <tbody>
-    @foreach ($produk as $item)
     <tr>
+        @foreach ($produk as $item)
       <th scope="row">{{ $loop->iteration }}</th>    
       <td>{{ $item->name_produk }}</td>
-      <td>{{ $item->desc }}</td>
       <td>{{ $item->stok }}</td>
       <td>{{ $item->status }}</td>
-      <td>{{ $item->diskon }}</td>
       <td>{{ $item->harga }}</td>
-      <td>{{ $item->Created_at }}</td>
+      <td>{{ $item->created_at }}</td>
       <td><img class="card-img-top" src="image/{{ $item->image }}" alt="{{ $item->image }}" height="200" widht="40"></td>
       <td>
-        <a href="{{ route('produk.create') }}"><button class="btn btn-primary"><i class="fa fa-plus-square" aria-hidden="true"></i></button></a>     
-        <a href="{{ route('produk.edit', $item->id) }}"><button class="btn btn-primary"><i class="fa fa-wrench" aria-hidden="true"></i></button></a>
-        {{-- <td><form action="{{ route('produk.destroy', $item->id) }}" method="post">@method('delete') @csrf --}}
-        <a href=""><button class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button></a>
-        {{-- </form> --}}
+        <a href="{{ url('/admin/edit1', $item->id) }}"><button class="btn btn-primary"><i class="fa fa-wrench" aria-hidden="true"></i></button></a>
+      </td>
+      <td><form action="{{ url('/admin/destroy1', $item->id) }}" method="post">@method('delete') @csrf
+        <button class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
+        </form>
+      </td>
+      <td><form action="{{ url('/admin/create3') }}" method="post">@method('post') @csrf
+        <label for="">
+          <input type="text" name="qty" value="{{ $item->stok }}">
+        </label>
+        <select name="produk_id" class="form-control">
+          <option value="{{ $item->id}}">Pilih</option>
+          <option value="{{ $item->id}}" {{ old('produk_id') == $item->id ? 'selected':'' }}>{{ $item->id }}</option>
+      </select>
+        <button class="btn btn-dark"><i class="fa fa-cart-arrow-down" aria-hidden="true"></i></button>
+        </form>
       </td>
     </tr>
     @endforeach
     </tbody>
 </table>
-
- {{-- ------------------------------------------------------------------------------------------------- create --}}
-
- <div class="modal" id="modal" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Modal title</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <form action="{{ route('produk.store') }}" method="POST">
-            @method('post')
-            @csrf
-            <div class="form-group">
-              <label for="nama"></label>
-              <select class="form-control @error('nama') is-invalid  @enderror" id="nama" name="nama" value="{{ old('nama') }}">
-                <option selected disabled>Nama Siswa</option>
-                @foreach ($produk as $item)
-              <option value="{{ $item->nama }}">{{ $item->nama  }}</option>
-                @endforeach
-              </select>
-            </div>
-        
-            <div class="form-group">
-              <label for="desc"></label>
-              <select class="form-control @error('desc') is-invalid  @enderror" id="desc" name="desc" value="{{ old('desc') }}">
-                <option selected disabled>Pilih...</option>
-                <option>produk</option>
-                <option>sakit</option>
-                <option>Izin</option>
-                <option>Tanpa Keterangan</option>
-              </select>
-          </div>
-        
-        
-              <button type="submit" class="btn btn-primary">Submit</button>
-          </form>
-        </div>
-      </div>
-    </div>
-</div>
-
-  {{-- ------------------------------------------------------------------------------------------------- update --}}
-
   
 
 @endsection

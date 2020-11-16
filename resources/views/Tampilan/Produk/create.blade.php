@@ -9,7 +9,7 @@
         {{ session('status') }}
     </div>
 @endif
-<form action="{{ route('produk.store') }}" method="post" enctype="multipart/form-data">
+<form action="{{ url('/admin/create1') }}" method="post" enctype="multipart/form-data">
     @csrf
     <div class="form-group">
         <label for="name_produk">Name Produk</label>
@@ -24,14 +24,14 @@
     <div class="form-group">
         <label for="status">Status</label>
         <select name="status" class="form-control" required>
-            <option value="Publish" {{ old('status') == 'Publish' ? 'selected':'' }}>Publish</option>
-            <option value="Draft" {{ old('status') == 'Draft' ? 'selected':'' }}>Draft</option>
+            <option value="0" {{ old('status') == 'Publish' ? 'selected':'' }}>Publish</option>
+            <option value="1" {{ old('status') == 'Draft' ? 'selected':'' }}>Draft</option>
         </select>
         <p class="text-danger">{{ $errors->first('status') }}</p>
     </div>
     <div class="form-group">
       <label for="diskon">diskon</label>
-      <input type="text" name="diskon" class="form-control" required>
+      <input type="number" name="diskon" class="form-control" required>
       <p class="text-danger">{{ $errors->first('diskon') }}</p>
   </div>
   <div class="form-group">
@@ -73,10 +73,11 @@
         <button class="btn btn-primary btn-sm">Tambah</button>
     </div>
   </form>
+  
   <script>
     //TERAPKAN CKEDITOR PADA TEXTAREA DENGAN ID DESCRIPTION
     CKEDITOR.replace('description');
-</script>
+</script>   
   @endsection
    <!-- PADA ADMIN LAYOUTS, TERDAPAT YIELD JS YANG BERARTI KITA BISA MEMBUAT SECTION JS UNTUK MENAMBAHKAN SCRIPT JS JIKA DIPERLUKAN -->
     <!-- LOAD CKEDITOR -->

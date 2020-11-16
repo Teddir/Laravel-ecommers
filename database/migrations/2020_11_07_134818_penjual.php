@@ -15,11 +15,7 @@ class Penjual extends Migration
     {
         Schema::create('penjuals', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('name_penjual');
-            $table->string('avatar');
-            $table->string('password');
-            $table->string('email');
-            $table->string('alamat');
+            $table->string('name_toko');
             $table->integer('phone_number');
             $table->timestamps();
         });

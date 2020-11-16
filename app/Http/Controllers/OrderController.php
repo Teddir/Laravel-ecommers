@@ -3,6 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\orders;
+use App\produks;
+use App\kategoris;
+use App\User;
+
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -64,26 +68,31 @@ class OrderController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'status_order' => 'required',
-            'tgl_order' => 'required',
-            'time' => 'required',
-        ]);
+            'invoice' => 'required',
+            'subtotal' => 'required',
+            'status' => 'required',
+            'pesan' => 'required',
+            'pengiriman' => 'required',
+            ]);
 
         try {
             $orderaja = new orders;
-            $orderaja->status_order = $request->status_order;
-            $orderaja->tgl_order = $request->tgl_order;
-            $orderaja->time = $request->time;
+            $orderaja->invoice = $request->invoice;
+            $orderaja->subtotal = $request->subtotal;
+            $orderaja->status = $request->status;
+            $orderaja->pesan = $request->pesan;
+            $orderaja->pengiriman = $request->pengiriman;
+            $orderaja->produk_id = $request->produk_id;
+            $orderaja->user_id = auth()->user()->id;
             $orderaja->save();
-            if (!$orderaja) {
-                return response([
-                    'status' => 'error',
-                    'message' => 'Invalid Credentials',
-                    'data' => NULL, 404
-                ]);
-            }
+
         } catch (\Throwable $th) {
-            $th->getMessage();
+            return response([
+                'status' => 'error',
+                'message' => $th->getMessage(),
+                'data' => NULL, 404
+            ]);
+            
         }
         return response([
             'status' => 'succes',
@@ -98,9 +107,19 @@ class OrderController extends Controller
      * @param  \App\orders  $orders
      * @return \Illuminate\Http\Response
      */
-    public function show(orders $orders)
+    public function show($id)
     {
-        //
+        $orderaja = orders::find($id);
+        if (!$orderaja) {
+            # code...
+            return response()->json([
+                'data' => NULL, 402
+            ]);
+        }
+        return response()->json([
+            'data' => $orderaja, 200
+        ]);
+
     }
 
     /**
@@ -133,26 +152,24 @@ class OrderController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'status_order' => 'required',
-            'tgl_order' => 'required',
-            'time' => 'required',
-        ]);
+            'pesan' => 'required',
+            'pengiriman' => 'required',
+            ]);
 
         try {
             $orderaja = orders::find($id);
-            $orderaja->status_order = $request->status_order;
-            $orderaja->tgl_order = $request->tgl_order;
-            $orderaja->time = $request->time;
+            $orderaja->pesan = $request->pesan;
+            $orderaja->pengiriman = $request->pengiriman;
+            $orderaja->user_id = auth()->user()->id;
+            $orderaja->produk_id = $request->produk_id;
             $orderaja->save();
-            if (!$orderaja) {
-                return response([
-                    'status' => 'error',
-                    'message' => 'Invalid Credentials',
-                    'data' => NULL, 404
-                ]);
-            }
         } catch (\Throwable $th) {
-            $th->getMessage();
+            return response([
+                'status' => 'error',
+                'message' => $th->getMessage(),
+                'data' => NULL, 404
+            ]);
+            
         }
         return response([
             'status' => 'succes',
@@ -184,4 +201,121 @@ class OrderController extends Controller
             'data' => $orderaja, 200,
         ]);
     }
+
+
+    public function index1()
+    {
+        // $users = User::get();
+        // $produk = produks::get();
+        $orders = orders::where('user_id', auth()->user()->id)->with('users', 'produks', 'keranjangs')->get();
+        $subtotal = collect($orders)->sum(function($orders) {
+            return $orders['keranjangs']->qty * $orders['produks']->harga;
+        });
+        // dd($orderaja);
+        return view('Tampilan.Order.order', compact('orders', 'subtotal'));
+
+    }
+
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create1()
+    {
+        $orderaja = orders::get();
+       
+
+        // return view('Home', compact('orderaja'));
+
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store1(Request $request)
+    {
+        $request->validate([
+            'invoice' => 'required',
+            'subtotal' => 'required',
+            'status' => 'required',
+            'pesan' => 'required',
+            'pengiriman' => 'required',
+            ]);
+
+            $orderaja = new orders;
+            $orderaja->invoice = $request->invoice;
+            $orderaja->subtotal = $request->subtotal;
+            $orderaja->status = $request->status;
+            $orderaja->pesan = $request->pesan;
+            $orderaja->pengiriman = $request->pengiriman;
+            $orderaja->produk_id = $request->produk_id;
+            $orderaja->user_id = auth()->user()->id;
+            $orderaja->save();
+
+     
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  \App\orders  $orders
+     * @return \Illuminate\Http\Response
+     */
+    public function show1(orders $orders)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  \App\orders  $orders
+     * @return \Illuminate\Http\Response
+     */
+    public function edit1($id)
+    {
+        $orderaja = orders::find($id);
+        
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \App\orders  $orders
+     * @return \Illuminate\Http\Response
+     */
+    public function update1(Request $request, $id)
+    {
+        $request->validate([
+            'pesan' => 'required',
+            ]);
+
+            $orderaja = orders::find($id);
+            $orderaja->pesan = $request->pesan;
+            $orderaja->pengiriman = $request->pengiriman;
+            $orderaja->produk_id = $request->produk_id;
+            $orderaja->user_id = auth()->user()->id;
+            $orderaja->save();
+       
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  \App\orders  $orders
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy1($id)
+    {
+        $orderaja = orders::destroy($id);
+    
+    }
+
+
+    
 }

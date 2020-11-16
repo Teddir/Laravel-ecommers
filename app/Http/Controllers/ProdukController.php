@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\produks;
 use Illuminate\Http\Request;
 use App\kategoris;
+use App\User;
 
 class ProdukController extends Controller
 {
@@ -15,16 +16,8 @@ class ProdukController extends Controller
      */
     public function index()
     {
-        // $produk = produks::get();
-        // $produk = kategoris::with(['kategoris'])->orderBy('created_at', 'asc')->get();
-        // $kategori = kategoris::get();
-        // $produk = produks::with(['kategoris'])->orderBy('created_at', 'asc')->get();
-        $produk = produks::get();
-
-        //-------------------------------------------------------------->WEB
-
-        // return view('Tampilan.Produk.produk', compact('produk'));
         //-------------------------------------------------------------->API    
+        $produk = produks::get();
         if (!$produk) {
             # code...
             return response()->json([
@@ -47,11 +40,7 @@ class ProdukController extends Controller
      */
     public function create()
     {
-        // $kategori = kategoris::get();
-        // return response()->json(['data' => $kategori]);
-        $produk = produks::with(['kategoris'])->orderBy('created_at', 'asc')->get();
-        $kategori = kategoris::with(['produk'])->orderBy('created_at', 'asc')->get();
-        return view('Tampilan.Produk.create', compact('kategori','produk'));
+        $produk = produks::get();
         if (!$produk) {
             # code...
             return response()->json([
@@ -61,9 +50,6 @@ class ProdukController extends Controller
         return response()->json([
             'data' => $produk, 200
         ]);
-
-        // return view('Home', compact('produk'));
-
     }
 
     /**
@@ -79,7 +65,6 @@ class ProdukController extends Controller
             'desc' => 'required',
             'harga' => 'required',
             'stok' => 'required',
-            'tgl_masuk' => 'required',
             'status' => 'required',
             'diskon' => 'required',
         ]);
@@ -87,28 +72,30 @@ class ProdukController extends Controller
         $imgName = $request->image->getClientOriginalName() . '-' . time() . '.' . $request->image->extension();
 
         $request->image->move(public_path('image'), $imgName);
-
+            // dd($imgName);
         try {
             $produk = new produks;
             $produk->name_produk = $request->name_produk;
+            $produk->user_id = auth()->user()->id;
+            $produk->kategori_id = $request->kategori_id;
             $produk->desc = $request->desc;
             $produk->harga = $request->harga;
             $produk->stok = $request->stok;
-            $produk->tgl_masuk = $request->tgl_masuk;
             $produk->image = $imgName;
             $produk->status = $request->status;
             $produk->diskon = $request->diskon;
             $produk->save();
-            return redirect('/dashbord')->with(['success' => 'Kategori Diperbaharui!']);
-            if (!$produk) {
+
+        
+        } catch (\Throwable $th) {
+                
                 return response([
                     'status' => 'error',
-                    'message' => 'Gagal Di Tambah',
+                    'message' => $th->getMessage(),
                     'data' => NULL, 404
                 ]);
-            }
-        } catch (\Throwable $th) {
-            $th->getMessage();
+            
+            
         }
         return response([
             'status' => 'succes',
@@ -124,9 +111,22 @@ class ProdukController extends Controller
      * @param  \App\produks  $produks
      * @return \Illuminate\Http\Response
      */
-    public function show(produks $produks)
+    public function show($id)
     {
-        //
+        $produk = produks::find($id);
+        if (!$produk) {
+            # code...
+            return response()->json([
+                'status' => 'Error',
+                'Message' => 'Data Gagal Di Tampilkan',
+                'data' => NULL, 402,
+            ]);
+        }
+        return response()->json([
+            'status' => 'Succes',
+            'Message' => 'Data Berhasil Di Tampilkan',
+            'data' => $produk, 200,
+        ]);
     }
 
     /**
@@ -138,10 +138,7 @@ class ProdukController extends Controller
     public function edit($id)
     {
         $produk = produks::with(['kategoris'])->orderBy('created_at', 'asc')->find($id);
-        $kategori = kategoris::with(['produk'])->orderBy('created_at', 'asc')->get();
-        return view('Tampilan.Produk.edit', compact('kategori','produk'));
         if (!$produk) {
-            # code...
             return response()->json([
                 'data' => NULL, 402
             ]);
@@ -185,8 +182,9 @@ class ProdukController extends Controller
         $produk->image = $imgName;
         $produk->status = $request->status;
         $produk->diskon = $request->diskon;
+        $produk->user_id = auth()->user()->id;
+        $produk->kategori_id = $request->kategori_id;
         $produk->save();
-        return redirect('/dashbord')->with(['success' => 'Kategori Diperbaharui!']);
             if (!$produk) {
                 return response([
                     'status' => 'error',
@@ -228,11 +226,12 @@ class ProdukController extends Controller
         ]);
     }
 
+    //-------------------------------------------------------------->WEB
     public function render(Request $request, $cari)
     {
         $produk =  produks::WHERE('name', 'like', '%' . $cari . '%');
         $produk->cari = $request->cari;
-        return view('dashbord', compact('kategori','produk'));
+        return view('dashbord', compact('produk'));
         if (!$produk) {
             # code...
             return response()->json([
@@ -245,4 +244,103 @@ class ProdukController extends Controller
             'data' => $produk, 200,
         ]);
     }
+    
+    public function index1(){
+
+        $produk = produks::get();
+        $users = User::get();
+        // $produk = produks::get();
+        $produk = produks::with('users', 'produks')->get();
+        return view('Tampilan.Produk.produk', compact('produk', 'users', 'produk'));
+
+    }
+
+    public function show1(produks $produks)
+    {
+        $kategori = kategoris::get();
+        $user = User::get();
+        $produk = produks::with(['kategoris'])->orderBy('created_at', 'asc')->get();
+        return view('Tampilan.Produk.create', compact('produk', 'kategori', 'user'));
+
+    }
+
+
+    public function store1(Request $request)
+    {
+        $request->validate([
+            'name_produk' => 'required',
+            'desc' => 'required',
+            'harga' => 'required',
+            'stok' => 'required',
+            'status' => 'required',
+            'diskon' => 'required',
+        ]);
+
+        $imgName = $request->image->getClientOriginalName() . '-' . time() . '.' . $request->image->extension();
+
+        $request->image->move(public_path('image'), $imgName);
+
+        $user = User::find($request->id);
+            $produk = new produks;
+            $produk->name_produk = $request->name_produk;
+            $produk->user_id = $user;
+            $produk->desc = $request->desc;
+            $produk->harga = $request->harga;
+            $produk->stok = $request->stok;
+            $produk->image = $imgName;
+            $produk->status = $request->status;
+            $produk->diskon = $request->diskon;
+            $produk->save();
+
+            return redirect('/admin/index1')->with(['success' => 'Kategori Diperbaharui!']);
+        
+    }
+
+    public function edit1($id)
+    {
+        $produk = produks::find($id);
+        $kategori = kategoris::with(['produk'])->orderBy('created_at', 'asc')->get();
+        return view('Tampilan.Produk.edit', compact('produk','kategori'));
+    }
+
+    public function update1(Request $request, $id)
+    {
+        $request->validate([
+            'name_produk' => 'required',
+            'desc' => 'required',
+            'harga' => 'required',
+            'stok' => 'required|integer',
+            'status' => 'required',
+            'diskon' => 'required',
+        ]);
+
+        $imgName = $request->old_image;
+        if ($request->image) {
+            $imgName = $request->image->getClientOriginalName() . '-' . time() . '.' . $request->image->extension();
+
+            $request->image->move(public_path('image'), $imgName);
+        }
+
+        $produk = produks::find($id);
+        $produk->name_produk = $request->name_produk;
+        $produk->desc = $request->desc;
+        $produk->harga = $request->harga;
+        $produk->stok = $request->stok;
+        $produk->image = $imgName;
+        $produk->status = $request->status;
+        $produk->diskon = $request->diskon;
+        $produk->save();
+
+        return redirect('/admin/index1')->with(['success' => 'Kategori Diperbaharui!']);
+    }
+
+    public function destroy1($id)
+    {
+        $produk = produks::destroy($id);
+        return redirect('/admin/index1')->with(['success' => 'Kategori Diperbaharui!']);
+    
+    }
+
 }
+
+

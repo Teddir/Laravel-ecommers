@@ -19,9 +19,9 @@ class Produk extends Migration
             $table->text('desc');
             $table->integer('harga');
             $table->integer('stok');
-            $table->string('image');
-            $table->integer('status');
-            $table->integer('diskon');
+            $table->string('image')->nullable();
+            $table->integer('status')->default(0)->comment('0 = Publish, 1 = Draft');
+            $table->string('diskon');
             $table->timestamps();
         });
     }

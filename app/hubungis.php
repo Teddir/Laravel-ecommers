@@ -7,6 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 class hubungis extends Model
 {
     protected $fillable = [
-        'name_hubungi', 'email', 'subjek', 'message','date',
+        'email', 'subjek', 'message',
+        'hubungi_id',
     ];
+
+    public function users()
+    {
+        //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
+        return $this->hasMany(User::class, 'id');
+    }
 }

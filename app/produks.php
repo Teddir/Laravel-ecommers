@@ -7,20 +7,34 @@ use Illuminate\Database\Eloquent\Model;
 class produks extends Model
 {
     protected $fillable = [
-        'name_produk', 'desc', 'harga','stok','tgl_masuk','image','terjual','diskon',
+        'name_produk', 'desc', 'harga','stok','image','diskon','status',
+        'kategori_id','user_id'
+
         
     ];
-
-    public function child()
-    {
-        //MENGGUNAKAN RELASI ONE TO MANY DENGAN FOREIGN KEY parent_id
-        return $this->hasMany(produks::class, 'name_kategori');
-    }
 
     public function kategoris()
     {
         //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI KATEGORI INI BISA DIGUNAKAN OLEH BANYAK PRODUK
-        return $this->hasMany(kategoris::class, 'name_kategori');
+        return $this->hasMany(kategoris::class, 'id');
+    }
+
+    public function produks()
+    {
+        //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
+        return $this->hasMany(produks::class, 'id', 'user_id' );
+    }
+
+    public function users()
+    {
+        //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
+        return $this->hasOne(User::class, 'id', 'user_id' );
+    }
+
+    public function orders()
+    {
+        //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
+        return $this->hasMany(orders::class, 'id', 'user_id' );
     }
 
 

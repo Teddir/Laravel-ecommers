@@ -15,8 +15,10 @@ class Keranjang extends Migration
     {
         Schema::create('keranjangs', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('jumlah');
-            $table->date('date');
+            $table->string('qty');
+            $table->string('produk_name')->nullable();
+            $table->string('produk_price')->nullable();
+            $table->string('produk_image')->nullable();
             $table->timestamps();
         });
     }
