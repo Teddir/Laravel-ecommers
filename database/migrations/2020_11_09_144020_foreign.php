@@ -57,6 +57,8 @@ class Foreign extends Migration
 
 
 
+
+
     }
 
     /**

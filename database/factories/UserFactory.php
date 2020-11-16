@@ -35,6 +35,7 @@ $factory->define(User::class, function (Faker $faker) {
         'email' => $faker->unique()->safeEmail,
         'email_verified_at' => now(),
         'alamat' => $faker->streetAddress,
+        'phone_number' => 1234567,
         // 'id_kota' => $faker->buildingNumber,
         // 'id_produk' => $faker->buildingNumber,
         // 'id_kategori' => $faker->buildingNumber,
@@ -48,13 +49,15 @@ $factory->define(messages::class, function (Faker $faker) {
         $from = 1;
         $to = 2;
         $is_read = rand(0, 1);
+        $number = 123;
     } while ($from === $to);
 
     return [
         'from' => $from,
         'to' => $to,
         'message' => $faker->sentence,
-        'is_read' => $is_read
+        'is_read' => $is_read,
+        'phone_number' => $number,
     ];
 });
 $factory->define(hubungis::class, function (Faker $faker) {
