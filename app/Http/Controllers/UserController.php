@@ -45,7 +45,7 @@ class UserController extends Controller
             'name' => $request->get('name'),
             'email' => $request->get('email'),
             'password' => Hash::make($request->get('password')),
-            'image' => 'https://via.placeholder.com/150',
+            'avatar' => 'https://via.placeholder.com/150',
             'alamat' => $request->get('alamat'),
         ]);
 
@@ -124,10 +124,10 @@ class UserController extends Controller
         ]);
 
         $imgName = $request->old_image;
-        if ($request->image) {
-            $imgName = $request->image->getClientOriginalName() . '-' . time() . '.' . $request->image->extension();
+        if ($request->avatar) {
+            $imgName = $request->avatar->getClientOriginalName() . '-' . time() . '.' . $request->avatar->extension();
 
-            $request->image->move(public_path('image'), $imgName);
+            $request->avatar->move(public_path('image'), $imgName);
         }
 
         try {
@@ -136,7 +136,7 @@ class UserController extends Controller
             $produk->email = $request->email;
             $produk->password = $request->password;
             $produk->alamat = $request->alamat;
-            $produk->image = $imgName;
+            $produk->avatar = $imgName;
             $produk->produk_id = $request->produk_id;
             $produk->kategori_id = $request->kategori_id;
             $produk->kota_id = $request->kota_id;
@@ -211,9 +211,9 @@ class UserController extends Controller
             'alamat' => 'required|string|max:255|unique:users',
         ]);
 
-        $imgName = $request->image->getClientOriginalName() . '-' . time() . '.' . $request->image->extension();
+        $imgName = $request->avatar->getClientOriginalName() . '-' . time() . '.' . $request->avatar->extension();
 
-        $request->image->move(public_path('image'), $imgName);
+        $request->avatar->move(public_path('image'), $imgName);
 
 
         $user = new User;
@@ -221,7 +221,7 @@ class UserController extends Controller
         $user->email = $request->email;
         $user->password = $request->password;
         $user->alamat = $request->alamat;
-        $user->image = $imgName;
+        $user->avatar = $imgName;
         $user->save();
 
             return redirect('/admin/index4')->with(['success' => 'Kategori Diperbaharui!']);
@@ -245,10 +245,10 @@ class UserController extends Controller
         ]);
 
         $imgName = $request->old_image;
-        if ($request->image) {
-            $imgName = $request->image->getClientOriginalName() . '-' . time() . '.' . $request->image->extension();
+        if ($request->avatar) {
+            $imgName = $request->avatar->getClientOriginalName() . '-' . time() . '.' . $request->avatar->extension();
 
-            $request->image->move(public_path('image'), $imgName);
+            $request->avatar->move(public_path('image'), $imgName);
         }
 
         $produk = User::find($id);
@@ -256,7 +256,7 @@ class UserController extends Controller
         $produk->email = $request->email;
         $produk->password = $request->password;
         $produk->alamat = $request->alamat;
-        $produk->image = $imgName;
+        $produk->avatar = $imgName;
         $produk->save();
 
         return redirect('/admin/index4')->with(['success' => 'Kategori Diperbaharui!']);

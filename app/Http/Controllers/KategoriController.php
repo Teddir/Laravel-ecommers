@@ -74,7 +74,6 @@ class KategoriController extends Controller
             try {
             $kategori = new kategoris();
             $kategori->name_kategori = $request->name_kategori;
-            $kategori->tgl_posting = $request->tgl_posting;
             $kategori->save();
             return redirect('/dashbord')->with(['success' => 'Kategori Diperbaharui!']);
             if (!$kategori) {
@@ -147,21 +146,13 @@ class KategoriController extends Controller
     {
         $request->validate([
             'name_kategori' => 'required',
-            'tgl_posting' => 'required',
         ]);
 
-        $imgName = $request->old_image;
-        if ($request->image) {
-            $imgName = $request->image->getClientOriginalName() . '-' . time() . '.' . $request->image->extension();
-
-            $request->image->move(public_path('image'), $imgName);
-        }
 
         try {
             //code...
             $kategori = kategoris::find($id);
             $kategori->name_kategori = $request->name_kategori;
-            $kategori->tgl_posting = $request->tgl_posting;
             $kategori->save();
             if (!$kategori) {
                 return response([
