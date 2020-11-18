@@ -31,10 +31,23 @@ class produks extends Model
         return $this->hasOne(User::class, 'id', 'user_id' );
     }
 
+    public function penjual()
+    {
+        //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
+        return $this->hasOne(penjuals::class, 'id', 'user_id' );
+    }
+
+
     public function orders()
     {
         //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
         return $this->hasMany(orders::class, 'id', 'user_id' );
+    }
+
+    public function keranjangs()
+    {
+        //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
+        return $this->hasOne(keranjangs::class, 'id', 'user_id' );
     }
 
 

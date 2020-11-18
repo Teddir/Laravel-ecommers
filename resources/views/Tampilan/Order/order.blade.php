@@ -10,7 +10,7 @@
     </div>
     @endif
     
-    <a href="{{ route('produk.store') }}"><button class="btn btn-primary"><i class="fa fa-check-circle-o" aria-hidden="true">   Buat Pesanan</i></button></a>     
+    <a href="{{ url('/admin/finish') }}"><button class="btn btn-primary"><i class="fa fa-check-circle-o" aria-hidden="true">   Buat Pesanan</i></button></a>     
 <table class="table table-striped mt-1">
   <thead>
     <tr>
@@ -19,6 +19,7 @@
       <th scope="col">Name Barang</th>
       <th scope="col">Harga</th>
       <th scope="col">Jumlah Barang</th>
+      <th scope="col">Diskon</th>
       <th scope="col">Subtotal</th>
       <th colspan="3"></th>       
     </tr>
@@ -32,6 +33,7 @@
       <td>{{ $item->produks->name_produk }}</td>
       <td>Rp.{{ $item->produks->harga }}</td>
       <td>{{ $item->keranjangs->qty }}</td>
+      <td>{{ $item->produks->diskon }}</td>
       <th>Rp.{{ $subtotal }}</th>
       <td>
        

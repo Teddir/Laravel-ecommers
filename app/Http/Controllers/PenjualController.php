@@ -218,7 +218,7 @@ class PenjualController extends Controller
 
         ]);
         $penjual = new penjuals;
-        $penjual->penjual_id = auth()->user()->id;
+        $penjual->penjual_id = $request->penjual_id;
         $penjual->name_toko = $request->name_toko;
         $penjual->phone_number = $request->phone_number;
         $penjual->save();

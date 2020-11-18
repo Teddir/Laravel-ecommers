@@ -38,9 +38,17 @@ Route::get('/produk', 'ProdukController@index');
 Route::get('/produk/{id}', 'ProdukController@show');
 
 Route::group(['middleware' => 'jwt.verify'], function () {
-
+    
+    
+    // -----------------------------------------------------> produk
+    
+    Route::get('/produkp', 'ProdukController@produkpenjual');      //------------->produkpenjualaja
+    Route::post('/produk', 'ProdukController@store');
     Route::put('/produk/{id}', 'ProdukController@update');
     Route::delete('/produk/{id}', 'ProdukController@destroy');
+
+    // -----------------------------------------------------> end produk
+
     // -----------------------------------------------------> chet
     Route::get('/message/{id}', 'ChatController@getMessage');
     Route::post('/message', 'ChatController@sendMessage');

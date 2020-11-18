@@ -124,23 +124,32 @@ class UserController extends Controller
             'alamat' => 'required|string|max:255',
         ]);
 
-        try {
-            $produk = User::find($id);
-            $produk->name = $request->name;
-            $produk->email = $request->email;
-            $produk->password = $request->password;
-            $produk->alamat = $request->alamat;
-            $produk->produk_id = $request->produk_id;
-            $produk->kategori_id = $request->kategori_id;
-            $produk->kota_id = $request->kota_id;
-            if ($request->hasFile('image')) {
-                $file = $request->file('image');
-                $image = Str::slug($file->getClientOriginalName(), '-') . time() . '-' . $file->getClientOriginalExtension();
+        dd($request->avatar);
 
-                $file->move(public_path('upload/produk') . $image);
-                $produk->image = $image;
-            }
-            $produk->save();
+        try {
+            $user = User::find($id);
+            $user->name = $request->name;
+            $user->email = $request->email;
+            $user->password = $request->password;
+            $user->alamat = $request->alamat;
+            $file = base64_encode(file_get_contents($request->avatar));
+
+            $client = new \GuzzleHttp\Client();
+            $response = $client->request('POST', 'https://freeimage.host/api/1/upload', [
+                'form_params' => [
+                    'key' => '6d207e02198a847aa98d0a2a901485a5',
+                    'action' => 'upload',
+                    'source' => $file,
+                    'format' => 'json'
+                ]
+            ]);
+
+            $data = $response->getBody()->getContents();
+            $data = json_decode($data);
+            $image = $data->image->url;
+
+            $user->avatar = $image;
+            $user->save();
         } catch (\Throwable $th) {
             return response([
                 'status' => 'error',
@@ -151,7 +160,7 @@ class UserController extends Controller
         return response([
             'status' => 'succes',
             'message' => 'Berhasil Di update',
-            'data' => $produk, 200
+            'data' => $user, 200
         ]);
     }
 
@@ -180,11 +189,12 @@ class UserController extends Controller
         ]);
     }
 
+
+
+
     public function index1()
     {
 
-        // $produk = User::get();
-        // $penjual = penjuals::get();
         $user = User::get();
         return view('Tampilan.Pembeli.pembeli', compact('user'));
     }
@@ -208,17 +218,28 @@ class UserController extends Controller
             'alamat' => 'required|string|max:255|unique:users',
         ]);
 
-        $imgName = $request->avatar->getClientOriginalName() . '-' . time() . '.' . $request->avatar->extension();
-
-        $request->avatar->move(public_path('image'), $imgName);
-
-
         $user = new User;
         $user->name = $request->name;
         $user->email = $request->email;
         $user->password = $request->password;
         $user->alamat = $request->alamat;
-        $user->avatar = $imgName;
+        $file = base64_encode(file_get_contents($request->image));
+
+        $client = new \GuzzleHttp\Client();
+    $response = $client->request('POST', 'https://freeimage.host/api/1/upload', [
+            'form_params' => [
+                'key' => '6d207e02198a847aa98d0a2a901485a5',
+                'action' => 'upload',
+                'source' => $file,
+                'format' => 'json'
+            ]
+        ]);
+
+        $data = $response->getBody()->getContents();
+        $data = json_decode($data);
+        $image = $data->image->url;
+
+        $user->avatar = $image;
         $user->save();
 
         return redirect('/admin/index4')->with(['success' => 'Kategori Diperbaharui!']);
@@ -240,20 +261,29 @@ class UserController extends Controller
             'alamat' => 'required|string|max:255',
         ]);
 
-        $imgName = $request->old_image;
-        if ($request->avatar) {
-            $imgName = $request->avatar->getClientOriginalName() . '-' . time() . '.' . $request->avatar->extension();
+        $user = User::find($id);
+        $user->name = $request->name;
+        $user->email = $request->email;
+        $user->password = $request->password;
+        $user->alamat = $request->alamat;
+        $file = base64_encode(file_get_contents($request->image));
 
-            $request->avatar->move(public_path('image'), $imgName);
-        }
+        $client = new \GuzzleHttp\Client();
+        $response = $client->request('POST', 'https://freeimage.host/api/1/upload', [
+            'form_params' => [
+                'key' => '6d207e02198a847aa98d0a2a901485a5',
+                'action' => 'upload',
+                'source' => $file,
+                'format' => 'json'
+            ]
+        ]);
 
-        $produk = User::find($id);
-        $produk->name = $request->name;
-        $produk->email = $request->email;
-        $produk->password = $request->password;
-        $produk->alamat = $request->alamat;
-        $produk->avatar = $imgName;
-        $produk->save();
+        $data = $response->getBody()->getContents();
+        $data = json_decode($data);
+        $image = $data->image->url;
+
+        $user->avatar = $image;
+        $user->save();
 
         return redirect('/admin/index4')->with(['success' => 'Kategori Diperbaharui!']);
     }

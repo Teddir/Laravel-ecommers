@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\kategoris;
 use App\User;
 use illuminate\support\Str;
+use App\keranjangs;
+use App\penjuals;
 
 class ProdukController extends Controller
 {
@@ -15,9 +17,9 @@ class ProdukController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+        //-------------------------------------------------------------->Produk    
+     public function index()
     {
-        //-------------------------------------------------------------->API    
         $produk = produks::get();
         if (!$produk) {
             # code...
@@ -33,6 +35,33 @@ class ProdukController extends Controller
             'data' => $produk, 200,
         ]);
     }
+
+    public function produkpenjual()
+    {
+        $produk = produks::where('user_id', auth()->user()->id)->with('produks','users')->get();
+        
+        // dd($produk);
+        if (!$produk) {
+            # code...
+            return response()->json([
+                'status' => 'Error',
+                'Message' => 'Data Gagal Di Tampilkan Sesuai Produk Penjual',
+                'data' => NULL, 402,
+            ]);
+        }
+        return response()->json([
+            'status' => 'Succes',
+            'Message' => 'Data Berhasil Di Tampilkan Sesuai Produk Penjual',
+            'data' => $produk, 200,
+        ]);
+    }
+
+    //-------------------------------------------------------------->END Produk    
+
+
+
+
+
 
     /**
      * Show the form for creating a new resource.
@@ -79,31 +108,38 @@ class ProdukController extends Controller
         $produk->stok = $request->stok;
         $produk->status = $request->status;
         $produk->diskon = $request->diskon;
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $image = Str::slug($file->getClientOriginalName(), '-'). time() . '-' . $file->getClientOriginalExtension();
+        $file = base64_encode(file_get_contents($request->image));
 
-            $file->move(public_path('upload/produk'). $image);
-            $produk->image = $image;
-        }
+        $client = new \GuzzleHttp\Client();
+        $response = $client->request('POST', 'https://freeimage.host/api/1/upload', [
+            'form_params' => [
+                'key' => '6d207e02198a847aa98d0a2a901485a5',
+                'action' => 'upload',
+                'source' => $file,
+                'format' => 'json'
+            ]
+        ]);
+
+        $data = $response->getBody()->getContents();
+        $data = json_decode($data);
+        $image = $data->image->url;
+
+        $produk->image = $image;
         try {
             $produk->save();
         } catch (\Throwable $th) {
-                
-                return response([
-                    'status' => 'error',
-                    'message' => $th->getMessage(),
-                    'data' => NULL, 404
-                ]);
-            
-            
+
+            return response([
+                'status' => 'error',
+                'message' => $th->getMessage(),
+                'data' => NULL, 404
+            ]);
         }
         return response([
             'status' => 'succes',
             'message' => 'Berhasil Di Tambah',
             'data' => $produk, 200
         ]);
-        
     }
 
     /**
@@ -168,37 +204,46 @@ class ProdukController extends Controller
             'diskon' => 'required',
         ]);
 
-        try {   
-        $produk = produks::find($id);
-        $produk->name_produk = $request->name_produk;
-        $produk->desc = $request->desc;
-        $produk->harga = $request->harga;
-        $produk->stok = $request->stok;
-        $produk->status = $request->status;
-        $produk->diskon = $request->diskon;
-        $produk->user_id = auth()->user()->id;
-        $produk->kategori_id = $request->kategori_id;
-        if ($request->hasFile('image')) {
-            $file = $request->file('image');
-            $image = Str::slug($file->getClientOriginalName(), '-'). time() . '-' . $file->getClientOriginalExtension();
+        try {
+            $produk = produks::find($id);
+            $produk->name_produk = $request->name_produk;
+            $produk->desc = $request->desc;
+            $produk->harga = $request->harga;
+            $produk->stok = $request->stok;
+            $produk->status = $request->status;
+            $produk->diskon = $request->diskon;
+            $produk->user_id = auth()->user()->id;
+            $produk->kategori_id = $request->kategori_id;
+            $file = base64_encode(file_get_contents($request->image));
 
-            $file->move(public_path('upload/produk'). $image);
+            $client = new \GuzzleHttp\Client();
+            $response = $client->request('POST', 'https://freeimage.host/api/1/upload', [
+                'form_params' => [
+                    'key' => '6d207e02198a847aa98d0a2a901485a5',
+                    'action' => 'upload',
+                    'source' => $file,
+                    'format' => 'json'
+                ]
+            ]);
+
+            $data = $response->getBody()->getContents();
+            $data = json_decode($data);
+            $image = $data->image->url;
+
             $produk->image = $image;
-        }
-        $produk->save();
+            $produk->save();
         } catch (\Throwable $th) {
             return response([
                 'status' => 'error',
                 'message' => $th->getMessage(),
                 'data' => NULL, 404
             ]);
-            
         }
         return response([
             'status' => 'succes',
             'message' => 'Berhasil Di update',
             'data' => $produk, 200
-        ]);    
+        ]);
     }
 
     /**
@@ -243,14 +288,42 @@ class ProdukController extends Controller
             'data' => $produk, 200,
         ]);
     }
-    
-    public function index1(){
 
-        $produk = produks::get();
+
+
+    public function index3(Request $request)
+    {
         $users = User::get();
+        $keranjang = keranjangs::get();
+
+            $produk = new produks;
+            $produk->stok = $request->stok;
+        if ($produk->stok = produks::where('user_id', auth()->user()->id)->with('users', 'produks', 'keranjangs')->get()) {
+            // dd($orderaja);
+            # code...
+                $subtotal = collect($request->stok)->sum(function($orders) {
+                return  $orders['produks']->jumlah - $orders['keranjangs']->qty  ;
+            });
+        };
+        $produk->save();
+        return view('Tampilan.Produk.produk', compact('orders', 'subtotal', 'keranjang'));
+
+    }
+
+    public function index1()
+    {
+
+
+        $users = User::get();
+        if ($produk = produks::where('user_id', auth()->user()->id)->with('users', 'produks', 'keranjangs')->get()) {
+            $subtotal = collect($produk)->sum(function ($orders) {
+                return  $orders['keranjangs']->qty * $orders['produk.stok'];
+            });
+            return view('Tampilan.Produk.produk', compact('users', 'subtotal', 'produk'));
+            // $produk->save();
+            dd($subtotal);   
+        }
         // $produk = produks::get();
-        $produk = produks::with('users', 'produks')->get();
-        return view('Tampilan.Produk.produk', compact('produk', 'users', 'produk'));
 
     }
 
@@ -260,7 +333,6 @@ class ProdukController extends Controller
         $user = User::get();
         $produk = produks::with(['kategoris'])->orderBy('created_at', 'asc')->get();
         return view('Tampilan.Produk.create', compact('produk', 'kategori', 'user'));
-
     }
 
 
@@ -274,32 +346,41 @@ class ProdukController extends Controller
             'status' => 'required',
             'diskon' => 'required',
         ]);
+        $produk = new produks;
+        $produk->name_produk = $request->name_produk;
+        $produk->user_id = auth()->user()->id;
+        $produk->desc = $request->desc;
+        $produk->harga = $request->harga;
+        $produk->stok = $request->stok;
+        $file = base64_encode(file_get_contents($request->image));
 
-        $imgName = $request->image->getClientOriginalName() . '-' . time() . '.' . $request->image->extension();
+        $client = new \GuzzleHttp\Client();
+        $response = $client->request('POST', 'https://freeimage.host/api/1/upload', [
+            'form_params' => [
+                'key' => '6d207e02198a847aa98d0a2a901485a5',
+                'action' => 'upload',
+                'source' => $file,
+                'format' => 'json'
+            ]
+        ]);
 
-        $request->image->move(public_path('image'), $imgName);
+        $data = $response->getBody()->getContents();
+        $data = json_decode($data);
+        $image = $data->image->url;
 
-        $user = User::find($request->id);
-            $produk = new produks;
-            $produk->name_produk = $request->name_produk;
-            $produk->user_id = $user;
-            $produk->desc = $request->desc;
-            $produk->harga = $request->harga;
-            $produk->stok = $request->stok;
-            $produk->image = $imgName;
-            $produk->status = $request->status;
-            $produk->diskon = $request->diskon;
-            $produk->save();
+        $produk->image = $image;
+        $produk->status = $request->status;
+        $produk->diskon = $request->diskon;
+        $produk->save();
 
-            return redirect('/admin/index1')->with(['success' => 'Kategori Diperbaharui!']);
-        
+        return redirect('/admin/index1')->with(['success' => 'Kategori Diperbaharui!']);
     }
 
     public function edit1($id)
     {
         $produk = produks::find($id);
         $kategori = kategoris::with(['produk'])->orderBy('created_at', 'asc')->get();
-        return view('Tampilan.Produk.edit', compact('produk','kategori'));
+        return view('Tampilan.Produk.edit', compact('produk', 'kategori'));
     }
 
     public function update1(Request $request, $id)
@@ -313,19 +394,29 @@ class ProdukController extends Controller
             'diskon' => 'required',
         ]);
 
-        $imgName = $request->old_image;
-        if ($request->image) {
-            $imgName = $request->image->getClientOriginalName() . '-' . time() . '.' . $request->image->extension();
-
-            $request->image->move(public_path('image'), $imgName);
-        }
 
         $produk = produks::find($id);
         $produk->name_produk = $request->name_produk;
         $produk->desc = $request->desc;
         $produk->harga = $request->harga;
         $produk->stok = $request->stok;
-        $produk->image = $imgName;
+        $file = base64_encode(file_get_contents($request->image));
+
+        $client = new \GuzzleHttp\Client();
+        $response = $client->request('POST', 'https://freeimage.host/api/1/upload', [
+            'form_params' => [
+                'key' => '6d207e02198a847aa98d0a2a901485a5',
+                'action' => 'upload',
+                'source' => $file,
+                'format' => 'json'
+            ]
+        ]);
+
+        $data = $response->getBody()->getContents();
+        $data = json_decode($data);
+        $image = $data->image->url;
+
+        $produk->image = $image;
         $produk->status = $request->status;
         $produk->diskon = $request->diskon;
         $produk->save();
@@ -337,9 +428,12 @@ class ProdukController extends Controller
     {
         $produk = produks::destroy($id);
         return redirect('/admin/index1')->with(['success' => 'Kategori Diperbaharui!']);
-    
     }
 
+    public function produkall()
+    {
+        // $produk = produks::where('user_id', auth()->user()->id())->with('produks', 'keranjangs', 'users');
+        $produk = produks::get();
+        return view('website.store', compact('produk'));
+    }
 }
-
-

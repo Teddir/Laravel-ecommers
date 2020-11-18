@@ -277,8 +277,11 @@ class KeranjangController extends Controller
         //UBAH ARRAY MENJADI COLLECTION, KEMUDIAN GUNAKAN METHOD SUM UNTUK MENGHITUNG SUBTOTAL
         // $keranjang = keranjangs::find($id);
         $keranjang = keranjangs::where('user_id', auth()->user()->id)->with('users', 'produks')->get();
+            $subtotal = collect($keranjang)->sum(function($keranjang) {
+                return $keranjang['qty'] * $keranjang['produks']->harga;
+            });
         $produk = produks::get();
-        return view('Tampilan.Keranjang.edit', compact('keranjang','produk' ));
+        return view('website.cart', compact('keranjang','produk','subtotal'));
 
     }
 

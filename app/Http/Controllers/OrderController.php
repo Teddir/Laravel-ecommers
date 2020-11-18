@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\orders;
 use App\produks;
 use App\kategoris;
+use App\keranjangs;
 use App\User;
 
 use Illuminate\Http\Request;
@@ -205,14 +206,35 @@ class OrderController extends Controller
 
     public function index1()
     {
-        // $users = User::get();
-        // $produk = produks::get();
-        $orders = orders::where('user_id', auth()->user()->id)->with('users', 'produks', 'keranjangs')->get();
-        $subtotal = collect($orders)->sum(function($orders) {
-            return $orders['keranjangs']->qty * $orders['produks']->harga;
-        });
+        $users = User::get();
+        $keranjang = keranjangs::get();
+        if ($orders = orders::where('user_id', auth()->user()->id)->with('users', 'produks', 'keranjangs')->get()) {
+            // dd($orderaja);
+            # code...
+                $subtotal = collect($orders)->sum(function($orders) {
+                return $orders['keranjangs']->qty * $orders['produks']->jumlah / $orders['produks']->diskon ;
+                });
+                return view('Tampilan.Order.order', compact('orders', 'subtotal', 'keranjang'));
+            };
         // dd($orderaja);
-        return view('Tampilan.Order.order', compact('orders', 'subtotal'));
+
+    }
+
+    public function index2()
+    {
+        $users = User::get();
+        $keranjang = keranjangs::get();
+        if ($orders = orders::where('user_id', auth()->user()->id)->with('users', 'produks', 'keranjangs')->get()) {
+            // dd($orderaja);
+            # code...
+                $subtotal = collect($orders)->sum(function($orders) {
+                return $orders['keranjangs']->qty * $orders['produks']->jumlah / $orders['produks']->diskon ;
+                });
+                            dd($orders);
+
+                return view('website.cart', compact('orders', 'subtotal', 'keranjang'));
+            };
+        // dd($orderaja);
 
     }
 
@@ -314,6 +336,38 @@ class OrderController extends Controller
     {
         $orderaja = orders::destroy($id);
     
+    }
+
+    public function finish()
+    {   
+
+
+        $keranjang = keranjangs::get();
+
+        $produk = produks::where('user_id', auth()->user()->id)->with('users', 'keranjangs')->get();
+        if ($orders = orders::where('user_id', auth()->user()->id)->with('users', 'produks', 'keranjangs')->get()) {
+            $subtotal = collect($orders)->sum(function($orders) {
+                    return $orders['keranjangs']->qty * $orders['produks']->harga / $orders['produks']->diskon ;
+            });
+            // dd($subtotal);
+            return view('Tampilan.Order.finish', compact('keranjang', 'produk','subtotal', 'orders'));
+        }
+        
+    }
+    
+    public function finish1()
+    {
+        
+        $produk = produks::get();
+        $keranjang = keranjangs::get();
+        $orders = orders::where('user_id', auth()->user()->id)->with('users', 'produks', 'keranjangs')->get();
+        $subtotal = collect($keranjang)->sum(function($keranjang) {
+            return $keranjang['qty'] - $keranjang['stok'];
+        });
+        // $produk->save();
+        
+        return view('Tampilan.Order.order', compact('keranjang', 'produk','subtotal', 'orders'));
+
     }
 
 

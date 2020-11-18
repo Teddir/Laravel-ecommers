@@ -29,7 +29,7 @@
         @foreach ($produk as $item)
       <th scope="row">{{ $loop->iteration }}</th>    
       <td>{{ $item->name_produk }}</td>
-      <td>{{ $item->stok }}</td>
+      <td>{{ $item->stok  }}</td>
       <td>{{ $item->status }}</td>
       <td>{{ $item->harga }}</td>
       <td>{{ $item->created_at }}</td>

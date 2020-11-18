@@ -14,16 +14,37 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// Route::get('/', function () {
+//     return view('welcome');
+// });
+
+// Route::get('/home', function () {
+//     return view('home');
+// });
+
+// Route::get('/dashbord', function () {
+//     return view('dashbord');
+// });
+
+
 Route::get('/', function () {
-    return view('welcome');
+    return view('website.faedah');
 });
 
-Route::get('/home', function () {
-    return view('home');
+
+Route::get('/store', 'ProdukController@produkat');
+Route::get('/store', 'ProdukController@produkall');
+
+Route::get('/shop', function () {
+    return view('website.shop');
 });
 
-Route::get('/dashbord', function () {
-    return view('dashbord');
+Route::get('/cart', function () {
+    return view('website.cart');
+});
+
+Route::get('/detail', function () {
+    return view('website.detail');
 });
 
 
@@ -40,6 +61,10 @@ Route::group(['middleware' => 'auth'], function () {
 });
 // Route::get('/create', 'ProdukController@index1'); 
 
+
 Route::get('/cari', 'ProdukController@render');
 Route::get('/login/facebook', 'Auth\LoginController@redirectToProvider');
 Route::get('/login/facebook/callback', 'Auth\LoginController@handleProviderCallback');
+
+
+Route::get('/edit3/{id}', 'KeranjangController@edit1');

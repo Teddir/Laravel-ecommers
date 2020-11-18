@@ -10,6 +10,7 @@
     </div>
 @endif
 
+<a href="{{ url('/admin/index5') }}"><button class="btn btn-primary"><i class="fa fa-check-circle-o" aria-hidden="true">   ChekOut</i></button></a> {{--  ->pengembangan --}}    
 <table class="table table-striped mt-1">
   <thead>
     <tr>
@@ -27,8 +28,7 @@
     @foreach ($keranjang as $item)
     <tr>
       <th scope="row">{{ $loop->iteration }}</th>    
-      <td>{{ $item->produks->name_produk }}</td>
-      <td>{{ $item->produks->harga }}</td>
+      <td>{{ $item->produks->zharga }}</td>
       <td>{{ $item->qty }}</td>
       <td>{{ $subtotal }}</td>
       <td>{{ $item->produks->created_at }}</td>
@@ -36,12 +36,11 @@
       <td>
         <form action="{{ url('/admin/update3', $item->id) }}" method="post"> @method('put') @csrf
           <label for="qty">
-            <input type="text" name="qty" placeholder="Tambah Barang ">
+          <input type="text" name="qty" value="{{ $item->qty }}" placeholder="Tambah Barang ">
           </label>
           <button class="btn btn-warning"><i class="fa fa-wrench" aria-hidden="true"></i></button></a>
         </form>
         </td>
-        <a href="{{ url('/admin/index5', $item->id) }}"><button class="btn btn-primary"><i class="fa fa-check-circle-o" aria-hidden="true">   ChekOut</i></button></a> {{--  ->pengembangan --}}    
         <td><form action="{{ url('/admin/destroy3', $item->id) }}" method="post">@method('delete') @csrf
           <a href=""><button class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button></a>
         </form>
