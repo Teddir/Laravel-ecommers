@@ -15,7 +15,6 @@ class Foreign extends Migration
     public function up()
     {
         Schema::table('produks', function (Blueprint $table) {
-            $table->foreignId('keranjang_id')->nullable()->constrained('keranjangs');
             $table->foreignId('kategori_id')->nullable()->constrained('kategoris');
             $table->foreignId('user_id')->nullable()->constrained('users');
         });

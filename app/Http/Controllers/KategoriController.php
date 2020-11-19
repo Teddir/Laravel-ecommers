@@ -20,9 +20,6 @@ class KategoriController extends Controller
     public function index()
     {
         $kategori = kategoris::get();
-        $kategori = kategoris::with(['produk'])->orderBy('created_at', 'asc')->get();
-        // return response()->json(['data' => $kategori]);
-            // return view('Tampilan.Kategori.create', compact('kategori'));
         if (! $kategori) {
             # code...
             return response()->json([

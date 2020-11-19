@@ -63,14 +63,13 @@ class ChekoutController extends Controller
         $chekout->produk_id = $request->produk_id;
         $chekout->keranjang_id = $request->keranjang_id;
         try {
-        $chekout->save();
+            $chekout->save();
         } catch (\Throwable $th) {
             return response([
                 'status' => 'error',
                 'message' => $th->getMessage(),
                 'data' => NULL, 404
             ]);
-            
         }
         return response([
             'status' => 'succes',
@@ -114,7 +113,7 @@ class ChekoutController extends Controller
             return response()->json([
                 'data' => NULL, 402
             ]);
-        } 
+        }
         return response()->json([
             'data' => $mbank, 200
         ]);
@@ -141,7 +140,6 @@ class ChekoutController extends Controller
                 'message' => $th->getMessage(),
                 'data' => NULL, 404
             ]);
-            
         }
         return response([
             'status' => 'succes',
@@ -159,7 +157,7 @@ class ChekoutController extends Controller
     public function destroy($id)
     {
         $chekout = chekout::destroy($id);
-        if (! $chekout) {
+        if (!$chekout) {
             # code...
             return response()->json([
                 'status' => 'Error',
@@ -180,19 +178,32 @@ class ChekoutController extends Controller
         // dd($row);
         if ($row->count() > 0) {
             // dd($row);
-            $keranjang = new chekout;
-            $keranjang->keranjang_id = $row->id; 
-            $keranjang->produk_name = $row->name_produk;
-            $keranjang->produk_price = $row->harga;
-            $keranjang->produk_image = $row->image;
-            dd($keranjang);
-            $keranjang->save();
-            // $keranjang = new keranjangs;
-            return redirect('/website/cart');
-        } else {
-            return redirect('/website');
+            $chekout = new chekout;
+            $chekout->qty = $row->qty;
+            $chekout->keranjang_id = $row->id;
+            $chekout->produk_name = $row->produk_name;
+            $chekout->produk_price = $row->produk_price;
+            $chekout->produk_image = $row->produk_image;
+            $chekout->produk_id = $row->produk_id;
+
+            // dd($chekout);
+            $chekout->save();
+            try {
+
+                // $chekout = new chekouts;
+            } catch (\Throwable $th) {
+                return response([
+                    'status' => 'error',
+                    'message' => $th->getMessage(),
+                    'data' => NULL, 404
+
+                ]);
+            }
+            return response([
+                'status' => 'succes',
+                'message' => 'Berhasil Di ChekOut',
+                'data' => $chekout, 200
+            ]);
         }
-
     }
-
 }

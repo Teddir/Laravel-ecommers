@@ -65,6 +65,7 @@ Route::group(['middleware' => 'jwt.verify'], function () {
     Route::resource('/penjual', 'PenjualController');
 
     Route::resource('/chekout', 'ChekoutController');
+    Route::post('/tambah/chekout/{id}', 'ChekoutController@chekout');    
 
     Route::get('user', 'UserController@index');  //-------->nampilin
     Route::put('user/{id}', 'UserController@update');           //----------update

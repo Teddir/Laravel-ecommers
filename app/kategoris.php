@@ -12,11 +12,6 @@ class kategoris extends Model
         // 'tgl_posting'---> diganti sama created_at
     ];
 
-    public function produk()
-    {
-        //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
-        return $this->hasMany(produks::class, 'id', 'produk_id' );
-    }   
     
     public function kategoris()
     {

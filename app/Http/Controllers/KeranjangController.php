@@ -118,7 +118,7 @@ class KeranjangController extends Controller
                 }
                 return response([
                     'status' => 'succes',
-                    'message' => 'Berhasil Di update',
+                    'message' => 'Berhasil Di Masukan Ke Keranjang',
                     'data' => $keranjang, 200
                 ]);
         }
