@@ -21,7 +21,7 @@ class ProdukController extends Controller
     //-------------------------------------------------------------->Produk    
     public function index()
     {
-        $produk = produks::where('user_id', auth()->user()->id)->with('kategoris')->get();
+        $produk = produks::get();
         if (!$produk) {
             # code...
             return response()->json([
@@ -35,10 +35,6 @@ class ProdukController extends Controller
             'Message' => 'Data Berhasil Di Tampilkan',
             'data' => $produk, 200,
         ]);
-    }
-    public function __construct()
-    {
-        $this->middleware('jwt.verify');
     }
 
     public function produkpenjual()
