@@ -8,6 +8,7 @@ use App\kategoris;
 use App\User;
 use illuminate\support\Str;
 use App\keranjangs;
+use App\orders;
 use App\penjuals;
 
 class ProdukController extends Controller
@@ -17,10 +18,14 @@ class ProdukController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-        //-------------------------------------------------------------->Produk    
-     public function index()
+    //-------------------------------------------------------------->Produk    
+    public function __construct()
     {
-        $produk = produks::get();
+        $this->middleware('jwt.verify');
+    }
+    public function index()
+    {
+        $produk = produks::where('user_id', auth()->user()->id)->with('kategoris')->get();
         if (!$produk) {
             # code...
             return response()->json([
@@ -38,8 +43,7 @@ class ProdukController extends Controller
 
     public function produkpenjual()
     {
-        $produk = produks::where('user_id', auth()->user()->id)->with('produks','users')->get();
-        
+        $produk = produks::where('user_id', auth()->user()->id)->with('produks', 'users')->get();
         // dd($produk);
         if (!$produk) {
             # code...
@@ -94,8 +98,8 @@ class ProdukController extends Controller
             'name_produk' => 'required',
             'desc' => 'required',
             'harga' => 'required',
-            'stok' => 'required',
-            'status' => 'required',
+            'stok' => 'required|integer',
+            'status' => 'required|integer',
             'diskon' => 'required',
         ]);
 
@@ -150,7 +154,7 @@ class ProdukController extends Controller
      */
     public function show($id)
     {
-        $produk = produks::find($id);
+        $produk = produks::where('user_id', auth()->user()->id)->with('kategoris')->get();
         if (!$produk) {
             # code...
             return response()->json([
@@ -195,43 +199,28 @@ class ProdukController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'name_produk' => 'required',
-            'desc' => 'required',
-            'harga' => 'required',
-            'stok' => 'required|integer',
-            'status' => 'required',
-            'diskon' => 'required',
-        ]);
+    
+        $produk = produks::find($id);
+        $dataRequest = $request->all();
+        $dataResult = array_filter($dataRequest);
 
-        try {
-            $produk = produks::find($id);
-            $produk->name_produk = $request->name_produk;
-            $produk->desc = $request->desc;
-            $produk->harga = $request->harga;
-            $produk->stok = $request->stok;
-            $produk->status = $request->status;
-            $produk->diskon = $request->diskon;
-            $produk->user_id = auth()->user()->id;
-            $produk->kategori_id = $request->kategori_id;
-            $file = base64_encode(file_get_contents($request->image));
-
-            $client = new \GuzzleHttp\Client();
-            $response = $client->request('POST', 'https://freeimage.host/api/1/upload', [
-                'form_params' => [
-                    'key' => '6d207e02198a847aa98d0a2a901485a5',
-                    'action' => 'upload',
-                    'source' => $file,
-                    'format' => 'json'
+        $file = base64_encode(file_get_contents($request->image));
+        $client = new \GuzzleHttp\Client();
+        $response = $client->request('POST', 'https://freeimage.host/api/1/upload', [
+            'form_params' => [
+                'key' => '6d207e02198a847aa98d0a2a901485a5',
+                'action' => 'upload',
+                'source' => $file,
+                'format' => 'json'
                 ]
-            ]);
-
-            $data = $response->getBody()->getContents();
-            $data = json_decode($data);
-            $image = $data->image->url;
-
-            $produk->image = $image;
-            $produk->save();
+                ]);
+                
+                $data = $response->getBody()->getContents();
+                $data = json_decode($data);
+                $image = $data->image->url;
+                $produk->image = $image;
+            try {
+            $produk->update($dataRequest);
         } catch (\Throwable $th) {
             return response([
                 'status' => 'error',
@@ -290,42 +279,31 @@ class ProdukController extends Controller
     }
 
 
+    //-------------------------------------------------------------->Admin
 
-    public function index3(Request $request)
+    public function __construct1()
+    {
+        $this->middleware('auth');
+    }
+
+    public function index1(Request $request)
     {
         $users = User::get();
         $keranjang = keranjangs::get();
 
-            $produk = new produks;
-            $produk->stok = $request->stok;
-        if ($produk->stok = produks::where('user_id', auth()->user()->id)->with('users', 'produks', 'keranjangs')->get()) {
+        $produk = new produks;
+        $produk->stok = $request->stok;
+        if ($produk = produks::where('user_id', auth()->user()->id)->with('users', 'produks', 'keranjangs')->get()) {
             // dd($orderaja);
             # code...
-                $subtotal = collect($request->stok)->sum(function($orders) {
-                return  $orders['produks']->jumlah - $orders['keranjangs']->qty  ;
+            $subtotal = collect($request->stok)->sum(function ($orders) {
+                return  $orders['produks']->jumlah - $orders['keranjangs']->qty;
             });
         };
-        $produk->save();
-        return view('Tampilan.Produk.produk', compact('orders', 'subtotal', 'keranjang'));
-
+        // $produk->save();
+        return view('Tampilan.Produk.produk', compact('produk', 'subtotal', 'keranjang'));
     }
 
-    public function index1()
-    {
-
-
-        $users = User::get();
-        if ($produk = produks::where('user_id', auth()->user()->id)->with('users', 'produks', 'keranjangs')->get()) {
-            $subtotal = collect($produk)->sum(function ($orders) {
-                return  $orders['keranjangs']->qty * $orders['produk.stok'];
-            });
-            return view('Tampilan.Produk.produk', compact('users', 'subtotal', 'produk'));
-            // $produk->save();
-            dd($subtotal);   
-        }
-        // $produk = produks::get();
-
-    }
 
     public function show1(produks $produks)
     {
@@ -430,10 +408,59 @@ class ProdukController extends Controller
         return redirect('/admin/index1')->with(['success' => 'Kategori Diperbaharui!']);
     }
 
+
+    //-------------------------------------------------------------->WEB
+
     public function produkall()
     {
         // $produk = produks::where('user_id', auth()->user()->id())->with('produks', 'keranjangs', 'users');
         $produk = produks::get();
-        return view('website.store', compact('produk'));
+        // $produkdetail = produks::find($id);
+        return view('website.allproduk', compact('produk'));
+    }
+
+    public function bestseller()
+    {
+        return view('website.bestseller', compact('produk'));
+    }
+
+    public function newproduk()
+    {
+        $produk = produks::get();
+        // $produk = produks::find($id);
+        return view('website.newproduk', compact('produk'));
+    }
+
+    // public function cart()
+    // {
+    //     $produk = produks::get();
+    //     $subtotal = null;
+    //     return view('website.cart', compact('produk', 'subtotal'));
+
+    // }
+
+
+    public function produldetail($id)
+    {
+        // $produk = produks::where('user_id', auth()->user()->id())->with('produks', 'keranjangs', 'users');
+        $produkdetail = produks::find($id);
+        return view('website.cart', compact('produkdetail'));
+    }
+
+    public function chekout(Request $request, $id)
+    {
+        $row = produks::get();
+        if ($produks = produks::where('user_id', auth()->user()->id)->with('keranjangs')->first()) {
+            // dd($produks->keranjangs->qty);
+            $stok = $produks->stok - $produks->keranjangs->qty;
+            // dd($stok);
+            // dd($stok);
+            $produk = produks::find($id);
+            // dd($produk);
+            $produk->stok = $stok;
+            $produk->update();
+            return view('website.chekout')
+                ->with('title', 'Cart &rarr; Checkout');
+        };
     }
 }

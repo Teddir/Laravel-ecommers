@@ -4,11 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class keranjangs extends Model
+class chekout extends Model
 {
     protected $fillable = [
-        'jumlah', 'qty', 'produk_name', 'produk_price', 'produk_image',
-        'user_id', 'produk_id'
+        'qty', 'produk_name', 'produk_price', 'produk_image',
+        'keranjang_id', 'produk_id'
     ];
 
     public function produks()
@@ -17,16 +17,11 @@ class keranjangs extends Model
         return $this->hasMany(produks::class,  'id', 'produk_id');
     }
 
-    public function users()
-    {
-        //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
-        return $this->hasOne(User::class, 'id', 'user_id');
-    }
 
     public function keranjangs()
     {
         //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
-        return $this->hasOne(keranjangs::class, 'id', 'user_id');
+        return $this->hasOne(keranjangs::class, 'id', 'keranjang_id');
     }
 
 }

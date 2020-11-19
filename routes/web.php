@@ -28,25 +28,17 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::get('/', function () {
-    return view('website.faedah');
+    return view('welcome');
 });
+
+Route::get('/Doc', function () {
+    return view('bersama');
+});
+
 
 
 Route::get('/store', 'ProdukController@produkat');
 Route::get('/store', 'ProdukController@produkall');
-
-Route::get('/shop', function () {
-    return view('website.shop');
-});
-
-Route::get('/cart', function () {
-    return view('website.cart');
-});
-
-Route::get('/detail', function () {
-    return view('website.detail');
-});
-
 
 Auth::routes();
 
@@ -68,3 +60,12 @@ Route::get('/login/facebook/callback', 'Auth\LoginController@handleProviderCallb
 
 
 Route::get('/edit3/{id}', 'KeranjangController@edit1');
+
+
+Route::get('/website', 'ProdukController@newproduk');
+Route::get('/website/cart', 'KeranjangController@cart');
+Route::delete('/website/hapus/{id}', 'KeranjangController@hapuskeranjang');
+Route::put('/website/cart/update/{id}', 'KeranjangController@update1');
+Route::put('/website/cart/update/{id}', 'ProdukController@chekout');
+
+Route::get('/website/create/{id}', 'KeranjangController@add');

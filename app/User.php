@@ -56,7 +56,7 @@ class User extends Authenticatable implements JWTSubject
     public function kategoris()
     {
         //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
-        return $this->hasMany(kategoris::class, 'id', );
+        return $this->hasMany(kategoris::class, 'id', 'kategori_id');
     }
 
     public function produks()

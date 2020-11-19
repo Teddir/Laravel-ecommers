@@ -26,13 +26,14 @@
   </thead>
   <tbody>
     @foreach ($keranjang as $item)
+
     <tr>
       <th scope="row">{{ $loop->iteration }}</th>    
-      <td>{{ $item->produks->zharga }}</td>
+      {{-- <td>{{ $item->produks->harga }}</td> --}}
       <td>{{ $item->qty }}</td>
       <td>{{ $subtotal }}</td>
-      <td>{{ $item->produks->created_at }}</td>
-      <td><img class="card-img-top" src="image/{{ $item->produk_image }}" alt="{{ $item->produks->image }}" height="200" widht="40"></td>
+      {{-- <td>{{ $item->produks->created_at }}</td> --}}
+      {{-- <td><img class="card-img-top" src="image/{{ $item->produk_image }}" alt="{{ $item->produks->image }}" height="200" widht="40"></td> --}}
       <td>
         <form action="{{ url('/admin/update3', $item->id) }}" method="post"> @method('put') @csrf
           <label for="qty">

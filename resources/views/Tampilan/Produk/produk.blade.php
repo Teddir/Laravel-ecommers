@@ -33,7 +33,7 @@
       <td>{{ $item->status }}</td>
       <td>{{ $item->harga }}</td>
       <td>{{ $item->created_at }}</td>
-      <td><img class="card-img-top" src="image/{{ $item->image }}" alt="{{ $item->image }}" height="200" widht="40"></td>
+      <td><img class="card-img-top" src="{{ $item->image }}" alt="{{ $item->image }}" height="200" widht="40"></td>
       <td>
         <a href="{{ url('/admin/edit1', $item->id) }}"><button class="btn btn-primary"><i class="fa fa-wrench" aria-hidden="true"></i></button></a>
       </td>

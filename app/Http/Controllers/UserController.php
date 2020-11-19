@@ -77,10 +77,12 @@ class UserController extends Controller
     }
 
 
-    public function show($id)
+
+    public function index()
     {
-        $produk = User::find($id);
-        if (!$produk) {
+
+        $user = User::get();
+        if (!$user) {
             # code...
             return response()->json([
                 'status' => 'Error',
@@ -91,7 +93,25 @@ class UserController extends Controller
         return response()->json([
             'status' => 'Succes',
             'Message' => 'Data Berhasil Di Tampilkan',
-            'data' => $produk, 200,
+            'data' => $user, 200,
+        ]);
+    }
+
+    public function show($id)
+    {
+        $user = User::find($id);
+        if (!$user) {
+            # code...
+            return response()->json([
+                'status' => 'Error',
+                'Message' => 'Data Gagal Di Tampilkan',
+                'data' => NULL, 402,
+            ]);
+        }
+        return response()->json([
+            'status' => 'Succes',
+            'Message' => 'Data Berhasil Di Tampilkan',
+            'data' => $user, 200,
         ]);
     }
 
@@ -103,53 +123,42 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $produk = User::find($id);
-        if (!$produk) {
+        $user = User::find($id);
+        if (!$user) {
             return response()->json([
                 'data' => NULL, 402
             ]);
         }
         return response()->json([
-            'data' => $produk, 200
+            'data' => $user, 200
         ]);
     }
 
 
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
-            'alamat' => 'required|string|max:255',
-        ]);
 
-        dd($request->avatar);
-
-        try {
-            $user = User::find($id);
-            $user->name = $request->name;
-            $user->email = $request->email;
-            $user->password = $request->password;
-            $user->alamat = $request->alamat;
-            $file = base64_encode(file_get_contents($request->avatar));
-
-            $client = new \GuzzleHttp\Client();
-            $response = $client->request('POST', 'https://freeimage.host/api/1/upload', [
-                'form_params' => [
-                    'key' => '6d207e02198a847aa98d0a2a901485a5',
+        $user = User::find($id);
+        $dataRequest = $request->all();
+        $dataResult = array_filter($dataRequest);
+        // dd($dataRequest);
+        $file = base64_encode(file_get_contents($request->avatar));
+        $client = new \GuzzleHttp\Client();
+        $response = $client->request('POST', 'https://freeimage.host/api/1/upload', [
+            'form_params' => [
+                'key' => '6d207e02198a847aa98d0a2a901485a5',
                     'action' => 'upload',
                     'source' => $file,
                     'format' => 'json'
-                ]
-            ]);
+                    ]
+                    ]);
 
-            $data = $response->getBody()->getContents();
-            $data = json_decode($data);
+                    $data = $response->getBody()->getContents();
+                    $data = json_decode($data);
             $image = $data->image->url;
-
             $user->avatar = $image;
-            $user->save();
+            try {
+            $user->update($dataRequest);
         } catch (\Throwable $th) {
             return response([
                 'status' => 'error',
@@ -254,18 +263,10 @@ class UserController extends Controller
 
     public function update1(Request $request, $id)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255',
-            'password' => 'required|string|min:6',
-            'alamat' => 'required|string|max:255',
-        ]);
-
         $user = User::find($id);
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->password = $request->password;
-        $user->alamat = $request->alamat;
+        $dataRequest = $request->all();
+        $dataResult = array_filter($dataRequest);
+
         $file = base64_encode(file_get_contents($request->image));
 
         $client = new \GuzzleHttp\Client();
@@ -283,7 +284,7 @@ class UserController extends Controller
         $image = $data->image->url;
 
         $user->avatar = $image;
-        $user->save();
+        $user->save($dataRequest);
 
         return redirect('/admin/index4')->with(['success' => 'Kategori Diperbaharui!']);
     }

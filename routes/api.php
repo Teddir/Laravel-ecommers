@@ -26,12 +26,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::post('register', 'UserController@register');
 Route::post('login', 'UserController@login');
 
-
-
-
 Route::post('logout', 'UserController@logout');
 Route::get('/chat', 'ChatController@index')->name('home');
-
 
 //route produk
 Route::get('/produk', 'ProdukController@index');
@@ -43,8 +39,8 @@ Route::group(['middleware' => 'jwt.verify'], function () {
     // -----------------------------------------------------> produk
     
     Route::get('/produkp', 'ProdukController@produkpenjual');      //------------->produkpenjualaja
-    Route::post('/produk', 'ProdukController@store');
     Route::put('/produk/{id}', 'ProdukController@update');
+    Route::post('/produk', 'ProdukController@store');
     Route::delete('/produk/{id}', 'ProdukController@destroy');
 
     // -----------------------------------------------------> end produk
@@ -76,7 +72,10 @@ Route::group(['middleware' => 'jwt.verify'], function () {
 
     Route::resource('/penjual', 'PenjualController');
 
-    Route::get('user', 'UserController@getAuthenticatedUser');  //-------->nampilin
+    Route::resource('/chekout', 'ChekoutController');
+
+    Route::get('user', 'UserController@index');  //-------->nampilin
     Route::put('user/{id}', 'UserController@update');           //----------update
     Route::delete('user/{id}', 'UserController@destroy');         //-------------delete
+    Route::get('user/{id}', 'UserController@show');         //-------------delete
 });

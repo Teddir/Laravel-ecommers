@@ -63,10 +63,9 @@ class HubungiController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'email' => 'required',
+            'email' => 'required|email',
             'subjek' => 'required',
             'message' => 'required',
-            'date' => 'required',
         ]);
 
         try {
@@ -74,7 +73,6 @@ class HubungiController extends Controller
             $hubungi->email = $request->email;
             $hubungi->subjek = $request->subjek;
             $hubungi->message = $request->message;
-            $hubungi->date = $request->date;
             $hubungi->save();
             if (!$hubungi) {
                 return response([
@@ -118,7 +116,7 @@ class HubungiController extends Controller
             return response()->json([
                 'data' => NULL, 402
             ]);
-        } 
+        }
         return response()->json([
             'data' => $hubungi, 200
         ]);
@@ -133,20 +131,12 @@ class HubungiController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'email' => 'required',
-            'subjek' => 'required',
-            'message' => 'required',
-            'date' => 'required',
-        ]);
 
+        $hubungi = hubungis::find($id);
+        $dataRequest = $request->all();
+        $dataResult = array_filter($dataRequest);
         try {
-            $hubungi = hubungis::find($id);
-            $hubungi->email = $request->email;
-            $hubungi->subjek = $request->subjek;
-            $hubungi->message = $request->message;
-            $hubungi->date = $request->date;
-            $hubungi->save();
+            $hubungi->update($dataRequest);
             if (!$hubungi) {
                 return response([
                     'status' => 'error',
@@ -173,7 +163,7 @@ class HubungiController extends Controller
     public function destroy($id)
     {
         $hubungi = hubungis::destroy($id);
-        if (! $hubungi) {
+        if (!$hubungi) {
             # code...
             return response()->json([
                 'status' => 'Error',

@@ -15,8 +15,9 @@ class Foreign extends Migration
     public function up()
     {
         Schema::table('produks', function (Blueprint $table) {
+            $table->foreignId('keranjang_id')->nullable()->constrained('keranjangs');
             $table->foreignId('kategori_id')->nullable()->constrained('kategoris');
-            $table->foreignId('penjual_id')->nullable()->constrained('penjuals');
+            $table->foreignId('user_id')->nullable()->constrained('users');
         });
         
         Schema::table('keranjangs', function (Blueprint $table) {
@@ -27,6 +28,7 @@ class Foreign extends Migration
         Schema::table('orders', function (Blueprint $table) {
             $table->foreignId('produk_id')->nullable()->constrained('produks');
             $table->foreignId('user_id')->nullable()->constrained('users');
+            $table->foreignId('keranjang_id')->nullable()->constrained('keranjangs');
         });
 
         Schema::table('penjuals', function (Blueprint $table) {
@@ -37,6 +39,11 @@ class Foreign extends Migration
 
         Schema::table('hubungis', function (Blueprint $table) {
             $table->foreignId('hubungi_id')->nullable()->constrained('users');
+        });
+
+        Schema::table('chekouts', function (Blueprint $table) {
+            $table->foreignId('keranjang_id')->nullable()->constrained('keranjangs');
+            $table->foreignId('produk_id')->nullable()->constrained('produks');
         });
 
     }

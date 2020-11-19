@@ -142,15 +142,12 @@ class KategoriController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'name_kategori' => 'required',
-        ]);
 
 
+        //code...
+        $kategori = kategoris::find($id);
+        $kategori->name_kategori = $request->name_kategori;
         try {
-            //code...
-            $kategori = kategoris::find($id);
-            $kategori->name_kategori = $request->name_kategori;
             $kategori->save();
         } catch (\Throwable $th) {
 

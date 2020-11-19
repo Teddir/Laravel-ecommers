@@ -19,7 +19,7 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orderaja = orders::get();
+        $orderaja = orders::where('user_id', auth()->user()->id)->with('produks', 'keranjangs')->get();
         if (!$orderaja) {
             # code...
             return response()->json([
@@ -152,18 +152,12 @@ class OrderController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'pesan' => 'required',
-            'pengiriman' => 'required',
-            ]);
-
+        $orderaja = orders::find($id);
+        $dataRequest = $request->all();
+        $dataResult = array_filter($dataRequest);
+        
         try {
-            $orderaja = orders::find($id);
-            $orderaja->pesan = $request->pesan;
-            $orderaja->pengiriman = $request->pengiriman;
-            $orderaja->user_id = auth()->user()->id;
-            $orderaja->produk_id = $request->produk_id;
-            $orderaja->save();
+            $orderaja->update($dataRequest);
         } catch (\Throwable $th) {
             return response([
                 'status' => 'error',
@@ -226,12 +220,12 @@ class OrderController extends Controller
         $keranjang = keranjangs::get();
         if ($orders = orders::where('user_id', auth()->user()->id)->with('users', 'produks', 'keranjangs')->get()) {
             // dd($orderaja);
+            // dd($orders);
             # code...
                 $subtotal = collect($orders)->sum(function($orders) {
-                return $orders['keranjangs']->qty * $orders['produks']->jumlah / $orders['produks']->diskon ;
+                // return $orders['keranjangs']->qty * $orders['produks']->jumlah;
                 });
-                            dd($orders);
-
+                
                 return view('website.cart', compact('orders', 'subtotal', 'keranjang'));
             };
         // dd($orderaja);
@@ -371,5 +365,5 @@ class OrderController extends Controller
     }
 
 
-    
+   
 }

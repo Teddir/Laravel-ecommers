@@ -2,21 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\kota;
-use App\kotas;
 use Illuminate\Http\Request;
+use App\chekout;
 
-class KotaController extends Controller
+class ChekoutController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        $kota = kotas::get();
-        if (! $kota) {
+        $chekout = chekout::with('keranjangs', 'produks')->get();
+        // dd($chekout);
+        if (!$chekout) {
             # code...
             return response()->json([
                 'status' => 'Error',
@@ -27,11 +22,8 @@ class KotaController extends Controller
         return response()->json([
             'status' => 'Succes',
             'Message' => 'Data Berhasil Di Tampilkan',
-            'data' => $kota, 200,
+            'data' => $chekout, 200,
         ]);
-
-        // return view('home', compact('kota'));
-
     }
 
     /**
@@ -41,19 +33,16 @@ class KotaController extends Controller
      */
     public function create()
     {
-        $kota = kotas::get();
-        if (!$kota) {
+        $chekout = chekout::where('user_id', auth()->user()->id)->with('users', 'produks')->get();
+        if (!$chekout) {
             # code...
             return response()->json([
                 'data' => NULL, 402
             ]);
-        } 
+        }
         return response()->json([
-            'data' => $kota, 200
+            'data' => $chekout, 200
         ]);
-
-        // return view('Home', compact('ko$kota'));
-
     }
 
     /**
@@ -65,16 +54,15 @@ class KotaController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name_kota' => 'required',
-            'onkos_kirim' => 'required',
+            'qty' => 'required',
         ]);
 
+        $chekout = new chekout;
+        $chekout->qty = $request->qty;
+        $chekout->produk_id = $request->produk_id;
+        $chekout->keranjang_id = $request->keranjang_id;
         try {
-            $kota = new kotas;
-            $kota->name_kota = $request->name_kota;
-            $kota->onkos_kirim = $request->onkos_kirim;
-            $kota->save();
-           
+        $chekout->save();
         } catch (\Throwable $th) {
             return response([
                 'status' => 'error',
@@ -86,38 +74,48 @@ class KotaController extends Controller
         return response([
             'status' => 'succes',
             'message' => 'Berhasil Di Tambah',
-            'data' => $kota, 200
+            'data' => $chekout, 200
         ]);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\kota  $kota
+     * @param  \App\chekout  $chekout
      * @return \Illuminate\Http\Response
      */
-    public function show(kotas $kota)
+    public function show($id)
     {
-        //
+        $chekout = chekout::with('keranjangs', 'produks')->find($id);
+        if (!$chekout) {
+            # code...
+            return response()->json([
+                'data' => NULL, 402
+            ]);
+        }
+        return response()->json([
+            'data' => $chekout, 200
+        ]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\kota  $kota
+     * @param  \App\chekout  $chekout
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        $kota = kotas::find($id);
-        if (!$kota) {
+        $mbank = chekout::find($id);
+
+        if (!$mbank) {
             # code...
             return response()->json([
                 'data' => NULL, 402
             ]);
         } 
         return response()->json([
-            'data' => $kota, 200
+            'data' => $mbank, 200
         ]);
     }
 
@@ -125,21 +123,17 @@ class KotaController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\kota  $kota
+     * @param  \App\chekout  $chekout
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'name_kota' => 'required',
-            'onkos_kirim' => 'required',
-        ]);
-
+        $chekout = chekout::find($id);
+        $dataRequest = $request->all();
+        $dataResult = array_filter($dataRequest);
+        // dd($dataRequest);
         try {
-            $kota = kotas::find($id);
-            $kota->name_kota = $request->name_kota;
-            $kota->onkos_kirim = $request->onkos_kirim;
-            $kota->save();
+            $chekout->update($dataRequest);
         } catch (\Throwable $th) {
             return response([
                 'status' => 'error',
@@ -150,21 +144,21 @@ class KotaController extends Controller
         }
         return response([
             'status' => 'succes',
-            'message' => 'Berhasil Di Tambah',
-            'data' => $kota, 200
+            'message' => 'Berhasil Di update',
+            'data' => $chekout, 200
         ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\kota  $kota
+     * @param  \App\chekout  $chekout
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $kota = kotas::destroy($id);
-        if (! $kota) {
+        $chekout = chekout::destroy($id);
+        if (! $chekout) {
             # code...
             return response()->json([
                 'status' => 'Error',
@@ -175,7 +169,8 @@ class KotaController extends Controller
         return response()->json([
             'status' => 'Succes',
             'Message' => 'Data Berhasil Di Hapus',
-            'data' => $kota, 200,
+            'data' => $chekout, 200,
         ]);
     }
+
 }

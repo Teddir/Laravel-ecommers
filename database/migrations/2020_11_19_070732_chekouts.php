@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Keranjang extends Migration
+class Chekouts extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class Keranjang extends Migration
      */
     public function up()
     {
-        Schema::create('keranjangs', function (Blueprint $table) {
-            $table->bigIncrements('id');
+        Schema::create('chekouts', function (Blueprint $table) {
+            $table->id();
             $table->string('qty')->default(1);
             $table->string('produk_name')->nullable();
             $table->string('produk_price')->nullable();
             $table->string('produk_image')->nullable();
-            $table->string('produk_diskon')->nullable();
+            $table->string('status')->nullable();
             $table->timestamps();
         });
     }
@@ -31,6 +31,6 @@ class Keranjang extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('Keranjang');
+        Schema::dropIfExists('chekouts');
     }
 }

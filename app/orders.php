@@ -19,7 +19,7 @@ class orders extends Model
 
     public function users()
     {
-        return $this->hasOne(User::class, 'id', 'user_id');
+        return $this->hasMany(User::class, 'id', 'user_id');
     }
 
     public function produks()

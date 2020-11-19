@@ -68,7 +68,7 @@ $factory->define(hubungis::class, function (Faker $faker) {
 $factory->define(produks::class, function (Faker $faker) {
     return [
         // 'id_kategori' => $faker->buildingNumber,
-        'penjual_id' => 2,
+        'user_id' => 1,
         'name_produk' => $faker->name,
         'desc' => $faker->text,
         'harga' => 7800,
@@ -91,9 +91,9 @@ $factory->define(orders::class, function (Faker $faker) {
 });
 $factory->define(keranjangs::class, function (Faker $faker) {
     return [
-        'user_id' => 3,
+        'user_id' => 1,
         'produk_id' => 1,
-        'qty' => 1,
+        'qty' => 4,
 
     ];
 });
@@ -114,6 +114,14 @@ $factory->define(kotas::class, function (Faker $faker) {
 $factory->define(kategoris::class, function (Faker $faker) {
     return [
         'produk_id' => 1,
+        'name_kategori' => $faker->name,
+    ];
+});
+
+$factory->define(Chekouts::class, function (Faker $faker) {
+    return [
+        'produk_id' => 1,
+        'keranjang_id' => 1,
         'name_kategori' => $faker->name,
     ];
 });
