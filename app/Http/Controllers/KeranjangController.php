@@ -90,6 +90,41 @@ class KeranjangController extends Controller
         ]);
     }
 
+
+    public function addcart($id)
+    {
+        $row = produks::find($id);
+        // dd($row);
+        if ($row->count() > 0) {
+            // dd($row);
+            $keranjang = new keranjangs;
+            $keranjang->produk_id = $row->id; 
+            $keranjang->produk_name = $row->name_produk;
+            $keranjang->produk_price = $row->harga;
+            $keranjang->produk_image = $row->image;
+            $keranjang->produk_diskon = $row->diskon;
+            $keranjang->user_id = auth()->user()->id;
+            // dd($keranjang);
+        
+            try {
+                $keranjang->save();
+                } catch (\Throwable $th) {
+                    return response([
+                        'status' => 'error',
+                        'message' => $th->getMessage(),
+                        'data' => NULL, 404
+                    ]);
+                    
+                }
+                return response([
+                    'status' => 'succes',
+                    'message' => 'Berhasil Di update',
+                    'data' => $keranjang, 200
+                ]);
+        }
+
+    }
+
     /**
      * Display the specified resource.
      *

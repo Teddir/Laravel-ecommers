@@ -17,9 +17,11 @@ class OrderController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+     
     public function index()
     {
-        $orderaja = orders::where('user_id', auth()->user()->id)->with('produks', 'keranjangs')->get();
+        $orderaja = orders::get();
         if (!$orderaja) {
             # code...
             return response()->json([

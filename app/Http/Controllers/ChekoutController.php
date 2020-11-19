@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\chekout;
+use App\keranjangs;
 
 class ChekoutController extends Controller
 {
@@ -171,6 +172,27 @@ class ChekoutController extends Controller
             'Message' => 'Data Berhasil Di Hapus',
             'data' => $chekout, 200,
         ]);
+    }
+
+    public function chekout($id)
+    {
+        $row = keranjangs::find($id);
+        // dd($row);
+        if ($row->count() > 0) {
+            // dd($row);
+            $keranjang = new chekout;
+            $keranjang->keranjang_id = $row->id; 
+            $keranjang->produk_name = $row->name_produk;
+            $keranjang->produk_price = $row->harga;
+            $keranjang->produk_image = $row->image;
+            dd($keranjang);
+            $keranjang->save();
+            // $keranjang = new keranjangs;
+            return redirect('/website/cart');
+        } else {
+            return redirect('/website');
+        }
+
     }
 
 }

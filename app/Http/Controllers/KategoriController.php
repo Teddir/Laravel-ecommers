@@ -160,7 +160,7 @@ class KategoriController extends Controller
         }
         return response([
             'status' => 'succes',
-            'message' => 'Berhasil Di Tambah',
+            'message' => 'Berhasil Di Update',
             'data' => $kategori, 200
         ]);
 

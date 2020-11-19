@@ -49,12 +49,6 @@ Route::group(['middleware' => 'jwt.verify'], function () {
     Route::get('/message/{id}', 'ChatController@getMessage');
     Route::post('/message', 'ChatController@sendMessage');
 
-    //route mod bank
-    Route::resource('/modebank', 'ModBankController');
-
-    //route kota
-    Route::resource('/kota', 'KotaController');
-
     //route hubungi
     Route::resource('/hubungi', 'HubungiController');
 
@@ -63,10 +57,7 @@ Route::group(['middleware' => 'jwt.verify'], function () {
 
     //route keranjang
     Route::resource('/keranjang', 'KeranjangController');
-    Route::post('/tambah/keranjang/{id}', 'KeranjangController@add');    
-
-    //route mainmenu
-    Route::resource('/mainMenu', 'MainMenuController');
+    Route::post('/tambah/keranjang/{id}', 'KeranjangController@addcart');    
 
     //route order
     Route::resource('/order', 'OrderController');

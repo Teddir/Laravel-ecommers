@@ -168,7 +168,7 @@
 <li>
     <ul>
         Route::resource('/keranjang', 'KeranjangController');
-        
+        Route::post('/tambah/keranjang/{id}', 'KeranjangController@addcart');    //-----------> addcart/tambah ke keranjang
     </ul>
 </li>
 <li>

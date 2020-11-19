@@ -64,7 +64,7 @@ class PenjualController extends Controller
     {
         $request->validate([
             'name_toko' => 'required:unique:penjuals',
-            'phone_number' => 'required:unique:penjuals',
+            'phone_number' => 'required:unique:penjuals|integer',
 
         ]);
 
@@ -138,20 +138,11 @@ class PenjualController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'name_toko' => 'required',
-            'phone_number' => 'required',
-        ]);
-
+        $penjual = penjuals::find($id);
+        $dataRequest = $request->all();
+        $dataResult = array_filter($dataRequest);        
         try {
-            $penjual = penjuals::find($id);
-            $penjual->name_penjual = $request->name_penjual;
-            $penjual->name_toko = $request->name_toko;
-            $penjual->phone_number = $request->phone_number;
-            $penjual->message_id = $request->message_id;
-            $penjual->penjual_id = auth()->user()->id;
-
-            $penjual->save();
+            $penjual->update($dataRequest);
         } catch (\Throwable $th) {
             return response([
                 'status' => 'error',
