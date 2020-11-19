@@ -19,10 +19,6 @@ class ProdukController extends Controller
      * @return \Illuminate\Http\Response
      */
     //-------------------------------------------------------------->Produk    
-    public function __construct()
-    {
-        $this->middleware('jwt.verify');
-    }
     public function index()
     {
         $produk = produks::where('user_id', auth()->user()->id)->with('kategoris')->get();
@@ -39,6 +35,10 @@ class ProdukController extends Controller
             'Message' => 'Data Berhasil Di Tampilkan',
             'data' => $produk, 200,
         ]);
+    }
+    public function __construct()
+    {
+        $this->middleware('jwt.verify');
     }
 
     public function produkpenjual()

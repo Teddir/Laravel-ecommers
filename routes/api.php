@@ -63,6 +63,7 @@ Route::group(['middleware' => 'jwt.verify'], function () {
 
     //route keranjang
     Route::resource('/keranjang', 'KeranjangController');
+    Route::post('/tambah/keranjang/{id}', 'KeranjangController@add');    
 
     //route mainmenu
     Route::resource('/mainMenu', 'MainMenuController');

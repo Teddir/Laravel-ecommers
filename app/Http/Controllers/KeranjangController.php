@@ -63,21 +63,16 @@ class KeranjangController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store($id)
+    public function store(Request $request)
     {
-        $row = produks::find($id);
-        // dd($row);
-        if ($row->count() > 0) {
-            // dd($row);
-            $keranjang = new keranjangs;
-            $keranjang->produk_id = $row->id; 
-            $keranjang->produk_name = $row->name_produk;
-            $keranjang->produk_price = $row->harga;
-            $keranjang->produk_image = $row->image;
-            $keranjang->produk_diskon = $row->diskon;
-            $keranjang->user_id = auth()->user()->id;
-            // dd($keranjang);
-            $keranjang->save();
+        $request->validate([
+            'qty' => 'required',
+        ]);
+
+        $keranjang = new keranjangs;
+        $keranjang->qty = $request->qty;
+        $keranjang->user_id = auth()->user()->id;
+        $keranjang->produk_id = $request->produk_id;
         try {
         $keranjang->save();
         } catch (\Throwable $th) {
@@ -148,7 +143,7 @@ class KeranjangController extends Controller
         $keranjang = keranjangs::find($id);
         $dataRequest = $request->all();
         $dataResult = array_filter($dataRequest);
-        // dd($dataRequest);
+        
         try {
             $keranjang->update($dataRequest);
         } catch (\Throwable $th) {
