@@ -56,8 +56,11 @@ Route::group(['middleware' => 'jwt.verify'], function () {
     Route::resource('/kategori', 'KategoriController');
 
     //route keranjang
-    Route::resource('/keranjang', 'KeranjangController');
-    Route::post('/keranjang/{id}', 'KeranjangController@pesan');
+    Route::get('/keranjang', 'KeranjangController@index'); //----------------->nampilin all aja di keranjang 
+    Route::get('/keranjangaja/', 'KeranjangController@detailkeranjang'); //-----------> detail barang si user di dalam Ke keranjang
+    Route::post('/keranjang/{id}', 'KeranjangController@pesan'); //------------> tambah ke keranjang
+    Route::delete('/keranjang/delete/{id}', 'KeranjangController@destroy'); //-----------> hapus barang ke keranjang
+    Route::post('/keranjnag/chekout', 'KeranjangController@konfirmasi'); //-----------> chekout
 
 
     //route Penjual
@@ -66,7 +69,7 @@ Route::group(['middleware' => 'jwt.verify'], function () {
     Route::get('user', 'UserController@index');  //-------->nampilin semua user
     Route::get('useraja', 'UserController@getAuthenticatedUser');  //-------->nampilin 1 user
     Route::get('userp', 'UserController@userp');         //-------------delete
-    Route::put('user/{id}', 'UserController@update');           //----------update
+    Route::put('user/update', 'UserController@update');           //----------update
     Route::delete('user/{id}', 'UserController@destroy');         //-------------delete
     Route::get('user/{id}', 'UserController@show');         //-------------delete
 });

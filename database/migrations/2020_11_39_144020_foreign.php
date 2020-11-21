@@ -45,11 +45,6 @@ class Foreign extends Migration
             $table->foreignId('user_id')->nullable()->constrained('users')->cascedeOnDelete();
         });
 
-        Schema::table('chekouts', function (Blueprint $table) {
-            $table->foreignId('keranjang_id')->nullable()->constrained('keranjangs')->cascedeOnDelete();
-            $table->foreignId('produk_id')->nullable()->constrained('produks')->cascedeOnDelete();
-        });
-
     }
 
     /**

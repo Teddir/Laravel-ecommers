@@ -39,8 +39,21 @@ class KeranjangController extends Controller
         $produk = produks::where('id', $id)->first();
         // dd($produk);
 
-        if ($request->qty > $produk->stok) {
-            return redirect('/website')->with('status', 'Maaf Stok Tidak Cukup');
+        $keranjang = $request->jumlah_pesan;
+
+        if (empty($request->jumlah_pesan)) {
+            return response()->json([
+                'status' => 'Error',
+                'Message' => 'Anda Belum Mengisi Jumlah Pesan',
+                'data' => NULL, 402,
+            ]);
+        }
+        if ($request->jumlah_pesan > $produk->stok) {
+            return response()->json([
+                'status' => 'Error',
+                'Message' => 'Maaf Setok Tidak Ada',
+                'data' => NULL, 402,
+            ]);
         }
         $cek_pesanan =  keranjangs::where('user_id', auth()->user()->id)->where('status', 0)->first();
         if (empty($cek_pesanan)) {
@@ -64,8 +77,8 @@ class KeranjangController extends Controller
             $keranjangdetail = new keranjangdetail;
             $keranjangdetail->produk_id = $produk->id;
             $keranjangdetail->keranjang_id = $keranjang_new->id;
-            $keranjangdetail->jumlah_pesan = $request->qty;
-            $keranjangdetail->subtotal = $produk->harga * $request->qty;
+            $keranjangdetail->jumlah_pesan = $request->jumlah_pesan;
+            $keranjangdetail->subtotal = $produk->harga * $request->jumlah_pesan;
             $keranjangdetail->save();
     
         } else
@@ -73,17 +86,17 @@ class KeranjangController extends Controller
             $cek_keranjangdetail = keranjangdetail::where('produk_id', $produk->id)
             ->where('keranjang_id', $keranjang_new->id)->first();
 
-            $cek_keranjangdetail->jumlah_pesan = $cek_keranjangdetail->jumlah_pesan+$request->qty;
+            $cek_keranjangdetail->jumlah_pesan = $cek_keranjangdetail->jumlah_pesan+$request->jumlah_pesan;
             
             //harga sekarang
-            $harga_keranjangdetail_new = $produk->harga*$request->qty;
+            $harga_keranjangdetail_new = $produk->harga*$request->jumlah_pesan;
             $cek_keranjangdetail->subtotal = $cek_keranjangdetail->subtotal+$harga_keranjangdetail_new;
             $cek_keranjangdetail->update();
         }
 
         //jumlah total
         $keranjang = keranjangs::where('user_id', auth()->user()->id)->where('status', 0)->first();
-        $keranjang->subtotal = $keranjang->subtotal+$produk->harga*$request->qty;
+        $keranjang->subtotal = $keranjang->subtotal+$produk->harga*$request->jumlah_pesan;
         try {
             $keranjang->update();
         } catch (\Throwable $th) {
@@ -101,14 +114,23 @@ class KeranjangController extends Controller
     }
 
 
-    public function chekout()
+    public function detailkeranjang()
     {
-        // $produk = produks::where('user_id', auth()->user()->id)->where('chekout')->first();
-        $keranjang = keranjangs::where('user_id', auth()->user()->id)->where('status', 0)->first();
-        // dd($keranjang);
-        $keranjangdetail = keranjangdetail::where('keranjang_id', $keranjang->id)->get();
-        // dd($keranjangdetail);
-        return view('website.cart', compact('keranjang', 'keranjangdetail'));
+         $keranjang = keranjangs::where('user_id', auth()->user()->id)->where('status', 0)->first();
+         if ($keranjang->id == null) {
+            return response()->json([
+                'status' => 'Error',
+                'Message' => 'Maaf Anda Tidak Memiliki Daftar Barang Di Keranjang',
+                'data' => NULL, 402,
+            ]);
+        }
+         $keranjangdetail = keranjangdetail::where('keranjang_id', $keranjang->id)->get();
+         return response()->json([
+            'status' => 'Succes',
+            'Message' => 'Data Berhasil Di Menampilkan Keranjang',
+            'data' => $keranjangdetail, 200,
+        ]);
+         
         
     }
 

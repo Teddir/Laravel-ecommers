@@ -152,9 +152,9 @@ class UserController extends Controller
     }
 
 
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-
+        $id = auth()->user()->id;
         $user = User::find($id);
         $dataRequest = $request->all();
         $dataResult = array_filter($dataRequest);
