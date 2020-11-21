@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Order extends Migration
+class Finish extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,11 @@ class Order extends Migration
      */
     public function up()
     {
-        Schema::create('orders', function (Blueprint $table) {
+        Schema::create('finishs', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('invoice')->unique();
-            $table->integer('subtotal');
+            $table->string('qty')->default(1);
             $table->integer('status')->default(0)->comment('0 = confirm, 1 = prosses, 2 = finish');
-            $table->integer('pengiriman')->default(0)->comment('0 = standar, 1 = kilat');;
-            $table->string('pesan')->nullable();            
+            $table->integer('pengiriman')->default(0)->comment('0 = standar, 1 = kilat');
             $table->timestamps();
         });
     }

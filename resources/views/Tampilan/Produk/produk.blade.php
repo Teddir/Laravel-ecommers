@@ -41,17 +41,6 @@
         <button class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
         </form>
       </td>
-      <td><form action="{{ url('/admin/create3') }}" method="post">@method('post') @csrf
-        <label for="">
-          <input type="text" name="qty" value="{{ $item->stok }}">
-        </label>
-        <select name="produk_id" class="form-control">
-          <option value="{{ $item->id}}">Pilih</option>
-          <option value="{{ $item->id}}" {{ old('produk_id') == $item->id ? 'selected':'' }}>{{ $item->id }}</option>
-      </select>
-        <button class="btn btn-dark"><i class="fa fa-cart-arrow-down" aria-hidden="true"></i></button>
-        </form>
-      </td>
     </tr>
     @endforeach
     </tbody>

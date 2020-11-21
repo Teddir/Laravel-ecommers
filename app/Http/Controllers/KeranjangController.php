@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\keranjangdetail;
 use App\keranjangs;
 use App\orders;
 use App\produks;
@@ -17,12 +18,7 @@ class KeranjangController extends Controller
      */
     public function index()
     {
-        // $keranjang = keranjangs::where('user_id', auth()->user()->id)->with('users', 'produks')->get();
-        // dd($keranjang);
         $keranjang = keranjangs::where('user_id', auth()->user()->id)->with('users', 'produks')->get();
-        // $subtotal = collect($keranjang)->sum(function($keranjang) {
-        //     return $keranjang['qty'] * $keranjang['produks']->harga;
-        // });
         if (!$keranjang) {
             # code...
             return response()->json([
@@ -38,393 +34,259 @@ class KeranjangController extends Controller
         ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
+    public function pesan(Request $request, $id)
     {
-        $keranjang = keranjangs::where('user_id', auth()->user()->id)->with('users', 'produks')->get();
-        if (!$keranjang) {
+        $produk = produks::where('id', $id)->first();
+        // dd($produk);
+
+        if ($request->qty > $produk->stok) {
+            return redirect('/website')->with('status', 'Maaf Stok Tidak Cukup');
+        }
+        $cek_pesanan =  keranjangs::where('user_id', auth()->user()->id)->where('status', 0)->first();
+        if (empty($cek_pesanan)) {
             # code...
-            return response()->json([
-                'data' => NULL, 402
-            ]);
-        }
-        return response()->json([
-            'data' => $keranjang, 200
-        ]);
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $request->validate([
-            'qty' => 'required',
-        ]);
-
-        $keranjang = new keranjangs;
-        $keranjang->qty = $request->qty;
-        $keranjang->user_id = auth()->user()->id;
-        $keranjang->produk_id = $request->produk_id;
-        try {
-        $keranjang->save();
-        } catch (\Throwable $th) {
-            return response([
-                'status' => 'error',
-                'message' => $th->getMessage(),
-                'data' => NULL, 404
-            ]);
-            
-        }
-        return response([
-            'status' => 'succes',
-            'message' => 'Berhasil Di update',
-            'data' => $keranjang, 200
-        ]);
-    }
-
-
-    public function addcart($id)
-    {
-        $row = produks::find($id);
-        // dd($row);
-        if ($row->count() > 0) {
-            // dd($row);
+            //simpan database
             $keranjang = new keranjangs;
-            $keranjang->produk_id = $row->id; 
-            $keranjang->produk_name = $row->name_produk;
-            $keranjang->produk_price = $row->harga;
-            $keranjang->produk_image = $row->image;
-            $keranjang->produk_diskon = $row->diskon;
             $keranjang->user_id = auth()->user()->id;
-            // dd($keranjang);
-        
-            try {
-                $keranjang->save();
-                } catch (\Throwable $th) {
-                    return response([
-                        'status' => 'error',
-                        'message' => $th->getMessage(),
-                        'data' => NULL, 404
-                    ]);
-                    
-                }
-                return response([
-                    'status' => 'succes',
-                    'message' => 'Berhasil Di Masukan Ke Keranjang',
-                    'data' => $keranjang, 200
-                ]);
+            $keranjang->status = 0;
+            $keranjang->subtotal = 0;
+            $keranjang->save();
         }
 
-    }
+        //simpan ke databsw keranjangdetails
+        $keranjang_new = keranjangs::where('user_id', auth()->user()->id)->where('status', 0)->first();
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\keranjangs  $keranjangs
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        $keranjang = keranjangs::where('user_id', auth()->user()->id)->with('users', 'produks')->find($id);
-        if (!$keranjang) {
-            # code...
-            return response()->json([
-                'data' => NULL, 402
-            ]);
-        }
-        return response()->json([
-            'data' => $keranjang, 200
-        ]);
-    }
+        //cek keranjang new
+        $cek_keranjangdetail = keranjangdetail::where('produk_id', $produk->id)
+        ->where('keranjang_id', $keranjang_new->id)->first();
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\keranjangs  $keranjangs
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $mbank = keranjangs::find($id);
+        if (empty($cek_keranjangdetail)) {
+            $keranjangdetail = new keranjangdetail;
+            $keranjangdetail->produk_id = $produk->id;
+            $keranjangdetail->keranjang_id = $keranjang_new->id;
+            $keranjangdetail->jumlah_pesan = $request->qty;
+            $keranjangdetail->subtotal = $produk->harga * $request->qty;
+            $keranjangdetail->save();
+    
+        } else
+        {
+            $cek_keranjangdetail = keranjangdetail::where('produk_id', $produk->id)
+            ->where('keranjang_id', $keranjang_new->id)->first();
 
-        if (!$mbank) {
-            # code...
-            return response()->json([
-                'data' => NULL, 402
-            ]);
-        } 
-        return response()->json([
-            'data' => $mbank, 200
-        ]);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\keranjangs  $keranjangs
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        $keranjang = keranjangs::find($id);
-        $dataRequest = $request->all();
-        $dataResult = array_filter($dataRequest);
-        
-        try {
-            $keranjang->update($dataRequest);
-        } catch (\Throwable $th) {
-            return response([
-                'status' => 'error',
-                'message' => $th->getMessage(),
-                'data' => NULL, 404
-            ]);
+            $cek_keranjangdetail->jumlah_pesan = $cek_keranjangdetail->jumlah_pesan+$request->qty;
             
+            //harga sekarang
+            $harga_keranjangdetail_new = $produk->harga*$request->qty;
+            $cek_keranjangdetail->subtotal = $cek_keranjangdetail->subtotal+$harga_keranjangdetail_new;
+            $cek_keranjangdetail->update();
         }
-        return response([
-            'status' => 'succes',
-            'message' => 'Berhasil Di update',
-            'data' => $keranjang, 200
-        ]);
-    }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\keranjangs  $keranjangs
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        $keranjang = keranjangs::destroy($id);
-        if (! $keranjang) {
-            # code...
+        //jumlah total
+        $keranjang = keranjangs::where('user_id', auth()->user()->id)->where('status', 0)->first();
+        $keranjang->subtotal = $keranjang->subtotal+$produk->harga*$request->qty;
+        try {
+            $keranjang->update();
+        } catch (\Throwable $th) {
             return response()->json([
                 'status' => 'Error',
-                'Message' => 'Data Gagal Di Hapus',
+                'Message' => $th->getMessage(),
+                'data' => NULL, 402,
+            ]);
+        }
+        return response()->json([
+            'status' => 'Succes',
+            'Message' => 'Data Berhasil Di Masukan Ke Keranjang',
+            'data' => $keranjang, 200,
+        ]);
+    }
+
+
+    public function chekout()
+    {
+        // $produk = produks::where('user_id', auth()->user()->id)->where('chekout')->first();
+        $keranjang = keranjangs::where('user_id', auth()->user()->id)->where('status', 0)->first();
+        // dd($keranjang);
+        $keranjangdetail = keranjangdetail::where('keranjang_id', $keranjang->id)->get();
+        // dd($keranjangdetail);
+        return view('website.cart', compact('keranjang', 'keranjangdetail'));
+        
+    }
+
+    public function konfirmasi()
+    {
+        $keranjang = keranjangs::where('user_id', auth()->user()->id)->where('status', 0)->first();
+        $keranjang_id = $keranjang->id;
+        $keranjang->status = 1;
+        $keranjang->update();
+
+        $keranjangdetail = keranjangdetail::where('keranjang_id', $keranjang_id)->get();
+        foreach ($keranjangdetail as $keranjangdetail) {
+            $produk = produks::where('id', $keranjangdetail->produk_id)->first();
+            $produk->stok = $produk->stok - $keranjangdetail->jumlah_pesan;
+            try {
+                //code...
+                $produk->update();
+            } catch (\Throwable $th) {
+                return response()->json([
+                    'status' => 'Error',
+                    'Message' => $th->getMessage(),
+                    'data' => NULL, 402,
+                ]);
+            }
+            return response()->json([
+                'status' => 'Succes',
+                'Message' => 'Data Berhasil Di Konfirmasi',
+                'data' => $keranjangdetail, 200,
+            ]);
+        }
+    }
+
+    public function destroy($id)
+    {
+        $keranjangdetail = keranjangdetail::where('id', $id)->first();
+
+        $keranjang = keranjangs::where('id', $keranjangdetail->id)->first();
+        // dd($keranjang);
+        $keranjang->subtotal = $keranjang->subtotal-$keranjangdetail->subtotal;
+        $keranjang->update();
+            // dd($keranjang);
+        try {
+                //code...
+                $keranjangdetail->delete();
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 'Error',
+                'Message' => $th->getMessage(),
                 'data' => NULL, 402,
             ]);
         }
         return response()->json([
             'status' => 'Succes',
             'Message' => 'Data Berhasil Di Hapus',
-            'data' => $keranjang, 200,
+            'data' => $keranjangdetail, 200,
         ]);
     }
 
-    //--------------------------------------------------->web
 
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index1(request $request)
-    {   
-        $keranjang = keranjangs::where('user_id', auth()->user()->id)->with('users', 'produks')->get();
-        $subtotal = null;
-        return view('Tampilan.Keranjang.keranjang', compact('keranjang', 'subtotal'));
+    //-----------------------------------------> website faedah.store
 
-        // $produk = produks::get();
-        // $keranjang = keranjangs::with(['user', 'produk',])->orderBy('created_at', 'asc')->get();
-        // return view('Tampilan.Keranjang.keranjang', compact('keranjang', 'produk'));
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create1()
+    public function pesan1(Request $request, $id)
     {
-        $keranjang = keranjangs::where('user_id', auth()->user()->id)->with('users', 'produks')->get();
+        $produk = produks::where('id', $id)->first();
+        // dd($produk);
 
-        $keranjang = keranjangs::get();
-        return view('Tampilan.Keranjang.keranjang', compact('keranjang'));
-
-    }
-
-  
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store1(Request $request)
-    {
-
-        $request->validate([
-            // 'qty' => 'required',
-            // 'produk_id' => 'required'
-        ]);
-        $keranjang = keranjangs::get();
-        $keranjang = produks::get();
-       
-            $keranjang = new keranjangs;
-            $keranjang->qty = $request->qty;
-            $keranjang->user_id = auth()->user()->id;
-            $keranjang->produk_id = $request->produk_id;
-            $keranjang->save();
-            return redirect('/admin/index3')->with(['success' => 'Kategori Diperbaharui!']);
-
-
-        
-    }
-      
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\keranjangs  $keranjangs
-     * @return \Illuminate\Http\Response
-     */
-    public function show1()
-    {
-        $produk = produks::get();
-        $keranjang = keranjangs::where('user_id', auth()->user()->id)->with('users', 'produks')->get();
-        return view('Tampilan.Keranjang.create', compact('keranjang', 'produk'));
-
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\keranjangs  $keranjangs
-     * @return \Illuminate\Http\Response
-     */
-    public function edit1($id)
-    {
-        //UBAH ARRAY MENJADI COLLECTION, KEMUDIAN GUNAKAN METHOD SUM UNTUK MENGHITUNG SUBTOTAL
-        // $keranjang = keranjangs::find($id);
-        $keranjang = keranjangs::where('user_id', auth()->user()->id)->with('users', 'produks')->get();
-            $subtotal = collect($keranjang)->sum(function($keranjang) {
-                return $keranjang['qty'] * $keranjang['produks']->harga;
-            });
-        $produk = produks::get();
-        return view('website.cart', compact('keranjang','produk','subtotal'));
-
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\keranjangs  $keranjangs
-     * @return \Illuminate\Http\Response
-     */
-    public function update1(Request $request, $id)
-    {
-        $request->validate([
-            // 'jumlah' => 'required',
-        ]);
-
-        // $keranjang = keranjangs::with('users', 'produks')->get();
-        $keranjang = keranjangs::find($id);
-        $keranjang->update([
-            $keranjang->qty = $request->qty
-            ]);
-            return redirect('/website/cart')->with(['success' => 'Kategori Diperbaharui!']);
-
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\keranjangs  $keranjangs
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy1($id)
-    {
-        $keranjang = keranjangs::destroy($id);
-        return redirect('/admin/index3')->with(['success' => 'Kategori Diperbaharui!']);
-    }
-
-    public function cart()
-    {   
-        $produk = produks::get();
-        // $orders = orders::get();
-        // dd($keranjang);
-        $keranjang = keranjangs::with('produks')->get();
-
-        if ($keranjang = keranjangs::get()) {
-            // dd($produk);
-            $subtotal = collect($keranjang)->sum(function($keranjang) {
-                return $keranjang['produk_price'] * $keranjang['qty'];    
-            });
-            // dd($subtotal);
+        if ($request->qty > $produk->stok) {
+            return redirect('/website')->with('status', 'Maaf Stok Tidak Cukup');
         }
-        
-    return view('website.cart', compact('keranjang', 'subtotal', 'produk'));
+        $cek_pesanan =  keranjangs::where('user_id', auth()->user()->id)->where('status', 0)->first();
+        if (empty($cek_pesanan)) {
+            # code...
+            //simpan database
+            $keranjang = new keranjangs;
+            $keranjang->user_id = auth()->user()->id;
+            $keranjang->status = 0;
+            $keranjang->subtotal = 0;
+            $keranjang->save();
+        }
+
+        //simpan ke databsw keranjangdetails
+        $keranjang_new = keranjangs::where('user_id', auth()->user()->id)->where('status', 0)->first();
+
+        //cek keranjang new
+        $cek_keranjangdetail = keranjangdetail::where('produk_id', $produk->id)
+        ->where('keranjang_id', $keranjang_new->id)->first();
+
+        if (empty($cek_keranjangdetail)) {
+            $keranjangdetail = new keranjangdetail;
+            $keranjangdetail->produk_id = $produk->id;
+            $keranjangdetail->keranjang_id = $keranjang_new->id;
+            $keranjangdetail->jumlah_pesan = $request->qty;
+            $keranjangdetail->subtotal = $produk->harga * $request->qty;
+            $keranjangdetail->save();
+    
+        } else
+        {
+            $cek_keranjangdetail = keranjangdetail::where('produk_id', $produk->id)
+            ->where('keranjang_id', $keranjang_new->id)->first();
+
+            $cek_keranjangdetail->jumlah_pesan = $cek_keranjangdetail->jumlah_pesan+$request->qty;
+            
+            //harga sekarang
+            $harga_keranjangdetail_new = $produk->harga*$request->qty;
+            $cek_keranjangdetail->subtotal = $cek_keranjangdetail->subtotal+$harga_keranjangdetail_new;
+            $cek_keranjangdetail->update();
+        }
+
+        //jumlah total
+        $keranjang = keranjangs::where('user_id', auth()->user()->id)->where('status', 0)->first();
+        $keranjang->subtotal = $keranjang->subtotal+$produk->harga*$request->qty;
+        $keranjang->update();
+        return redirect('/website')->with('status', 'Pesanan Berhasil Di Hapus');
+
+
     }
 
-    public function add($id)
+
+    public function chekout1()
     {
-        $row = produks::find($id);
-        // dd($row);
-        if ($row->count() > 0) {
-            // dd($row);
-            $keranjang = new keranjangs;
-            $keranjang->produk_id = $row->id; 
-            $keranjang->produk_name = $row->name_produk;
-            $keranjang->produk_price = $row->harga;
-            $keranjang->produk_image = $row->image;
-            $keranjang->produk_diskon = $row->diskon;
-            $keranjang->user_id = auth()->user()->id;
-            // dd($keranjang);
-            $keranjang->save();
-            // $keranjang = new keranjangs;
-            return redirect('/website/cart');
-        } else {
+        // $produk = produks::where('user_id', auth()->user()->id)->where('chekout')->first();
+        $keranjang = keranjangs::where('user_id', auth()->user()->id)->where('status', 0)->first();
+        // dd($keranjang);
+
+        if ($keranjang->id == null) {
             return redirect('/website');
         }
-
-    }
-    
-  
-    
-    public function updateproduk(Request $request)
-    {
+        $keranjangdetail = keranjangdetail::where('keranjang_id', $keranjang->id)->get();
+        // dd($keranjangdetail);
+        return view('website.cart', compact('keranjang', 'keranjangdetail'));
         
     }
 
-    public function hapuskeranjang($id)
+    public function konfirmasi1()
     {
-        $keranjang = keranjangs::destroy($id);
-        return redirect('/website')->with(['success' => 'Kategori Diperbaharui!']);
+        $keranjang = keranjangs::where('user_id', auth()->user()->id)->where('status', 0)->first();
+        $keranjang_id = $keranjang->id;
+        $keranjang->status = 1;
+        $keranjang->update();
+
+        $keranjangdetail = keranjangdetail::where('keranjang_id', $keranjang_id)->get();
+        foreach ($keranjangdetail as $keranjangdetail) {
+            $produk = produks::where('id', $keranjangdetail->produk_id)->first();
+            $produk->stok = $produk->stok - $keranjangdetail->jumlah_pesan;
+
+            $produk->update();
+
+            return redirect('/website')->with('status', 'Pesanan Berhasil Di Hapus');
+
+        
+        }
+        
     }
 
-    // public function keranjang()
-    // {
-    //     if (keranjangs::count() == 0) {
-    //         return Redirect::to('/');       
-    //     } else {
-    //         return View::make('keranjangs.basket')
-    //                    ->with('title', 'keranjangs &rarr; Basket');
-    //     }
-    // }
+    public function destroy1($id)
+    {
+        $keranjangdetail = keranjangdetail::where('id', $id)->first();
 
+        $keranjang = keranjangs::where('id', $keranjangdetail->id)->first();
+        // dd($keranjang);
+        $keranjang->subtotal = $keranjang->subtotal-$keranjangdetail->subtotal;
+        $keranjang->update();
+            // dd($keranjang);
+        $keranjangdetail->delete();
 
-    // public function remove($rowid)
-    // {
-    //     Cart::remove($rowid);
-    //     return Redirect::to('basket');
-    // }
+        return redirect('/website')->with('status', 'Pesanan Berhasil Di Hapus');
+     
+    }
 
-    // public function destroy()
-    // {
-    //     Cart::destroy();
-    //     return Redirect::to('/');
-    // }
+    public function cari(Request $request)
+    {
+        $cari = $request->get('cari');
+        $result =  produks::WHERE('name_produk', 'like', '%' . $cari . '%')->paginate(10);
+
+        return view('website.cari', compact('cari', 'result'));
+
+    }
+
 
    
 }

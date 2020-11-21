@@ -52,7 +52,7 @@
 					<div class="col-lg-8 d-none d-lg-block">
 						<nav class="mainmenu__nav">
 							<ul class="meninmenu d-flex justify-content-start">
-								<li class="drop with--one--item"><a href="index.html">Home</a></li>
+              <li class="drop with--one--item"><a href="{{url('/website')}}">Home</a></li>
 								<li class="drop"><a href="#">Shop</a>
 									<div class="megamenu mega03">
 										<ul class="item item03">
@@ -162,7 +162,7 @@
 					<div class="col-md-6 col-sm-6 col-6 col-lg-2">
 						<ul class="header__sidebar__right d-flex justify-content-end align-items-center">
 											<form action="/cari" method="get">
-												<input type="text" class="searching" name="cari" placeholder="Search for...">
+												<input type="text" class="searching" name="cari" placeholder="Search Book...">
 											</form>
 							<li class="wishlist"><i class="fa fa-heart" aria-hidden="true"></i></li>
 							<li class="shopcart"><i class="fa fa-shopping-cart" aria-hidden="true"><a href="{{url('/website/chekout')}}">.</a></i>
@@ -431,7 +431,7 @@
 				<!-- Start Single Tab Content -->
 				<div class="furniture--4 border--round arrows_style owl-carousel owl-theme row mt--50">
 					<!-- Start Single Product -->
-					@foreach ($produk as $item)
+					@foreach ($result as $item)
 					<div class="product product__style--3">
 						<div class="col-lg-3 col-md-4 col-sm-6 col-12">
 							<div class="product__thumb">
@@ -522,7 +522,7 @@
 				</div>
 				<div class="furniture--4 border--round arrows_style owl-carousel owl-theme row mt--50">
 					<!-- Start Single Product -->
-					@foreach ($produk as $item)
+					@foreach ($result as $item)
 					<div class="product product__style--3">
 						<div class="col-lg-3 col-md-4 col-sm-6 col-12">
 							<div class="product__thumb">
@@ -646,7 +646,7 @@
 				</div>
 			</div>
 			<div class="slider center" >
-				@foreach ($produk as $item)
+				@foreach ($result as $item)
 				<!-- Single product start -->
 				
 				<!-- Single product start -->
@@ -738,7 +738,7 @@
 		<!-- QUICKVIEW PRODUCT                          Modal Keranjang--> 
 		<div id="quickview-wrapper">  
 		    <!-- Modal -->
-				@foreach ($produk as $item)
+				@foreach ($result as $item)
     
 				<div class="modal fade" id="productmodal{{$item->id}}" tabindex="-1" role="dialog">
 					<div class="modal-dialog modal__container" role="document">

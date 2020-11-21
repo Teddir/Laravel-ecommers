@@ -8,31 +8,25 @@ use Illuminate\Database\Eloquent\Model;
 class penjuals extends Model
 {
     protected $fillable = [
-        'name_toko','phone_number',
-        'message_id','penjual_id', //---->user is penjual
+        'name_toko', 'phone_number',
+        'message_id', 'user_id', 'produk_id'  //---->user is penjual
     ];
 
     public function messages()
     {
-        return $this->hasMany(messages::class, 'id');
-    }
-
-    public function penjuals()
-    {
-        //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
-        return $this->hasMany(penjuals::class, 'id', 'penjual_id' );
+        return $this->hasMany(messages::class, 'penjual_id', 'id');
     }
 
     public function users()
     {
         //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
-        return $this->hasOne(User::class, 'id', 'penjual_id' );
+        return $this->hasMany(User::class, 'penjual_id', 'id');
     }
 
     public function produks()
     {
         //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
-        return $this->hasMany(produks::class, 'id', 'penjual_id' );
+        return $this->hasMany(produks::class, 'penjual_id','id' );
     }
 
 }

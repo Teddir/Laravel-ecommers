@@ -5578,8 +5578,8 @@ h3.widget-title-modal {
       font-weight: 700; }
   .customer_details .customar__field .input_box input {
     height: 40px;
-    background: #fff none repeat scroll 0 0;
-    border: 1px solid #e1e1e1;
+    background: rgb(5, 5, 5) none repeat scroll 0 0;
+    border: 1px solid #161616;
     width: 100%;
     padding: 0 10px; }
 .customer_details .customar__field .margin_between {
@@ -5588,7 +5588,7 @@ h3.widget-title-modal {
   margin-left: -15px;
   margin-right: -15px; }
 .select__option {
-  border: 1px solid #e1e1e1;
+  border: 1px solid #070606;
   height: 40px;
   padding: 0 43px 0 10px;
   width: 100%; }
@@ -5621,9 +5621,9 @@ h3.widget-title-modal {
   margin-left: 8px;
 }
 .wn__order__box {
-  background: #f4f4f4 none repeat scroll 0 0; }
+  background: #0a0909 none repeat scroll 0 0; }
   .wn__order__box h3.onder__title {
-    border-bottom: 1px solid #e1e1e1;
+    border-bottom: 1px solid #0e0d0d;
     font-size: 24px;
     margin: 0;
     padding: 15px 0;
@@ -5664,7 +5664,7 @@ h3.widget-title-modal {
   margin-right: 5px;
   margin-top: 6px; }
 .total__amount {
-  border-top: 1px solid #e1e1e1;
+  border-top: 1px solid #161616;
   padding: 0 80px; }
 .total__amount li span {
   float: right; }
@@ -5689,7 +5689,7 @@ h3.widget-title-modal {
   font-size: 12px;
   padding: 10px 12px; }
 a.checkout__title {
-  background: #f4f4f4 none repeat scroll 0 0;
+  background: #131212 none repeat scroll 0 0;
   display: block;
   padding: 10px 15px;
   font-weight: 600; }

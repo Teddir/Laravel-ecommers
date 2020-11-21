@@ -49,9 +49,8 @@
         <div class="col-md-3 left_col">
           <div class="left_col scroll-view">
             <div class="navbar nav_title" style="border: 0;">
-              <a href="/home" class="site_title"><i class="fa fa-paw"></i> <span>Gentelella Alela!</span></a>
+              <a href="{{url('/website')}}" class="site_title"><i class="fa fa-paw"></i> <span>Gentelella Alela!</span></a>
             </div>
-
             <div class="clearfix"></div>
 
             <!-- menu profile quick info -->
@@ -75,20 +74,15 @@
                 <ul class="nav side-menu">
                   <li><a><i class="fa fa-home"></i> Home <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="/admin/index1">E-Produk</a></li>
-                      <li><a href="/admin/index2">E-Penjual</a></li>
-                      <li><a href="/admin/index4">E-Pembeli</a></li>
-                      <li><a href="/admin/index6">E-Kategori</a></li>
+                    <li><a href="{{('/website')}}">Faedah Store</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-edit"></i> Forms <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
-                      <li><a href="/admin/index5">Data Order</a></li>
-                      <li><a href="/admin/index3">Form Keranjang</a></li>
-                      <li><a href="/admin/finish">Invoice</a></li>
-                      <li><a href="form_wizards.html">Form Wizard</a></li>
-                      <li><a href="form_upload.html">Form Upload</a></li>
-                      <li><a href="form_buttons.html">Form Buttons</a></li>
+                      <li><a href="/admin/index1">E-Produk</a></li>
+                      <li><a href="/admin/index2">E-Penjual</a></li>
+                      <li><a href="/admin/index4">E-Pembeli</a></li>
+                      <li><a href="/admin/index6">E-Kategori</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-desktop"></i> UI Elements <span class="fa fa-chevron-down"></span></a>
@@ -257,7 +251,7 @@
                 <div class="col-md-5 col-sm-5  form-group pull-right top_search">
                   <div class="input-group">
                       
-                      <input type="text" class="form-control" name="cari" placeholder="Search for...">
+                      <input type="text" class="form-control" name="cari" placeholder="Search Name Book...">
                       <span class="input-group-btn">
                         <button class="btn btn-default" type="button">Go!</button>
                       

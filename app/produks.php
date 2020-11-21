@@ -13,42 +13,61 @@ class produks extends Model
         
     ];
 
-    public function kategoris()
-    {
-        //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI KATEGORI INI BISA DIGUNAKAN OLEH BANYAK PRODUK
-        return $this->hasMany(kategoris::class, 'id');
-    }
-
     public function produks()
     {
         //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
-        return $this->hasMany(produks::class, 'id', 'user_id' );
+        return $this->hasMany(produks::class, 'id','produk_id');
+    }
+
+
+    public function kategoris()
+    {
+        //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI KATEGORI INI BISA DIGUNAKAN OLEH BANYAK PRODUK
+        return $this->hasMany(kategoris::class, 'id', 'user_id');
     }
 
     public function users()
     {
         //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
-        return $this->hasOne(User::class, 'id', 'user_id' );
-    }
-
-    public function penjual()
-    {
-        //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
-        return $this->hasOne(penjuals::class, 'id', 'user_id' );
-    }
-
-
-    public function orders()
-    {
-        //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
-        return $this->hasMany(orders::class, 'id', 'user_id' );
+        return $this->hasMany(User::class, 'id', 'user_id');
     }
 
     public function keranjangs()
     {
         //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
-        return $this->hasOne(keranjangs::class, 'id', 'user_id' );
+        return $this->hasMany(keranjangs::class, 'id', 'produk_id');
     }
+
+    public function keranjangdetails()
+    {
+        //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
+        return $this->belongsTo(keranjangdetails::class, 'id','produk_id');
+    }
+
+    public function finish()
+    {
+        //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
+        return $this->belongsTo(finish::class, 'produk_id', 'id');
+    }
+
+    public function chekouts()
+    {
+        //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
+        return $this->belongsTo(chekouts::class, 'id', 'produk_id');
+    }
+
+    public function penjuals()
+    {
+        //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
+        return $this->belongsTo(penjuals::class, 'produk_id', 'id');
+    }
+
+
+
+
+
+
+
 
 
 }

@@ -57,17 +57,15 @@ Route::group(['middleware' => 'jwt.verify'], function () {
 
     //route keranjang
     Route::resource('/keranjang', 'KeranjangController');
-    Route::post('/tambah/keranjang/{id}', 'KeranjangController@addcart');    
+    Route::post('/keranjang/{id}', 'KeranjangController@pesan');
 
-    //route order
-    Route::resource('/order', 'OrderController');
 
+    //route Penjual
     Route::resource('/penjual', 'PenjualController');
 
-    Route::resource('/chekout', 'ChekoutController');
-    Route::post('/tambah/chekout/{id}', 'ChekoutController@chekout');    
-
-    Route::get('user', 'UserController@index');  //-------->nampilin
+    Route::get('user', 'UserController@index');  //-------->nampilin semua user
+    Route::get('useraja', 'UserController@getAuthenticatedUser');  //-------->nampilin 1 user
+    Route::get('userp', 'UserController@userp');         //-------------delete
     Route::put('user/{id}', 'UserController@update');           //----------update
     Route::delete('user/{id}', 'UserController@destroy');         //-------------delete
     Route::get('user/{id}', 'UserController@show');         //-------------delete

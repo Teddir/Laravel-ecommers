@@ -39,7 +39,7 @@ class ProdukController extends Controller
 
     public function produkpenjual()
     {
-        $produk = produks::where('user_id', auth()->user()->id)->with('produks', 'users')->get();
+        $produk = produks::where('user_id', auth()->user()->id)->with('users', 'kategoris')->get();
         // dd($produk);
         if (!$produk) {
             # code...
@@ -57,11 +57,6 @@ class ProdukController extends Controller
     }
 
     //-------------------------------------------------------------->END Produk    
-
-
-
-
-
 
     /**
      * Show the form for creating a new resource.
@@ -109,7 +104,6 @@ class ProdukController extends Controller
         $produk->status = $request->status;
         $produk->diskon = $request->diskon;
         $file = base64_encode(file_get_contents($request->image));
-
         $client = new \GuzzleHttp\Client();
         $response = $client->request('POST', 'https://freeimage.host/api/1/upload', [
             'form_params' => [
@@ -123,7 +117,6 @@ class ProdukController extends Controller
         $data = $response->getBody()->getContents();
         $data = json_decode($data);
         $image = $data->image->url;
-
         $produk->image = $image;
         try {
             $produk->save();
@@ -150,7 +143,7 @@ class ProdukController extends Controller
      */
     public function show($id)
     {
-        $produk = produks::where('user_id', auth()->user()->id)->with('kategoris')->get();
+        $produk = produks::where('user_id', auth()->user()->id)->with('kategoris')->find($id);
         if (!$produk) {
             # code...
             return response()->json([
@@ -195,7 +188,7 @@ class ProdukController extends Controller
      */
     public function update(Request $request, $id)
     {
-    
+
         $produk = produks::find($id);
         $dataRequest = $request->all();
         $dataResult = array_filter($dataRequest);
@@ -208,14 +201,14 @@ class ProdukController extends Controller
                 'action' => 'upload',
                 'source' => $file,
                 'format' => 'json'
-                ]
-                ]);
-                
-                $data = $response->getBody()->getContents();
-                $data = json_decode($data);
-                $image = $data->image->url;
-                $produk->image = $image;
-            try {
+            ]
+        ]);
+
+        $data = $response->getBody()->getContents();
+        $data = json_decode($data);
+        $image = $data->image->url;
+        $produk->image = $image;
+        try {
             $produk->update($dataRequest);
         } catch (\Throwable $th) {
             return response([
@@ -255,12 +248,14 @@ class ProdukController extends Controller
         ]);
     }
 
-    //-------------------------------------------------------------->WEB
-    public function render(Request $request, $cari)
+    public function search()
     {
-        $produk =  produks::WHERE('name', 'like', '%' . $cari . '%');
-        $produk->cari = $request->cari;
-        return view('dashbord', compact('produk'));
+    }
+    //-------------------------------------------------------------->WEB
+    public function render(Request $request)
+    {
+        $produk =  produks::WHERE('name', 'like', '%' . $request->cari . '%');
+        // return view('dashbord', compact('produk'));
         if (!$produk) {
             # code...
             return response()->json([
@@ -412,19 +407,19 @@ class ProdukController extends Controller
         // $produk = produks::where('user_id', auth()->user()->id())->with('produks', 'keranjangs', 'users');
         $produk = produks::get();
         // $produkdetail = produks::find($id);
-        return view('website.allproduk', compact('produk'));
+        return view('website.store', compact('produk'));
     }
 
     public function bestseller()
     {
-        return view('website.bestseller', compact('produk'));
+        return view('website.store', compact('produk'));
     }
 
     public function newproduk()
     {
         $produk = produks::get();
         // $produk = produks::find($id);
-        return view('website.newproduk', compact('produk'));
+        return view('website.store', compact('produk'));
     }
 
     // public function cart()

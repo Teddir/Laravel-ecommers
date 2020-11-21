@@ -16,10 +16,6 @@ class Keranjang extends Migration
         Schema::create('keranjangs', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('qty')->default(1);
-            $table->string('produk_name')->nullable();
-            $table->string('produk_price')->nullable();
-            $table->string('produk_image')->nullable();
-            $table->string('produk_diskon')->nullable();
             $table->timestamps();
         });
     }

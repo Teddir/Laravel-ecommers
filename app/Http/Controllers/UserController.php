@@ -15,6 +15,7 @@ class UserController extends Controller
 {
     public function login(Request $request)
     {
+        $user = User::get();
         $credentials = $request->only('email', 'password');
 
         try {
@@ -35,7 +36,7 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
-            'alamat' => 'required|string|max:255|unique:users',
+            'alamat' => 'required|string|max:255',
         ]);
 
         if ($validator->fails()) {
@@ -76,7 +77,23 @@ class UserController extends Controller
         return response()->json(compact('user'));
     }
 
-
+    public function userp()  //---->userpenjual
+    {
+        $user = User::where('id', auth()->user()->id)->with('penjuals')->get();
+        // dd($user);
+        if (!$user) {
+            return response()->json([
+                'status' => 'Error',
+                'Message' => 'Data Gagal Di Hapus',
+                'data' => NULL, 402,
+            ]);
+        }
+        return response()->json([
+            'status' => 'Succes',
+            'Message' => 'Data Berhasil Di Tampilkan',
+            'data' => $user, 200,
+        ]);
+    }
 
     public function index()
     {
@@ -294,4 +311,6 @@ class UserController extends Controller
         $produk = User::destroy($id);
         return redirect('/admin/index4')->with(['success' => 'Kategori Diperbaharui!']);
     }
+
+  
 }
