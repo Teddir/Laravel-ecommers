@@ -9,7 +9,7 @@
         {{ session('status') }}
     </div>
 @endif
-<form action="{{ url('/admin/create6') }}" method="post" enctype="multipart/form-data">
+<form action="{{ url('/admin/create4') }}" method="post" enctype="multipart/form-data">
     @csrf
     <div class="form-group">
         <label for="name_kategori">Name Kategori New</label>
@@ -28,7 +28,7 @@
     <div class="form-group">
         <button class="btn btn-primary btn-sm">Tambah</button>
     </div>
-    <a href="{{ url('/admin/edit6', $row->id) }}"><button class="btn btn-secondary btn-sm">Update</button></a>
+    <a href="{{ url('/admin/edit4', $row->id) }}"><button class="btn btn-secondary btn-sm">Update</button></a>
 </form>
 
 @endsection

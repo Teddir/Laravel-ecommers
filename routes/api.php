@@ -27,7 +27,8 @@ Route::post('register', 'UserController@register');
 Route::post('login', 'UserController@login');
 
 Route::post('logout', 'UserController@logout');
-Route::get('/chat', 'ChatController@index')->name('home');
+Route::get('/chat', 'ChatController@allchat');
+
 
 //route produk
 Route::get('/produk', 'ProdukController@index');
@@ -42,6 +43,7 @@ Route::group(['middleware' => 'jwt.verify'], function () {
     Route::put('/produk/{id}', 'ProdukController@update');
     Route::post('/produk', 'ProdukController@store');
     Route::delete('/produk/{id}', 'ProdukController@destroy');
+    Route::post('/searc', 'ProdukController@searc'); //-----------> Searching  Produk
 
     // -----------------------------------------------------> end produk
 
@@ -60,8 +62,7 @@ Route::group(['middleware' => 'jwt.verify'], function () {
     Route::get('/keranjangaja/', 'KeranjangController@detailkeranjang'); //-----------> detail barang si user di dalam Ke keranjang
     Route::post('/keranjang/{id}', 'KeranjangController@pesan'); //------------> tambah ke keranjang
     Route::delete('/keranjang/delete/{id}', 'KeranjangController@destroy'); //-----------> hapus barang ke keranjang
-    Route::post('/keranjnag/chekout', 'KeranjangController@konfirmasi'); //-----------> chekout
-
+    Route::post('/keranjang/chekout/', 'KeranjangController@konfirmasi'); //-----------> chekout
 
     //route Penjual
     Route::resource('/penjual', 'PenjualController');
@@ -72,4 +73,13 @@ Route::group(['middleware' => 'jwt.verify'], function () {
     Route::put('user/update', 'UserController@update');           //----------update
     Route::delete('user/{id}', 'UserController@destroy');         //-------------delete
     Route::get('user/{id}', 'UserController@show');         //-------------delete
+
+
+
+    Route::get('/allchat', 'ChatController@allchat');  //---------->menampilkan semua chat
+    Route::get('/chat/{id}', 'ChatController@index1');    //----------------------->menampilkan setiap ada chat
+    Route::post('/searc/pesan', 'ChatController@searc'); //-----------> Searching  Message
+    Route::get('/get/pesan', 'ChatController@getMessage'); //-----------> Nampilin  Message
+    Route::post('/send/pesan', 'ChatController@sendMessage'); //-----------> Kirim  Message
+
 });

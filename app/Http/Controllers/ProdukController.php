@@ -13,15 +13,49 @@ use App\penjuals;
 
 class ProdukController extends Controller
 {
+    // public function __construct()
+    // {
+    //     $this->middleware('jwt.verify');
+    // }
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
     //-------------------------------------------------------------->Produk    
+
+    public function searc(Request $request)
+    {
+        $cari = new produks;
+        $dataRequest = $request->all();
+        $dataResult = array_filter($dataRequest);
+        // dd($cari);
+        if (empty($dataRequest)) {
+            # code...
+            return response()->json([
+                'status' => 'Error',
+                'Message' => 'Name Barang Belum Terisi',
+                'data' => NULL, 402,
+            ]);
+        }
+        $result =  produks::WHERE('name_produk', 'like', '%' . $cari . '%')->paginate(10);
+        if (empty($result)) {
+            return response()->json([
+                'status' => 'Error',
+                'Message' => 'Name Barang Tidak Di Temukan',
+                'data' => NULL, 402,
+            ]);
+        }
+        return response()->json([
+            'status' => 'Succes',
+            'Message' => 'Barang Berhasil Di Temukan',
+            'data' => $result, 200,
+        ]);
+    }
     public function index()
     {
         $produk = produks::get();
+        // dd($produk);
         if (!$produk) {
             # code...
             return response()->json([
@@ -29,7 +63,7 @@ class ProdukController extends Controller
                 'Message' => 'Data Gagal Di Tampilkan',
                 'data' => NULL, 402,
             ]);
-        }
+        } 
         return response()->json([
             'status' => 'Succes',
             'Message' => 'Data Berhasil Di Tampilkan',
@@ -39,7 +73,7 @@ class ProdukController extends Controller
 
     public function produkpenjual()
     {
-        $produk = produks::where('user_id', auth()->user()->id)->with('users', 'kategoris')->get();
+        $produk = produks::where('user_id', auth()->user()->id, 'kategori_id')->with('kategoris')->get();
         // dd($produk);
         if (!$produk) {
             # code...
@@ -279,20 +313,9 @@ class ProdukController extends Controller
 
     public function index1(Request $request)
     {
-        $users = User::get();
-        $keranjang = keranjangs::get();
-
-        $produk = new produks;
-        $produk->stok = $request->stok;
-        if ($produk = produks::where('user_id', auth()->user()->id)->with('users', 'produks', 'keranjangs')->get()) {
-            // dd($orderaja);
-            # code...
-            $subtotal = collect($request->stok)->sum(function ($orders) {
-                return  $orders['produks']->jumlah - $orders['keranjangs']->qty;
-            });
-        };
-        // $produk->save();
-        return view('Tampilan.Produk.produk', compact('produk', 'subtotal', 'keranjang'));
+        $produk = produks::where('user_id', auth()->user()->id)->with('kategoris')->get();
+        // dd($produk);
+        return view('Tampilan.Produk.produk', compact('produk'));
     }
 
 
@@ -348,7 +371,7 @@ class ProdukController extends Controller
     public function edit1($id)
     {
         $produk = produks::find($id);
-        $kategori = kategoris::with(['produk'])->orderBy('created_at', 'asc')->get();
+        $kategori = kategoris::with('produks')->orderBy('created_at', 'asc')->get();
         return view('Tampilan.Produk.edit', compact('produk', 'kategori'));
     }
 
@@ -365,6 +388,8 @@ class ProdukController extends Controller
 
 
         $produk = produks::find($id);
+        $dataRequest = $request->all();
+        $dataResult  = array_filter($dataRequest);
         $produk->name_produk = $request->name_produk;
         $produk->desc = $request->desc;
         $produk->harga = $request->harga;
@@ -400,7 +425,7 @@ class ProdukController extends Controller
     }
 
 
-    //-------------------------------------------------------------->WEB
+    //-------------------------------------------------------------->WEBSITE
 
     public function produkall()
     {
@@ -420,38 +445,5 @@ class ProdukController extends Controller
         $produk = produks::get();
         // $produk = produks::find($id);
         return view('website.store', compact('produk'));
-    }
-
-    // public function cart()
-    // {
-    //     $produk = produks::get();
-    //     $subtotal = null;
-    //     return view('website.cart', compact('produk', 'subtotal'));
-
-    // }
-
-
-    public function produldetail($id)
-    {
-        // $produk = produks::where('user_id', auth()->user()->id())->with('produks', 'keranjangs', 'users');
-        $produkdetail = produks::find($id);
-        return view('website.cart', compact('produkdetail'));
-    }
-
-    public function chekout(Request $request, $id)
-    {
-        $row = produks::get();
-        if ($produks = produks::where('user_id', auth()->user()->id)->with('keranjangs')->first()) {
-            // dd($produks->keranjangs->qty);
-            $stok = $produks->stok - $produks->keranjangs->qty;
-            // dd($stok);
-            // dd($stok);
-            $produk = produks::find($id);
-            // dd($produk);
-            $produk->stok = $stok;
-            $produk->update();
-            return view('website.chekout')
-                ->with('title', 'Cart &rarr; Checkout');
-        };
     }
 }

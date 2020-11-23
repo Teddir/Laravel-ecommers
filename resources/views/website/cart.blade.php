@@ -420,7 +420,7 @@
 																				<td class="product-thumbnail"><a href="#"><img src="{{$item->produks[0]->image}}" alt="product img"></a></td>
 																						<td class="product-name"><a href="#">{{ $item->produks[0]->name_produk }}</a></td>
 																				<td class="product-price"><span class="amount">Rp. {{number_format($item->produks[0]->harga)}}</span></td>
-																						<td class="product-quantity"><input type="number" value="{{ number_format($item->jumlah_pesan) }}"></td>
+																						<td class="product-price"><span class="amount">{{ number_format($item->jumlah_pesan) }}</span></td>
 																						<td class="product-subtotal">Rp. {{ number_format($item->subtotal) }}</td>
 																				<td class="product-remove"><a href="{{url('/website/chekout/delete', $item->id)}}">X</a></td>
 																					</tr>
@@ -434,7 +434,7 @@
 															<ul class="cart__btn__list d-flex flex-wrap flex-md-nowrap flex-lg-nowrap justify-content-between">
 																	<li><a href="#">Coupon Code</a></li>
 																	<li><a href="#">Apply Code</a></li>
-																	<li><a href="#">Update Cart</a></li>
+																	<li><a href="{{url('/website/chekout/update')}}">Update Cart</a></li>
 															<li><a href="{{url('/website/chekout/konfirmasi')}}">Check Out</a></li>
 															</ul>
 													</div>

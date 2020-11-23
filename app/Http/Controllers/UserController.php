@@ -158,23 +158,23 @@ class UserController extends Controller
         $user = User::find($id);
         $dataRequest = $request->all();
         $dataResult = array_filter($dataRequest);
-        // dd($dataRequest);
+
         $file = base64_encode(file_get_contents($request->avatar));
         $client = new \GuzzleHttp\Client();
         $response = $client->request('POST', 'https://freeimage.host/api/1/upload', [
             'form_params' => [
                 'key' => '6d207e02198a847aa98d0a2a901485a5',
-                    'action' => 'upload',
-                    'source' => $file,
-                    'format' => 'json'
-                    ]
-                    ]);
+                'action' => 'upload',
+                'source' => $file,
+                'format' => 'json'
+            ]
+        ]);
 
-                    $data = $response->getBody()->getContents();
-                    $data = json_decode($data);
-            $image = $data->image->url;
-            $user->avatar = $image;
-            try {
+        $data = $response->getBody()->getContents();
+        $data = json_decode($data);
+        $image = $data->image->url;
+        $user->avatar = $image;
+        try {
             $user->update($dataRequest);
         } catch (\Throwable $th) {
             return response([
@@ -249,10 +249,9 @@ class UserController extends Controller
         $user->email = $request->email;
         $user->password = $request->password;
         $user->alamat = $request->alamat;
-        $file = base64_encode(file_get_contents($request->image));
-
+        $file = base64_encode(file_get_contents($request->avatar));
         $client = new \GuzzleHttp\Client();
-    $response = $client->request('POST', 'https://freeimage.host/api/1/upload', [
+        $response = $client->request('POST', 'https://freeimage.host/api/1/upload', [
             'form_params' => [
                 'key' => '6d207e02198a847aa98d0a2a901485a5',
                 'action' => 'upload',
@@ -264,11 +263,10 @@ class UserController extends Controller
         $data = $response->getBody()->getContents();
         $data = json_decode($data);
         $image = $data->image->url;
-
         $user->avatar = $image;
         $user->save();
 
-        return redirect('/admin/index4')->with(['success' => 'Kategori Diperbaharui!']);
+        return redirect('/admin/index3')->with(['success' => 'Kategori Diperbaharui!']);
     }
 
     public function edit1($id)
@@ -283,9 +281,7 @@ class UserController extends Controller
         $user = User::find($id);
         $dataRequest = $request->all();
         $dataResult = array_filter($dataRequest);
-
-        $file = base64_encode(file_get_contents($request->image));
-
+        $file = base64_encode(file_get_contents($request->avatar));
         $client = new \GuzzleHttp\Client();
         $response = $client->request('POST', 'https://freeimage.host/api/1/upload', [
             'form_params' => [
@@ -301,16 +297,14 @@ class UserController extends Controller
         $image = $data->image->url;
 
         $user->avatar = $image;
-        $user->save($dataRequest);
+        $user->update($dataRequest);
 
-        return redirect('/admin/index4')->with(['success' => 'Kategori Diperbaharui!']);
+        return redirect('/admin/index3')->with(['success' => 'Kategori Diperbaharui!']);
     }
 
     public function destroy1($id)
     {
         $produk = User::destroy($id);
-        return redirect('/admin/index4')->with(['success' => 'Kategori Diperbaharui!']);
+        return redirect('/admin/index3')->with(['success' => 'Kategori Diperbaharui!']);
     }
-
-  
 }

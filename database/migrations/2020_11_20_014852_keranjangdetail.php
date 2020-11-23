@@ -15,7 +15,7 @@ class Keranjangdetail extends Migration
     {
         Schema::create('keranjangdetails', function (Blueprint $table) {
             $table->id();
-            $table->string('qty')->default(1);
+            $table->string('jumlah_pesan')->default(1);
             $table->string('subtotal')->default(1);            
             $table->timestamps();
         });

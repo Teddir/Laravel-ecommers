@@ -30,16 +30,16 @@
     {{-- {{dd($item)}} --}}
     <tr>
       <th scope="row">{{ $loop->iteration }}</th>    
-      <td><img class="card-img-top" src="/image/{{ $item->image }}" alt="{{ $item->image }}" height="70" widht="40"></td>
-      <td>{{ $item->users->name }}</td>
+      <td><img class="card-img-top" src="{{ $item->users[0]->avatar }}" alt="{{ $item->users[0]->avatar }}" height="200" widht="40"></td>
+      <td>{{ $item->users[0]->name }}</td>
       <td>{{ $item->name_toko }}</td>
       <td>{{ $item->phone_number }}</td>
-      <td>{{ $item->users->alamat }}</td>
-      <td>{{ $item->users->email }}</td>
+      <td>{{ $item->users[0]->alamat }}</td>
+      <td>{{ $item->users[0]->email }}</td>
       <td>{{ $item->created_at }}</td>
       <td>
         <a href="{{ url('/admin/edit2', $item->id) }}"><button class="btn btn-primary"><i class="fa fa-wrench" aria-hidden="true"></i></button></a> 
-        <td><form action="{{ url('/admin/destroy2', $item->id) }}" method="post">@method('delete') @csrf
+        <form action="{{ url('/admin/destroy2', $item->id) }}" method="post">@method('delete') @csrf
         <a href=""><button class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button></a>
         </form>
       </td>

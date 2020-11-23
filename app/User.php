@@ -16,7 +16,7 @@ class User extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','alamat','phone_number','image','alamat','status',
+        'name', 'email', 'password','alamat','phone_number','avatar','alamat','status',
         'produk_id','kategori_id','kota_id'
     ];
 
@@ -88,4 +88,12 @@ class User extends Authenticatable implements JWTSubject
         //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
         return $this->hasMany(keranjangs::class, 'id', 'user_id');
     }
+
+    public function messages()
+    {
+        //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
+        return $this->hasMany(messages::class, 'id', 'user_id');
+    }
+
+
 }

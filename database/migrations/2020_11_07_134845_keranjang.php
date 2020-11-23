@@ -15,7 +15,8 @@ class Keranjang extends Migration
     {
         Schema::create('keranjangs', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->string('qty')->default(1);
+            $table->string('subtotal')->default(1);
+            $table->integer('status')->default(0);
             $table->timestamps();
         });
     }

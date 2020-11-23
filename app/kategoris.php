@@ -21,7 +21,7 @@ class kategoris extends Model
     public function produks()
     {
         //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
-        return $this->belongsTo(produks::class, 'kategori_id' , 'id');
+        return $this->belongsTo(produks::class, 'id','kategori_id');
     }
 
     

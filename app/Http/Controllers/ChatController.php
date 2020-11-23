@@ -16,9 +16,49 @@ class ChatController extends Controller
      *
      * @return void
      */
-    public function __construct()
+    // public function __construct()
+    // {
+    //     $this->middleware('auth');
+    // }
+
+    public function searc(Request $request)
     {
-        $this->middleware('auth');
+        $cari = $request->all();
+        $result =  User::WHERE('name', 'like', '%' . $cari . '%')->paginate(10);
+        if (empty($result)) {
+            return response()->json([
+                'status' => 'Error',
+                'Message' => 'Name User Tidak Di Temukan',
+                'data' => NULL, 402,
+            ]);
+        }
+        return response()->json([
+            'status' => 'Succes',
+            'Message' => 'User Berhasil Di Temukan',
+            'data' => $result, 200,
+        ]);
+    }
+
+    public function allchat()
+    {
+        $user = User::first();
+        // $id = auth()->user()->id;
+        // $user = User::where('id', $id);
+        // $messages = messages::where('from', $user->id)->first();
+        $messages = messages::get();
+        // dd($messages);
+        if (empty($messages)) {
+            return response()->json([
+                'status' => 'Error',
+                'Message' => 'Name User Tidak Di Temukan',
+                'data' => NULL, 402,
+            ]);
+        }
+        return response()->json([
+            'status' => 'Succes',
+            'Message' => 'User Berhasil Di Temukan',
+            'data' => $messages, 200,
+        ]);
     }
 
     /**
@@ -26,7 +66,32 @@ class ChatController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index()
+
+    public function index1($user_id)
+    {
+        // $users = User::where('id', '!=', Auth::id())->get();
+        // return view('home', ['users' => $users ]);
+
+        $users =  DB::select('SELECT users.id, users.name, users.avatar, users.email, 
+        count(is_read) as unread FROM users LEFT JOIN messages ON users.id = messages.from AND is_read = 0  
+        WHERE users.id <>  messages.to   GROUP BY users.id, users.name, users.avatar, users.email');
+
+        if (empty($users)) {
+            return response()->json([
+                'status' => 'Error',
+                'Message' => 'Tidak Ada Chat',
+                'data' => NULL, 402,
+            ]);
+        }
+        return response()->json([
+            'status' => 'Succes',
+            'Message' => 'Berhasil Menampilkan Chat',
+            'data' => $users, 200,
+        ]);
+    }
+
+
+    public function index($user_id)
     {
         // $users = User::where('id', '!=', Auth::id())->get();
         // return view('home', ['users' => $users ]);
@@ -57,7 +122,7 @@ class ChatController extends Controller
     public function sendMessage(Request $request)
     {
         $from = Auth::id();
-        $to = $request->receiver_id;
+        $to = $request->to;
         $message = $request->message;
 
         $data = new messages();
@@ -65,7 +130,21 @@ class ChatController extends Controller
         $data->to = $to;
         $data->message = $message;
         $data->is_read = 0;
-        $data->save();
+        try {
+            $data->save();
+            //code...
+        } catch (\Throwable $th) {
+            return response()->json([
+                'status' => 'Error',
+                'Message' => $th->getMessage(),
+                'data' => NULL, 402,
+            ]);
+        }
+        return response()->json([
+            'status' => 'Succes',
+            'Message' => 'Berhasil Menampilkan Chat',
+            'data' => $data, 200,
+        ]);
 
         //Pusher
         $options  = array(

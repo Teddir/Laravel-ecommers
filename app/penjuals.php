@@ -14,19 +14,19 @@ class penjuals extends Model
 
     public function messages()
     {
-        return $this->hasMany(messages::class, 'penjual_id', 'id');
+        return $this->hasMany(messages::class, 'id', 'penjual_id');
     }
 
     public function users()
     {
         //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
-        return $this->hasMany(User::class, 'penjual_id', 'id');
+        return $this->hasMany(User::class, 'id', 'user_id');
     }
 
     public function produks()
     {
         //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
-        return $this->hasMany(produks::class, 'penjual_id','id' );
+        return $this->hasMany(produks::class,'id',  'penjual_id' );
     }
 
 }

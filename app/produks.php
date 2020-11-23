@@ -23,7 +23,7 @@ class produks extends Model
     public function kategoris()
     {
         //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI KATEGORI INI BISA DIGUNAKAN OLEH BANYAK PRODUK
-        return $this->hasMany(kategoris::class, 'id', 'user_id');
+        return $this->hasMany(kategoris::class, 'id', 'kategori_id');
     }
 
     public function users()

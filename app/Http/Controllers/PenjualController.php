@@ -191,7 +191,8 @@ class PenjualController extends Controller
     public function index1()
     {
         // $penjual = penjuals::where('penjual_id', auth()->user()->id)->with('users', 'penjuals')->get(); --->user
-        $penjual = penjuals::get();
+        $penjual = penjuals::where('user_id', auth()->user()->id)->with('users')->get();
+        // dd($penjual);
         return view('Tampilan.Penjual.penjual', compact('penjual'));
     }
 
@@ -205,11 +206,11 @@ class PenjualController extends Controller
     {
         $request->validate([
             'name_toko' => 'required:unique:penjuals',
-            'phone_number' => 'required',
+            'phone_number' => 'required|numeric',
 
         ]);
         $penjual = new penjuals;
-        $penjual->penjual_id = $request->penjual_id;
+        $penjual->user_id = auth()->user()->id;
         $penjual->name_toko = $request->name_toko;
         $penjual->phone_number = $request->phone_number;
         $penjual->save();

@@ -22,12 +22,12 @@
         <input type="number" name="phone_number" class="form-control" value="{{$penjual->phone_number}}" required>
         <p class="text-danger">{{ $errors->first('phone_number') }}</p>
     </div>
-    <select name="user_id" class="form-control">
+    {{-- <select name="user_id" class="form-control">
         <option value="">Pilih</option>
         @foreach ($user as $row)
         <option value="{{ $row->name }}" {{ old('user_id') == $row->name ? 'selected':'' }}>{{ $row->users->name }}</option>
         @endforeach
-    </select>
+    </select> --}}
     <div class="form-group">
         <button class="btn btn-primary btn-sm">Update</button>
     </div>

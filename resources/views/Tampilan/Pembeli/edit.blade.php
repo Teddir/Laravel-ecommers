@@ -9,7 +9,7 @@
     {{ session('status') }}
 </div>
 @endif
-<form action="{{ url('/admin/update4', $user->id) }}" method="post" enctype="multipart/form-data">
+<form action="{{ url('/admin/update3', $user->id) }}" method="post" enctype="multipart/form-data">
     @method('put')
     @csrf
     <div class="form-group">
@@ -28,14 +28,9 @@
         <p class="text-danger">{{ $errors->first('alamat') }}</p>
     </div>
     <div class="form-group">
-        <label for="password">password</label>
-        <input type="password" name="password" class="form-control" value="" required>
-        <p class="text-danger">{{ $errors->first('password') }}</p>
-    </div>
-    <div class="form-group">
-        <label for="image">Foto Produk</label>
-        <input type="file" name="image" class="form-control" value="{{ old('image') }}" alt={{$user->avatar}}">
-        <p class="text-danger">{{ $errors->first('image') }}</p>
+        <label for="avatar">Foto Produk</label>
+        <input type="file" name="avatar" class="form-control" value="{{ old('avatar') }}" required>
+        <p class="text-danger">{{ $errors->first('avatar') }}</p>
     </div>
     <div class="form-group">
         <button class="btn btn-primary btn-sm">Update</button>

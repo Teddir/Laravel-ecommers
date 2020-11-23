@@ -45,7 +45,6 @@ $factory->define(messages::class, function (Faker $faker) {
         $from = 1;
         $to = 2;
         $is_read = rand(0, 1);
-        $number = 123;
     } while ($from === $to);
 
     return [
@@ -53,7 +52,6 @@ $factory->define(messages::class, function (Faker $faker) {
         'to' => $to,
         'message' => $faker->sentence,
         'is_read' => $is_read,
-        'phone_number' => $number,
     ];
 });
 $factory->define(hubungis::class, function (Faker $faker) {

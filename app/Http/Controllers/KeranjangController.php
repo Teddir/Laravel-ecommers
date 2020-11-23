@@ -16,6 +16,12 @@ class KeranjangController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    //  public function __construct()
+    //  {
+    //      $this->middleware('jwt.verify');
+    //  }
+
     public function index()
     {
         $keranjang = keranjangs::where('user_id', auth()->user()->id)->with('users', 'produks')->get();
@@ -39,6 +45,14 @@ class KeranjangController extends Controller
         $produk = produks::where('id', $id)->first();
         // dd($produk);
 
+        if (empty($produk)) {
+            # code..
+            return response()->json([
+                'status' => 'Error',
+                'Message' => 'Maaf barang KadalWarsa Silahkan Pilih Barang Lain',
+                'data' => NULL, 402,
+            ]);
+        }
         $keranjang = $request->jumlah_pesan;
 
         if (empty($request->jumlah_pesan)) {
@@ -127,7 +141,7 @@ class KeranjangController extends Controller
          $keranjangdetail = keranjangdetail::where('keranjang_id', $keranjang->id)->get();
          return response()->json([
             'status' => 'Succes',
-            'Message' => 'Data Berhasil Di Menampilkan Keranjang',
+            'Message' => 'Berhasil Menampilkan Keranjang',
             'data' => $keranjangdetail, 200,
         ]);
          
@@ -255,7 +269,7 @@ class KeranjangController extends Controller
         $keranjang = keranjangs::where('user_id', auth()->user()->id)->where('status', 0)->first();
         // dd($keranjang);
 
-        if ($keranjang->id == null) {
+        if (empty($keranjang->id)) {
             return redirect('/website');
         }
         $keranjangdetail = keranjangdetail::where('keranjang_id', $keranjang->id)->get();

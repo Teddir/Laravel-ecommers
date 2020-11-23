@@ -17,7 +17,7 @@ class Foreign extends Migration
         Schema::table('produks', function (Blueprint $table) {
             $table->foreignId('kategori_id')->nullable()->constrained('kategoris')->cascedeOnDelete();
             $table->foreignId('user_id')->nullable()->constrained('users')->cascedeOnDelete();
-            $table->foreignId('keranjang_id')->nullable()->constrained('keranjangs')->cascedeOnDelete();
+            // $table->foreignId('keranjang_id')->nullable()->constrained('keranjangs')->cascedeOnDelete();
         });
         
         Schema::table('keranjangs', function (Blueprint $table) {

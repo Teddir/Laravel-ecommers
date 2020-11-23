@@ -9,12 +9,12 @@
     {{ session('status') }}
 </div>
 @endif
-<form action="{{ url('/admin/create4') }}" method="post" enctype="multipart/form-data">
+<form action="{{ url('/admin/create3') }}" method="post" enctype="multipart/form-data">
     @csrf
     <div class="form-group">
-        <label for="image">Foto </label>
-        <input type="file" name="image" class="form-control" value="{{ old('image') }}" required>
-        <p class="text-danger">{{ $errors->first('image') }}</p>
+        <label for="avatar">Foto </label>
+        <input type="file" name="avatar" class="form-control" value="{{ old('avatar') }}" required>
+        <p class="text-danger">{{ $errors->first('avatar') }}</p>
     </div>    
     <div class="form-group">
         <label for="name">Username</label>
