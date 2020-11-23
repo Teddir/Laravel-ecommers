@@ -70,7 +70,7 @@ class PenjualController extends Controller
 
         try {
             $penjual = new penjuals;
-            $penjual->user_id = auth()->user()->id;
+            // $penjual->user_id = auth()->user()->id;
             $penjual->name_toko = $request->name_toko;
             $penjual->phone_number = $request->phone_number;
             $penjual->save();
