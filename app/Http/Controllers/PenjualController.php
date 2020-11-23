@@ -64,14 +64,13 @@ class PenjualController extends Controller
     {
         $request->validate([
             'name_toko' => 'required:unique:penjuals',
-            'phone_number' => 'required:unique:penjuals|integer',
+            'phone_number' => 'required:unique:penjuals',
 
         ]);
 
         try {
             $penjual = new penjuals;
             $penjual->user_id = auth()->user()->id;
-            $penjual->message_id = $request->message_id;
             $penjual->name_toko = $request->name_toko;
             $penjual->phone_number = $request->phone_number;
             $penjual->save();
