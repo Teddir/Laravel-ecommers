@@ -315,7 +315,7 @@ class ProdukController extends Controller
     {
         $produk = produks::where('user_id', auth()->user()->id)->with('kategoris')->get();
         // dd($produk);
-        return view('Tampilan.Produk.produk', compact('produk'));
+        return view('Tampilan.user.Produk.produk', compact('produk'));
     }
 
 
@@ -324,7 +324,7 @@ class ProdukController extends Controller
         $kategori = kategoris::get();
         $user = User::get();
         $produk = produks::with(['kategoris'])->orderBy('created_at', 'asc')->get();
-        return view('Tampilan.Produk.create', compact('produk', 'kategori', 'user'));
+        return view('Tampilan.user.Produk.create', compact('produk', 'kategori', 'user'));
     }
 
 
@@ -446,4 +446,6 @@ class ProdukController extends Controller
         // $produk = produks::find($id);
         return view('website.store', compact('produk'));
     }
+
+    
 }

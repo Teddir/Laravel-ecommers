@@ -193,7 +193,7 @@ class PenjualController extends Controller
         // $penjual = penjuals::where('penjual_id', auth()->user()->id)->with('users', 'penjuals')->get(); --->user
         $penjual = penjuals::where('user_id', auth()->user()->id)->with('users')->get();
         // dd($penjual);
-        return view('Tampilan.Penjual.penjual', compact('penjual'));
+        return view('Tampilan.admin.Penjual.penjual', compact('penjual'));
     }
 
     /**

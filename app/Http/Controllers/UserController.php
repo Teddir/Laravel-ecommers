@@ -158,8 +158,8 @@ class UserController extends Controller
         $user = User::find($id);
         $dataRequest = $request->all();
         $dataResult = array_filter($dataRequest);
-
         $file = base64_encode(file_get_contents($request->avatar));
+
         $client = new \GuzzleHttp\Client();
         $response = $client->request('POST', 'https://freeimage.host/api/1/upload', [
             'form_params' => [
@@ -173,6 +173,7 @@ class UserController extends Controller
         $data = $response->getBody()->getContents();
         $data = json_decode($data);
         $image = $data->image->url;
+
         $user->avatar = $image;
         try {
             $user->update($dataRequest);
@@ -222,7 +223,7 @@ class UserController extends Controller
     {
 
         $user = User::get();
-        return view('Tampilan.Pembeli.pembeli', compact('user'));
+        return view('Tampilan.user.Pembeli.pembeli', compact('user'));
     }
 
     public function show1(User $User)
@@ -231,7 +232,7 @@ class UserController extends Controller
         // $user = User::with(['penjuals'])->orderBy('created_at', 'asc')->get(); //-------------> USER
         $penjual = penjuals::get();
         $user = User::get();
-        return view('Tampilan.Pembeli.create', compact('penjual', 'user'));
+        return view('Tampilan.admin.Pembeli.create', compact('penjual', 'user'));
     }
 
 
@@ -295,9 +296,9 @@ class UserController extends Controller
         $data = $response->getBody()->getContents();
         $data = json_decode($data);
         $image = $data->image->url;
-
         $user->avatar = $image;
-        $user->update($dataRequest);
+        $user->save();
+        // $user->update($dataRequest);
 
         return redirect('/admin/index3')->with(['success' => 'Kategori Diperbaharui!']);
     }
