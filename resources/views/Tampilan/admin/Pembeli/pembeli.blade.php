@@ -1,4 +1,4 @@
-@extends('dashbord_seller')
+@extends('dashbord_admin')
 
 @section('title', 'Data Customer')
 

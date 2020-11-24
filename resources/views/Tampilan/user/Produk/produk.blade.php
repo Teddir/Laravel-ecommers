@@ -10,7 +10,7 @@
 </div>
 @endif
 
-<a href="{{ url('/admin/tambah1') }}"><button class="btn btn-warning"><i class="fa fa-plus-square" aria-hidden="true"></i></button></a>        
+<a href="{{ url('/user/tambah1') }}"><button class="btn btn-warning"><i class="fa fa-plus-square" aria-hidden="true"></i></button></a>        
 <table class="table table-striped mt-1">
   <thead>
     <tr>
@@ -39,9 +39,9 @@
       <td>{{ $item->created_at }}</td>
       <td><img class="card-img-top" src="{{ $item->image }}" alt="{{ $item->image }}" height="200" widht="40"></td>
       <td>
-        <a href="{{ url('/admin/edit1', $item->id) }}"><button class="btn btn-primary"><i class="fa fa-wrench" aria-hidden="true"></i></button></a>
+        <a href="{{ url('/user/edit1', $item->id) }}"><button class="btn btn-primary"><i class="fa fa-wrench" aria-hidden="true"></i></button></a>
       
-      <form action="{{ url('/admin/destroy1', $item->id) }}" method="post">@method('delete') @csrf
+      <form action="{{ url('/user/destroy1', $item->id) }}" method="post">@method('delete') @csrf
         <button class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
         </form>
       </td>

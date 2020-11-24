@@ -31,7 +31,8 @@
       <td>{{ $item->alamat }}</td>
       <td>{{ $item->email }}</td>
       <td>
-        <form action="{{ url('/admin/destroy3', $item->id) }}" method="post">@method('delete') @csrf
+        <a href="{{ url('/admin/edit3', $item->id) }}"><button class="btn btn-primary"><i class="fa fa-wrench" aria-hidden="true"></i></button></a> 
+        <form action="{{ url('/user/destroy3', $item->id) }}" method="post">@method('delete') @csrf
         <button class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
         </form>
       </td>

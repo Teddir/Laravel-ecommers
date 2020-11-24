@@ -9,7 +9,7 @@
     {{ session('status') }}
 </div>
 @endif
-<form action="{{ url('/admin/create1') }}" method="post" enctype="multipart/form-data">
+<form action="{{ url('/user/create1') }}" method="post" enctype="multipart/form-data">
     @csrf
     <div class="form-group">
         <label for="name_produk">Name Produk</label>
@@ -76,5 +76,5 @@
 
 </script>
 @endsection
-<!-- PADA ADMIN LAYOUTS, TERDAPAT YIELD JS YANG BERARTI KITA BISA MEMBUAT SECTION JS UNTUK MENAMBAHKAN SCRIPT JS JIKA DIPERLUKAN -->
+<!-- PADA user LAYOUTS, TERDAPAT YIELD JS YANG BERARTI KITA BISA MEMBUAT SECTION JS UNTUK MENAMBAHKAN SCRIPT JS JIKA DIPERLUKAN -->
 <!-- LOAD CKEDITOR -->

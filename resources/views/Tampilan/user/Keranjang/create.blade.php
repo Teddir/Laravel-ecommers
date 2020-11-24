@@ -9,7 +9,7 @@
         {{ session('status') }}
     </div>
 @endif
-<form action="{{ url('/admin/create3') }}" method="post" enctype="multipart/form-data">
+<form action="{{ url('/user/create3') }}" method="post" enctype="multipart/form-data">
     @csrf
     <div class="card" style="width: 18rem;">
       <img class="card-img-top" src="image/{{ $row->image }}" alt="{{ $row->produks->image }}" height="200" widht="40">

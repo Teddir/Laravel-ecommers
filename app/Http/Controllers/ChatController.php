@@ -91,14 +91,12 @@ class ChatController extends Controller
     }
 
 
-    public function index($user_id)
+    public function index()
     {
         // $users = User::where('id', '!=', Auth::id())->get();
         // return view('home', ['users' => $users ]);
 
-        $users =  DB::select('SELECT users.id, users.name, users.avatar, users.email, 
-        count(is_read) as unread FROM users LEFT JOIN messages ON users.id = messages.from AND is_read = 0  
-        WHERE users.id <>  messages.to   GROUP BY users.id, users.name, users.avatar, users.email');
+        $users =  DB::select('SELECT users.id, users.name, users.avatar, users.email, count(is_read) as unread FROM users LEFT JOIN messages ON users.id = messages.from AND is_read = 0 AND messages.to = ' . Auth::id() . ' WHERE users.id <> ' . Auth::id() . ' GROUP BY users.id, users.name, users.avatar, users.email');
         return view('halchat', compact('users'));
     }
 
@@ -122,29 +120,15 @@ class ChatController extends Controller
     public function sendMessage(Request $request)
     {
         $from = Auth::id();
-        $to = $request->to;
+        $to = $request->receiver_id;
         $message = $request->message;
 
-        $data = new messages();
+        $data = new messages;
         $data->from = $from;
         $data->to = $to;
         $data->message = $message;
         $data->is_read = 0;
-        try {
-            $data->save();
-            //code...
-        } catch (\Throwable $th) {
-            return response()->json([
-                'status' => 'Error',
-                'Message' => $th->getMessage(),
-                'data' => NULL, 402,
-            ]);
-        }
-        return response()->json([
-            'status' => 'Succes',
-            'Message' => 'Berhasil Menampilkan Chat',
-            'data' => $data, 200,
-        ]);
+        $data->save();
 
         //Pusher
         $options  = array(

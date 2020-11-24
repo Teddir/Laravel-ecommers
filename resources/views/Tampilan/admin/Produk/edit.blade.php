@@ -1,4 +1,4 @@
-@extends('dashbord_seller')
+@extends('dashbord_admin')
 
 @section('title', 'Update kategori')
 
@@ -9,7 +9,7 @@
     {{ session('status') }}
 </div>
 @endif
-<form action="{{ url('/user/update1', $produk->id) }}" method="post" enctype="multipart/form-data">
+<form action="{{ url('/admin/update1', $produk->id) }}" method="post" enctype="multipart/form-data">
     @method('put')
     @csrf
     <div class="form-group">
@@ -30,7 +30,7 @@
     <div class="form-group">
         <label for="kategori_id">Kategori</label>
 
-        <!-- DATA KATEGORI DIGUNAKAN DISINI, SEHINGGA SETIAP PRODUK USER BISA MEMILIH KATEGORINYA -->
+        <!-- DATA KATEGORI DIGUNAKAN DISINI, SEHINGGA SETIAP PRODUK admin BISA MEMILIH KATEGORINYA -->
         <select name="kategori_id" class="form-control">
             <option value="">Pilih</option>
             @foreach ($kategori as $row)

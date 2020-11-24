@@ -15,8 +15,8 @@
   <thead>
     <tr>
       <th scope="col">No</th>
+      <th scope="col">Name Toko</th>
       <th scope="col">Name Produk</th>
-      {{-- <th scope="col">Kategori</th> --}}
       <th scope="col">Stok</th>
       <th scope="col">Status</th>
       <th scope="col">harga</th>
@@ -30,8 +30,8 @@
     <tr>
         @foreach ($produk as $item)
       <th scope="row">{{ $loop->iteration }}</th>    
+      <td>{{ $penjual[0]->name_toko }}</td>
       <td>{{ $item->name_produk }}</td>
-      {{-- <td>{{ $item->kategoris->name_kategori }}</td> --}}
       <td>{{ $item->stok  }}</td>
       <td>{{ $item->status }}</td>
       <td>{{ number_format($item->harga) }}</td>

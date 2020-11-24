@@ -1,6 +1,6 @@
-@extends('dashbord_admin')
+@extends('dashbord_seller')
 
-@section('title', 'Data Penjual')
+@section('title', 'Data Diri')
 
 @section('dashbord1')
 
@@ -10,13 +10,12 @@
 </div>
 @endif
 
-<a href="{{ url('/admin/tambah2') }}"><button class="btn btn-warning"><i class="fa fa-plus-square" aria-hidden="true"></i></button></a>        
 <table class="table table-striped mt-1">
   <thead>
     <tr>
       <th scope="col">No</th>
       <th scope="col">Avatar</th>
-      <th scope="col">Name Penjual</th>
+      <th scope="col">Name</th>
       <th scope="col">Name Toko</th>
       <th scope="col">Phone</th>
       <th scope="col">Alamat</th>
@@ -38,8 +37,8 @@
       <td>{{ $item->users[0]->email }}</td>
       <td>{{ $item->created_at }}</td>
       <td>
-        <a href="{{ url('/admin/edit2', $item->id) }}"><button class="btn btn-primary"><i class="fa fa-wrench" aria-hidden="true"></i></button></a> 
-        <form action="{{ url('/admin/destroy2', $item->id) }}" method="post">@method('delete') @csrf
+        <a href="{{ url('/user/edit2', $item->id) }}"><button class="btn btn-primary"><i class="fa fa-wrench" aria-hidden="true"></i></button></a> 
+        <form action="{{ url('/user/destroy2', $item->id) }}" method="post">@method('delete') @csrf
         <a href=""><button class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button></a>
         </form>
       </td>

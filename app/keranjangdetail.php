@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class keranjangdetail extends Model
 {
-    protected $fillable = ['qty', 'subtotal', 'produk_id', 'keranjang_id'];
+    protected $fillable = ['jumlah_pesan', 'subtotal', 'produk_id', 'keranjang_id'];
 
 
     public function produks()

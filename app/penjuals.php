@@ -12,6 +12,12 @@ class penjuals extends Model
         'message_id', 'user_id', 'produk_id'  //---->user is penjual
     ];
 
+
+    public function penjuals()
+    {
+        return $this->hasMany(penjuals::class, 'id', 'penjual_id');
+    }
+
     public function messages()
     {
         return $this->hasMany(messages::class, 'id', 'penjual_id');

@@ -35,7 +35,7 @@
       <td>{{ $item->produks->created_at }}</td>
       <td><img class="card-img-top" src="image/{{ $item->image }}" alt="{{ $item->produks->image }}" height="200" widht="40"></td>
       <td>
-        <td><form action="{{ url('/admin/update3', $item->id) }}" method="post">@method('put') @csrf
+        <td><form action="{{ url('/user/update3', $item->id) }}" method="post">@method('put') @csrf
                   <td><label for="jumlah">
                     <input type="number" name="jumlah" id="jumlah" placeholder="{{ $item->jumlah }}" value="{{ $item->jumlah }}">
                   </label>

@@ -15,7 +15,7 @@
                         
                         <div class="media">
                             <div class="media-left">
-                                <img src="/image/{{ $user->avatar }}" alt="{{ $user->avatar }}" class="media-project">
+                                <img src="{{ $user->avatar }}" alt="{{ $user->avatar }}" class="media-project">
                             </div>
                             <div class="media-body">
                                 <p class="name">{{ $user->name }}</p>
