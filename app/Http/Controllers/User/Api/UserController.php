@@ -177,7 +177,7 @@ class UserController extends Controller
 
         $user->avatar = $image;
         try {
-            $user->save($dataRequest);
+            $user->update($dataRequest);
         } catch (\Throwable $th) {
             return response([
                 'status' => 'error',
