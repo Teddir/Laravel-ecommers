@@ -157,9 +157,10 @@ class UserController extends Controller
     {
         $id = auth()->user()->id;
         $user = User::find($id);
-        $dataRequest = $request->all();
+        $dataRequest = $request->except(['avatar']);
         $dataResult = array_filter($dataRequest);
-        $file = base64_encode(file_get_contents($request->avatar));
+        $avatar = $request->file('avatar');
+        $file = base64_encode(file_get_contents($avatar));
 
         $client = new \GuzzleHttp\Client();
         $response = $client->request('POST', 'https://freeimage.host/api/1/upload', [
@@ -174,8 +175,9 @@ class UserController extends Controller
         $data = $response->getBody()->getContents();
         $data = json_decode($data);
         $image = $data->image->url;
-
+        
         $user->avatar = $image;
+        // dd($user);
         try {
             $user->update($dataResult);
         } catch (\Throwable $th) {

@@ -227,10 +227,11 @@ class ProdukController extends Controller
     {
 
         $produk = produks::find($id);
-        $dataRequest = $request->all();
+        $dataRequest = $request->except(['image']);
         $dataResult = array_filter($dataRequest);
+        $image = $request->file('image');
+        $file = base64_encode(file_get_contents($image));
 
-        $file = base64_encode(file_get_contents($request->image));
         $client = new \GuzzleHttp\Client();
         $response = $client->request('POST', 'https://freeimage.host/api/1/upload', [
             'form_params' => [
@@ -244,6 +245,7 @@ class ProdukController extends Controller
         $data = $response->getBody()->getContents();
         $data = json_decode($data);
         $image = $data->image->url;
+        
         $produk->image = $image;
         try {
             $produk->update($dataResult);
