@@ -246,7 +246,7 @@ class ProdukController extends Controller
         $image = $data->image->url;
         $produk->image = $image;
         try {
-            $produk->update($dataRequest);
+            $produk->update($dataResult);
         } catch (\Throwable $th) {
             return response([
                 'status' => 'error',
