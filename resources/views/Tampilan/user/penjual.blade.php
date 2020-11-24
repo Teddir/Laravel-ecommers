@@ -38,9 +38,7 @@
       <td>{{ $item->created_at }}</td>
       <td>
         <a href="{{ url('/user/edit2', $item->id) }}"><button class="btn btn-primary"><i class="fa fa-wrench" aria-hidden="true"></i></button></a> 
-        <form action="{{ url('/user/destroy2', $item->id) }}" method="post">@method('delete') @csrf
-        <a href=""><button class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button></a>
-        </form>
+        <a href="{{ url('/user/destroy2', $item->id) }}"><button class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button></a>
       </td>
     </tr>
     @endforeach

@@ -22,8 +22,7 @@ class PenjualController extends Controller
      */
     public function index1()
     {
-        $penjual = penjuals::with('users', 'penjuals')->first();
-        // dd($penjual);
+        $penjual = penjuals::where('user_id')->with('users')->get();
         return view('Tampilan.admin.Penjual.penjual', compact('penjual'));
     }
 

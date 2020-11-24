@@ -17,7 +17,8 @@ Route::group(['middleware' => 'auth:admin'], function () {
   //--------------------------------------------------->crud  
   Route::post('/create2', 'Penjual\Web\PenjualController@store1');
   Route::put('/update2/{id}', 'Penjual\Web\PenjualController@update1');
-  Route::delete('/destroy2/{id}', 'Penjual\Web\PenjualController@destroy1');
+  Route::get('/destroy2/{id}', 'Penjual\Web\PenjualController@destroy1');
+
 
   //--------------------------------------------------->tampilan E-Pembeli
   Route::get('/index3', 'User\Web\UserController@index1');
