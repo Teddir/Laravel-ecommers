@@ -63,8 +63,8 @@ Route::group(['middleware' => 'jwt.verify'], function () {
     Route::get('/keranjang', 'Keranjang\Api\KeranjangController@index'); //----------------->nampilin all aja di keranjang 
     Route::get('/keranjangaja', 'Keranjang\Api\KeranjangController@detailkeranjang'); //-----------> detail barang si user di dalam Ke keranjang
     Route::post('/keranjang/{id}', 'Keranjang\Api\KeranjangController@pesan'); //------------> tambah ke keranjang
-    Route::get('/keranjang/delete/{id}', 'Keranjang\Api\KeranjangController@destroy'); //-----------> hapus barang ke keranjang
-    Route::post('/keranjang/chekout', 'Keranjang\Api\KeranjangController@konfirmasi'); //-----------> chekout
+    Route::delete('/keranjang/delete/{id}', 'Keranjang\Api\KeranjangController@destroy'); //-----------> hapus barang ke keranjang
+    Route::post('/keranjangaja/chekout', 'Keranjang\Api\KeranjangController@konfirmasi'); //-----------> chekout
 
 
 

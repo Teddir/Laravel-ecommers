@@ -56,10 +56,9 @@
 
         .pending {
             position: absolute;
-            text-align: left;
-            align-items: flex-end;
+            left: 13px;
+            top: 9px;
             background: #bE00ff;
-            text-align-last: left;
             margin: 0;
             border-radius: 50%;
             width: 18px;
@@ -86,7 +85,7 @@
         .message-wrapper {
             padding: 10px;
             height: 526px;
-            background-image: url(/image/faedah.gif);
+            background-image: url(image/foto.jpg);
         }
 
         .messages .message {
@@ -246,7 +245,7 @@
                         }
                     }
                 }
-
+                
             });
 
             $('.user').click(function () {
@@ -284,13 +283,11 @@
                         data: datastr,
                         cache: false,
                         success: function (data) {
-
                         },
                         error: function (jqXHR, status, err) {
-
                         },
                         complete: function () {
-
+                            scrollToBottomFunc();
                         }
                     })
                 }

@@ -86,7 +86,7 @@ class ChatController extends Controller
         return response()->json([
             'status' => 'Succes',
             'Message' => 'Berhasil Menampilkan Chat',
-            'data' => $users, 200,
+            'data' => $users, 200,  
         ]);
     }
 
@@ -96,7 +96,7 @@ class ChatController extends Controller
         // $users = User::where('id', '!=', Auth::id())->get();
         // return view('home', ['users' => $users ]);
 
-        $users =  DB::select('SELECT users.id, users.name, users.avatar, users.email, count(is_read) as unread FROM users LEFT JOIN messages ON users.id = messages.from AND is_read = 0 AND messages.to = ' . Auth::id() . ' WHERE users.id <> ' . Auth::id() . ' GROUP BY users.id, users.name, users.avatar, users.email');
+        $users =  DB::select('SELECT users.id, users.name, users.avatar, users.email, count(is_read) as unread FROM users LEFT JOIN messages ON users.id = messages.from AND is_read = 0 AND messages.to = ' . Auth::id() . ' WHERE users.id != ' . Auth::id() . ' GROUP BY users.id, users.name, users.avatar, users.email');
         return view('halchat', compact('users'));
     }
 
@@ -123,14 +123,14 @@ class ChatController extends Controller
         $to = $request->receiver_id;
         $message = $request->message;
 
-        $data = new messages;
+        $data = new messages();
         $data->from = $from;
         $data->to = $to;
         $data->message = $message;
         $data->is_read = 0;
         $data->save();
 
-        //Pusher
+        //Pusher    
         $options  = array(
             'cluster' => 'ap1',
             'useTLS' => true
