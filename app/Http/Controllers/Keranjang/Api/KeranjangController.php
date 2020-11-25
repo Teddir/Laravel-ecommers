@@ -186,10 +186,10 @@ class KeranjangController extends Controller
     {
         $keranjangdetail = keranjangdetail::where('id', $id)->first();
 
-        $keranjang = keranjangs::where('id', $keranjangdetail->id)->first();
+        $keranjang = keranjangs::where('id', $keranjangdetail->keranjang_id)->first();
         // dd($keranjang);
-        // $keranjang->subtotal = $keranjang->subtotal-$keranjangdetail->subtotal;
-        // $keranjang->update();
+        $keranjang->subtotal = $keranjang->subtotal-$keranjangdetail->subtotal;
+        $keranjang->update();
             // dd($keranjang);
         try {
                 //code...

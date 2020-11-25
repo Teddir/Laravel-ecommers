@@ -93,9 +93,9 @@ class KeranjangController extends Controller
         $keranjang->update();
 
         $keranjangdetail = keranjangdetail::where('keranjang_id', $keranjang_id)->get();
-        foreach ($keranjangdetail as $keranjangdetail) {
-            $produk = produks::where('id', $keranjangdetail->produk_id)->first();
-            $produk->stok = $produk->stok - $keranjangdetail->jumlah_pesan;
+        foreach ($keranjangdetail as $keranjangdetails) {
+            $produk = produks::where('id', $keranjangdetails->produk_id)->first();
+            $produk->stok = $produk->stok - $keranjangdetails->jumlah_pesan;
 
             $produk->update();
 
