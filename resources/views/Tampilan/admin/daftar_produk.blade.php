@@ -27,17 +27,18 @@
     </tr>
   </thead>
   <tbody>
+    {{-- {{$item}} --}}
     <tr>
-        @foreach ($produk as $item)
+      @foreach ($penjual as $item)
       <th scope="row">{{ $loop->iteration }}</th>    
-      <td>{{ $penjual[0]->name_toko }}</td>
-      <td>{{ $item->name_produk }}</td>
-      <td>{{ $item->stok  }}</td>
-      <td>{{ $item->status }}</td>
-      <td>{{ number_format($item->harga) }}</td>
-      <td>{{ $item->diskon }}%</td>
+      <td>{{ $item->penjuals[0]->name_toko }}</td>
+      <td>{{ $item->produks[0]->name_produk }}</td>
+      <td>{{ $item->produks[0]->stok  }}</td>
+      <td>{{ $item->produks[0]->status }}</td>
+      <td>{{ number_format($item->produks[0]->harga) }}</td>
+      <td>{{ $item->produks[0]->diskon }}%</td>
       <td>{{ $item->created_at }}</td>
-      <td><img class="card-img-top" src="{{ $item->image }}" alt="{{ $item->image }}" height="200" widht="40"></td>
+      <td><img class="card-img-top" src="{{ $item->produks[0]->image }}" alt="{{ $item->image }}" height="200" widht="40"></td>
       <td>
         <a href="{{ url('/admin/edit1', $item->id) }}"><button class="btn btn-primary"><i class="fa fa-wrench" aria-hidden="true"></i></button></a>
       

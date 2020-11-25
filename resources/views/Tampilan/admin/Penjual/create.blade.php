@@ -18,11 +18,11 @@
     </div>
     <div class="form-group">
         <label for="phone_number">Phone Number</label>
-        <input type="number" name="phone_number" class="form-control" required>
+        <input type="text" name="phone_number" class="form-control" required>
         <p class="text-danger">{{ $errors->first('phone_number') }}</p>
     </div>
     <select class="form-control @error('user_id') is-invalid  @enderror" id="user_id" name="user_id">
-        <option selected disabled>Nama Siswa</option>
+        <option selected disabled>Nama Penjual</option>
         @foreach ($user as $item)
       <option value="{{ $item->id }}">{{ $item->name  }}</option>
         @endforeach

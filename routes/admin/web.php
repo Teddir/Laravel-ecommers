@@ -11,6 +11,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
   Route::delete('/destroy1/{id}', 'Produk\Web\ProdukController@destroy1');
 
   //--------------------------------------------------->tampilan E-Penjuals
+  Route::get('/detail/{user_id}', 'User\Web\UserController@detail');
   Route::get('/index2', 'Penjual\Web\PenjualController@index1');
   Route::get('/tambah2', 'Penjual\Web\PenjualController@show1');
   Route::get('/edit2/{id}', 'Penjual\Web\PenjualController@edit1');
@@ -27,7 +28,7 @@ Route::group(['middleware' => 'auth:admin'], function () {
   //--------------------------------------------------->crud  
   Route::post('/create3', 'User\Web\UserController@store1');
   Route::put('/update3/{id}', 'User\Web\UserController@update1');
-  Route::delete('/destroy3/{id}', 'User\Web\UserController@destroy1');
+  Route::get('/destroy3/{id}', 'User\Web\UserController@destroy1');
 
   //--------------------------------------------------->tampilan E-Kategori
   Route::get('/index4', 'Kategori\Web\KategoriController@index1');

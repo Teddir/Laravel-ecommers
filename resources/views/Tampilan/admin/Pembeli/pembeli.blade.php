@@ -15,7 +15,6 @@
   <thead>
     <tr>
       <th scope="col">No</th>
-      <th scope="col">Foto</th>
       <th scope="col">Customer</th>
       <th scope="col">Alamat</th>
       <th scope="col">Email</th>
@@ -27,15 +26,12 @@
     {{-- {{dd($item)}} --}}
     <tr>
       <th scope="row">{{ $loop->iteration }}</th>    
-      <td><img class="card-img-top" src="{{ $item->avatar }}" alt="{{ $item->avatar }}" height="200" widht="40"></td>
       <td>{{ $item->name }}</td>
       <td>{{ $item->alamat }}</td>
       <td>{{ $item->email }}</td>
       <td>
         <a href="{{ url('/admin/edit3', $item->id) }}"><button class="btn btn-primary"><i class="fa fa-wrench" aria-hidden="true"></i></button></a> 
-        <form action="{{ url('/admin/destroy3', $item->id) }}" method="post">@method('delete') @csrf
-        <button class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
-        </form>
+        <a href="{{ url('/admin/destroy3', $item->id) }}"><button class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button></a>
       </td>
     </tr>
     @endforeach

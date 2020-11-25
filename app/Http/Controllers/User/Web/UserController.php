@@ -14,6 +14,16 @@ use illuminate\Support\Str;
 
 class UserController extends Controller
 {
+    public function detail($id)
+    {
+        // $user = User::where('id', $id)->first();
+
+        $penjual = penjuals::where('user_id', $id)->with('users')->first();
+        // dd($penjual);
+        return view('Tampilan.admin.Penjual.detail', compact('penjual'));
+    }
+
+
     public function index1()
     {
 
@@ -50,7 +60,7 @@ class UserController extends Controller
         $user = new User;
         $user->name = $request->name;
         $user->email = $request->email;
-        $user->password = $request->password;
+        $user->password = Hash::make($request->password);
         $user->alamat = $request->alamat;
         $file = base64_encode(file_get_contents($request->avatar));
         $client = new \GuzzleHttp\Client();
@@ -76,7 +86,7 @@ class UserController extends Controller
     {
         // $user = User::with(['penjuals'])->orderBy('created_at', 'asc')->get();
         $user = user::find($id);
-        return view('Tampilan.Pembeli.edit', compact('user'));
+        return view('Tampilan.admin.Pembeli.edit', compact('user'));
     }
 
     public function update1(Request $request, $id)
@@ -109,5 +119,11 @@ class UserController extends Controller
     {
         $produk = User::destroy($id);
         return redirect('/admin/index3')->with(['success' => 'Kategori Diperbaharui!']);
+    }
+
+    public function destroy2($id)
+    {
+        $produk = User::destroy($id);
+        return redirect('/user/index3')->with(['success' => 'Kategori Diperbaharui!']);
     }
 }

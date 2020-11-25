@@ -25,7 +25,7 @@ class KeranjangController extends Controller
 
     public function index()
     {
-        $keranjang = keranjangs::where('user_id', auth()->user()->id)->with('users', 'produks')->get();
+        $keranjang = keranjangs::where('user_id', auth()->user()->id)->with('users')->get();
         if (!$keranjang) {
             # code...
             return response()->json([

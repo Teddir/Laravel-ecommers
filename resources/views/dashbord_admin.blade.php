@@ -79,8 +79,8 @@
                   </li>
                   <li><a><i class="fa fa-edit"></i> Forms <span class="fa fa-chevron-down"></span></a>
                     <ul class="nav child_menu">
+                      <li><a href="/admin/index2">E-Toko</a></li>
                       <li><a href="/admin/index1">E-Produk</a></li>
-                      <li><a href="/admin/index2">E-Penjual</a></li>
                       <li><a href="/admin/index3">E-Pembeli</a></li>
                       <li><a href="/admin/index4">E-Kategori</a></li>
                     </ul>

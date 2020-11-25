@@ -65,7 +65,7 @@ class PenjualController extends Controller
     {
         $request->validate([
             'name_toko' => 'required:unique:penjuals',
-            'phone_number' => 'required:unique:penjuals',
+            'phone_number' => 'required|numeric:unique:penjuals',
 
         ]);
 

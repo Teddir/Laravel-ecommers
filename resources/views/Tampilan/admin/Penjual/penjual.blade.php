@@ -10,7 +10,7 @@
 </div>
 @endif
 
-<a href="{{ url('/admin/tambah2') }}"><button class="btn btn-warning"><i class="fa fa-plus-square" aria-hidden="true"></i></button></a>        
+<a href="{{ url('/admin/tambah2') }}"><button class="btn btn-warning"><i class="fa fa-plus-square" aria-hidden="true">  Add</i></button></a>        
 <table class="table table-striped mt-1">
   <thead>
     <tr>
@@ -31,7 +31,7 @@
       <td>{{ $item->created_at }}</td>
       <td>
         <a href="{{ url('/admin/edit2', $item->id) }}"><button class="btn btn-primary"><i class="fa fa-wrench" aria-hidden="true"></i></button></a> 
-        <a href="{{ url('/admin/destroy2', $item->id) }}"><button class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button></a>
+        <a href="{{ url('/admin/detail', $item->user_id) }}"><button class="btn btn-dark"><i class="fa fa-info" aria-hidden="true"></i></button></a>
         <a href="{{ url('/admin/destroy2', $item->id) }}"><button class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button></a>
       </td>
     </tr>

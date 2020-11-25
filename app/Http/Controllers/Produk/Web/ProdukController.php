@@ -26,9 +26,11 @@ class ProdukController extends Controller
     {
         // $produk = produks::where('user_id', auth()->user()->id)->with('kategoris')->get();
         // dd($produk);
-        $penjual = penjuals::get();
-        $produk = produks::get();
-        return view('Tampilan.admin.daftar_produk', compact('produk','penjual'));
+        $penjuals = penjuals::get();
+        // dd($produk);
+        $penjual = User::where('id', $penjuals[0]->user_id)->with('penjuals')->first();
+        dd($penjual);    
+        return view('Tampilan.admin.daftar_produk', compact('penjual','penjuals'));
     }
 
     public function index2(Request $request)            //-------------------------------------------------------------->User
