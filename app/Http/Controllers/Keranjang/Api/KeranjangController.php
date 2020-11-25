@@ -188,8 +188,8 @@ class KeranjangController extends Controller
 
         $keranjang = keranjangs::where('id', $keranjangdetail->id)->first();
         // dd($keranjang);
-        $keranjang->subtotal = $keranjang->subtotal-$keranjangdetail->subtotal;
-        $keranjang->update();
+        // $keranjang->subtotal = $keranjang->subtotal-$keranjangdetail->subtotal;
+        // $keranjang->update();
             // dd($keranjang);
         try {
                 //code...
