@@ -29,7 +29,7 @@
   <tbody>
     {{-- {{$item}} --}}
     <tr>
-      @foreach ($penjual as $item)
+      @foreach ($produk as $item)
       <th scope="row">{{ $loop->iteration }}</th>    
       <td>{{ $item->penjuals[0]->name_toko }}</td>
       <td>{{ $item->produks[0]->name_produk }}</td>

@@ -40,13 +40,12 @@
         <label for="kategori_id">Kategori</label>
 
         <!-- DATA KATEGORI DIGUNAKAN DISINI, SEHINGGA SETIAP PRODUK USER BISA MEMILIH KATEGORINYA -->
-        <select name="kategori_id" class="form-control">
-            <option value="">Pilih</option>
-            @foreach ($kategori as $row)
-            <option value="{{ $row->id }}" {{ old('kategori_id') == $row->id ? 'selected':'' }}>
-                {{ $row->name_kategori }}</option>
+        <select class="form-control @error('kategori_id') is-invalid  @enderror" id="kategori_id" name="kategori_id">
+            <option selected disabled>Pilih</option>
+            @foreach ($kategori as $item)
+          <option value="{{ $item->id }}">{{ $item->name_kategori  }}</option>
             @endforeach
-        </select>
+          </select>
         <p class="text-danger">{{ $errors->first('kategori_id') }}</p>
     </div>
     <div class="form-group">

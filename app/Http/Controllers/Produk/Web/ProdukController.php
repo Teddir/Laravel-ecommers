@@ -11,6 +11,7 @@ use illuminate\support\Str;
 use App\keranjangs;
 use App\orders;
 use App\penjuals;
+use App\finish;
 
 class ProdukController extends Controller
 {
@@ -26,11 +27,11 @@ class ProdukController extends Controller
     {
         // $produk = produks::where('user_id', auth()->user()->id)->with('kategoris')->get();
         // dd($produk);
-        $penjuals = penjuals::get();
+        $penjual = penjuals::get();
         // dd($produk);
-        $penjual = User::where('id', $penjuals[0]->user_id)->with('penjuals')->first();
-        dd($penjual);    
-        return view('Tampilan.admin.daftar_produk', compact('penjual','penjuals'));
+        $produk = User::where('id', $penjual[0]->id)->with('produks')->get();
+        // dd($produk);    
+        return view('Tampilan.admin.daftar_produk', compact('produk','penjual'));
     }
 
     public function index2(Request $request)            //-------------------------------------------------------------->User
@@ -38,6 +39,16 @@ class ProdukController extends Controller
         $produk = produks::where('user_id', auth()->user()->id)->with('kategoris')->get();
         // dd($produk);
         return view('Tampilan.user.Produk.produk', compact('produk'));
+    }
+
+    public function penjualan(Request $request)            //-------------------------------------------------------------->User
+    {
+        $finish = finish::where('user_id', auth()->user()->id)->with('produks', 'keranjangdetails')->get();
+        // dd($finish);
+        return view('Tampilan.user.Produk.penjualan', compact('finish'));
+
+        //barang terjual
+
     }
 
 
@@ -258,7 +269,7 @@ class ProdukController extends Controller
     public function produkall()
     {
         // $produk = produks::where('user_id', auth()->user()->id())->with('produks', 'keranjangs', 'users');
-        $produk = produks::get();
+        $produk = produks::with('penjuals')->get;
         // $produkdetail = produks::find($id);
         return view('website.store', compact('produk'));
     }
@@ -270,9 +281,11 @@ class ProdukController extends Controller
 
     public function newproduk()
     {
+        $penjual = penjuals::get();
         $produk = produks::get();
         // $produk = produks::find($id);
-        return view('website.store', compact('produk'));
+        // dd($produk);
+        return view('website.store', compact('produk','penjual'));
     }
 
     

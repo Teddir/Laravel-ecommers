@@ -5,18 +5,11 @@ namespace App\Http\Controllers\Produk\Api;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\produks;
-use App\kategoris;
-use App\User;
-use illuminate\support\Str;
-use App\keranjangs;
-use App\orders;
-use App\penjuals;
-
 
 
 class ProdukController extends Controller
 {
-        // public function __construct()
+    // public function __construct()
     // {
     //     $this->middleware('jwt.verify');
     // }
@@ -66,7 +59,7 @@ class ProdukController extends Controller
                 'Message' => 'Data Gagal Di Tampilkan',
                 'data' => NULL, 402,
             ]);
-        } 
+        }
         return response()->json([
             'status' => 'Succes',
             'Message' => 'Data Berhasil Di Tampilkan',
@@ -125,10 +118,8 @@ class ProdukController extends Controller
         $request->validate([
             'name_produk' => 'required',
             'desc' => 'required',
-            'harga' => 'required',
+            'harga' => 'required|integer',
             'stok' => 'required|integer',
-            'status' => 'required|integer',
-            'diskon' => 'required',
         ]);
 
         $produk = new produks;
@@ -180,7 +171,7 @@ class ProdukController extends Controller
      */
     public function show($id)
     {
-        $produk = produks::where('user_id', auth()->user()->id)->with('kategoris')->find($id);
+        $produk = produks::where('user_id', auth()->user()->id)->find($id);
         if (!$produk) {
             # code...
             return response()->json([
@@ -245,7 +236,7 @@ class ProdukController extends Controller
         $data = $response->getBody()->getContents();
         $data = json_decode($data);
         $image = $data->image->url;
-        
+
         $produk->image = $image;
         try {
             $produk->update($dataResult);
@@ -304,6 +295,4 @@ class ProdukController extends Controller
             'data' => $produk, 200,
         ]);
     }
-
-
 }

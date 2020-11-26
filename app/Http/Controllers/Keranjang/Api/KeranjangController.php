@@ -135,14 +135,15 @@ class KeranjangController extends Controller
         // $produk = produks::where('id', $id)->first();
 
          $keranjang = keranjangs::where('user_id', auth()->user()->id)->where('status', 0)->first();
-         if ($keranjang->id == null) {
+         
+         if (empty($keranjang->id)) {
             return response()->json([
                 'status' => 'Error',
                 'Message' => 'Maaf Anda Tidak Memiliki Daftar Barang Di Keranjang',
                 'data' => NULL, 402,
             ]);
         }
-         $keranjangdetail = keranjangdetail::where('keranjang_id', $keranjang->id, 'produk_id')->with('produks')->get();
+         $keranjangdetail = keranjangdetail::where('keranjang_id', $keranjang->id, 'produk_id')->with('produks')->orderBy('created_at', 'DESC')->get();
         //  dd($keranjangdetail);
          return response()->json([
             'status' => 'Succes',
@@ -155,7 +156,16 @@ class KeranjangController extends Controller
 
     public function konfirmasi()
     {
+        
         $keranjang = keranjangs::where('user_id', auth()->user()->id)->where('status', 0)->first();
+        
+        if (empty($keranjang->id)) {
+            return response()->json([
+                'status' => 'Error',
+                'Message' => 'Maaf Anda Tidak Memiliki Daftar Barang Untuk Di Konfirmasi',
+                'data' => NULL, 402,
+            ]);
+        }
         $keranjang_id = $keranjang->id;
         $keranjang->status = 1;
         $keranjang->update();

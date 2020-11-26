@@ -30,7 +30,4 @@ Route::group(['middleware' => 'auth:admin'], function () {
   Route::put('/update3/{id}', 'User\Web\UserController@update1');
   Route::get('/destroy3/{id}', 'User\Web\UserController@destroy1');
 
-  //--------------------------------------------------->tampilan E-Kategori
-  Route::get('/index4', 'Kategori\Web\KategoriController@index1');
-  Route::post('/create4', 'Kategori\Web\KategoriController@store1');
 });

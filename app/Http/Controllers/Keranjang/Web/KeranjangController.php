@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Keranjang\Web;
 
+use App\finish;
 use App\Http\Controllers\Controller;
 use App\keranjangdetail;
 use App\keranjangs;
@@ -64,7 +65,7 @@ class KeranjangController extends Controller
         $keranjang = keranjangs::where('user_id', auth()->user()->id)->where('status', 0)->first();
         $keranjang->subtotal = $keranjang->subtotal+$produk->harga*$request->qty;
         $keranjang->update();
-        return redirect('/website')->with('status', 'Pesanan Berhasil Di Hapus');
+        return redirect('/website')->with('status', 'Berhasil Memesan');
 
 
     }
@@ -85,21 +86,36 @@ class KeranjangController extends Controller
         
     }
 
-    public function konfirmasi1()
+    public function konfirmasi1(Request $request)
     {
         $keranjang = keranjangs::where('user_id', auth()->user()->id)->where('status', 0)->first();
         $keranjang_id = $keranjang->id;
         $keranjang->status = 1;
         $keranjang->update();
 
+        if ($keranjang->id = null) {
+            return response('asas');
+        }
         $keranjangdetail = keranjangdetail::where('keranjang_id', $keranjang_id)->get();
         foreach ($keranjangdetail as $keranjangdetails) {
+            
+            
+            
             $produk = produks::where('id', $keranjangdetails->produk_id)->first();
             $produk->stok = $produk->stok - $keranjangdetails->jumlah_pesan;
-
+            
             $produk->update();
+            
+            $finish = new finish;
+            $finish->qty = $keranjangdetails->jumlah_pesan;
+            $finish->status = 0;
+            $finish->pengiriman = 0;  
+            $finish->produk_id = $keranjangdetails->produk_id;
+            $finish->user_id = auth()->user()->id;
+            $finish->keranjangdetail_id = $keranjangdetails->keranjang_id;
+            $finish->save();
 
-            return redirect('/website')->with('status', 'Pesanan Berhasil Di Hapus');
+            return redirect('/website')->with('status', 'Pesanan Akan Di Proses');
 
         
         }

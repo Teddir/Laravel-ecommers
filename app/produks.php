@@ -47,7 +47,7 @@ class produks extends Model
     public function finish()
     {
         //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
-        return $this->belongsTo(finish::class, 'produk_id', 'id');
+        return $this->belongsTo(finish::class,  'id', 'produk_id');
     }
 
     public function chekouts()

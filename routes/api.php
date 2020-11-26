@@ -42,9 +42,9 @@ Route::group(['middleware' => 'jwt.verify'], function () {
     // -----------------------------------------------------> produk
     
     Route::get('/produkp', 'Produk\Api\ProdukController@produkpenjual');      //------------->produkpenjualaja
-    Route::put('/produk/{id}', 'Produk\Api\ProdukController@update');
-    Route::post('/produk', 'Produk\Api\ProdukController@store');
-    Route::delete('/produk/{id}', 'Produk\Api\ProdukController@destroy');
+    Route::put('/produk/{id}', 'Produk\Api\ProdukController@update');    //-------------- Update Data
+    Route::post('/produk', 'Produk\Api\ProdukController@store');          //------------------------Tambah Data
+    Route::delete('/produk/{id}', 'Produk\Api\ProdukController@destroy');  //----------> Delete data
     Route::post('/searc', 'Produk\Api\ProdukController@searc'); //-----------> Searching  Produk
 
     // -----------------------------------------------------> end produk
@@ -55,9 +55,6 @@ Route::group(['middleware' => 'jwt.verify'], function () {
 
     //route hubungi
     Route::resource('/hubungi', 'HubungiController');
-
-    //route kategori
-    Route::resource('/kategori', 'Kategori\Api\KategoriController');
 
     //route keranjang
     Route::get('/keranjang', 'Keranjang\Api\KeranjangController@index'); //----------------->nampilin all aja di keranjang 
@@ -73,7 +70,7 @@ Route::group(['middleware' => 'jwt.verify'], function () {
 
     Route::get('user', 'User\Api\UserController@index');  //-------->nampilin semua user
     Route::get('useraja', 'User\Api\UserController@getAuthenticatedUser');  //-------->nampilin 1 user
-    Route::get('userp', 'User\Api\UserController@userp');         //-------------delete
+    Route::get('userp', 'User\Api\UserController@userp');         //-------------data si user aja
     Route::put('user/update', 'User\Api\UserController@update');           //----------update
     Route::delete('user/{id}', 'User\Api\UserController@destroy');         //-------------delete
     Route::get('user/{id}', 'User\Api\UserController@show');         //-------------delete

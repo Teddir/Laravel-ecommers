@@ -30,8 +30,10 @@
 
 	<!-- Modernizer js -->
 	<script src="{{asset('js1/vendor/modernizr-3.5.0.min.js')}}"></script>
+
 </head>
 <body>
+
 	<!--[if lte IE 9]>
 		<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience and security.</p>
 	<![endif]-->
@@ -165,8 +167,7 @@
 												<input type="text" class="searching" name="cari" placeholder="Search for...">
 											</form>
 							<li class="wishlist"><i class="fa fa-heart" aria-hidden="true"></i></li>
-							<li class="shopcart"><i class="fa fa-shopping-cart" aria-hidden="true"><a href="{{url('/website/chekout')}}">.</a></i>
-								<li class="user"><i class="fa fa-user" aria-hidden="true"></i></li>
+							<a  class="shopcart" href="{{url('/website/chekout')}}"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a>	
 								<!-- Start Shopping Cart -->
 								<div class="block-minicart minicart__active">
 									<div class="minicart-content-wrapper">
@@ -418,7 +419,11 @@
         <!-- End Slider area -->
 																																				<!-- Start New Seller Area -->
 		<section class="wn__product__area brown--color pt--80  pb--30">
-			
+				@if (session('status'))
+		<div class="alert alert-warning">
+		{{ session('status') }}
+		</div>
+		@endif
 			<div class="container">
 				<div class="row">
 					<div class="col-lg-12">
@@ -444,7 +449,7 @@
 							<div class="product__content content--center">
 								<h4><a href="single-product.html">{{$item->name_produk}}</a></h4>
 								<ul class="prize d-flex">
-									<li>{{$item->harga}}</li>
+									<li>{{number_format($item->harga)}}</li>
 									<li class="old_prize">{{$item->diskon}}</li>
 								</ul>
 								<div class="action">
@@ -535,7 +540,7 @@
 							<div class="product__content content--center">
 								<h4><a href="single-product.html">{{$item->name_produk}}</a></h4>
 								<ul class="prize d-flex">
-									<li>{{$item->harga}}</li>
+									<li>{{number_format($item->harga)}}</li>
 									<li class="old_prize">{{$item->diskon}}</li>
 								</ul>
 								<div class="action">
@@ -767,6 +772,7 @@
 																		<div class="quick-desc">
 																			<span class="old-price">Stok: {{($item->stok)}}</span>
 																			</div>
+																			
 															</div>
 															<div class="quick-desc">
 																	Keterangan {{$item->desc}}

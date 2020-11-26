@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class Finish extends Migration
+class Finishes extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,19 @@ class Finish extends Migration
      */
     public function up()
     {
-        Schema::create('finishs', function (Blueprint $table) {
+        Schema::create('finishes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('qty')->default(1);
             $table->integer('status')->default(0)->comment('0 = confirm, 1 = prosses, 2 = finish');
             $table->integer('pengiriman')->default(0)->comment('0 = standar, 1 = kilat');
+            $table->integer('produk_id');
+            $table->integer('user_id');
             $table->timestamps();
         });
+
+
+        
+
     }
 
     /**

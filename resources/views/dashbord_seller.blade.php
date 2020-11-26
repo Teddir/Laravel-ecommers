@@ -81,7 +81,7 @@
                     <ul class="nav child_menu">
                       <li><a href="/user/index1">E-Produk</a></li>
                       <li><a href="/user/index2">E-Penjualan</a></li>
-                      <li><a href="/user/index3">E-Pembeli</a></li>
+                      <li><a href="/user/index3">E-Profil</a></li>
                     </ul>
                   </li>
                   <li><a><i class="fa fa-desktop"></i> UI Elements <span class="fa fa-chevron-down"></span></a>

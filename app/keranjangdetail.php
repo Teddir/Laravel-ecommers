@@ -18,7 +18,13 @@ class keranjangdetail extends Model
     public function keranjangs()
     {
         //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
-        return $this->hasMany(keranjangs::class, 'keranjang_id', 'id');
+        return $this->hasMany(keranjangs::class, 'id', 'keranjang_id');
+    }
+
+    public function finish()
+    {
+        //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
+        return $this->belongsTo(finish::class, 'id','keranjangdetail_id');
     }
 
 
