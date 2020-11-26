@@ -63,8 +63,6 @@ Route::group(['middleware' => 'jwt.verify'], function () {
     Route::delete('/keranjang/delete/{id}', 'Keranjang\Api\KeranjangController@destroy'); //-----------> hapus barang ke keranjang
     Route::post('/keranjangaja/chekout', 'Keranjang\Api\KeranjangController@konfirmasi'); //-----------> chekout
 
-
-
     //route Penjual
     Route::resource('/penjual', 'Penjual\Api\PenjualController');
 
@@ -74,8 +72,6 @@ Route::group(['middleware' => 'jwt.verify'], function () {
     Route::put('user/update', 'User\Api\UserController@update');           //----------update
     Route::delete('user/{id}', 'User\Api\UserController@destroy');         //-------------delete
     Route::get('user/{id}', 'User\Api\UserController@show');         //-------------delete
-
-
 
     Route::get('/allchat', 'ChatController@allchat');  //---------->menampilkan semua chat
     Route::get('/chat/{id}', 'ChatController@index1');    //----------------------->menampilkan setiap ada chat

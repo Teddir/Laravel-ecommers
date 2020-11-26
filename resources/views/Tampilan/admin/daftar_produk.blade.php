@@ -17,8 +17,6 @@
       <th scope="col">No</th>
       <th scope="col">Name Toko</th>
       <th scope="col">Name Produk</th>
-      <th scope="col">Stok</th>
-      <th scope="col">Status</th>
       <th scope="col">harga</th>
       <th scope="col">diskon</th>
       <th scope="col">Tanggal Masuk</th>
@@ -33,8 +31,6 @@
       <th scope="row">{{ $loop->iteration }}</th>    
       <td>{{ $item->penjuals[0]->name_toko }}</td>
       <td>{{ $item->produks[0]->name_produk }}</td>
-      <td>{{ $item->produks[0]->stok  }}</td>
-      <td>{{ $item->produks[0]->status }}</td>
       <td>{{ number_format($item->produks[0]->harga) }}</td>
       <td>{{ $item->produks[0]->diskon }}%</td>
       <td>{{ $item->created_at }}</td>

@@ -30,7 +30,7 @@ class ProdukController extends Controller
         $penjual = penjuals::get();
         // dd($produk);
         $produk = User::where('id', $penjual[0]->id)->with('produks')->get();
-        // dd($produk);    
+        dd($produk);    
         return view('Tampilan.admin.daftar_produk', compact('produk','penjual'));
     }
 
