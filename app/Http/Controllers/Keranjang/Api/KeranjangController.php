@@ -19,10 +19,10 @@ class KeranjangController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    //  public function __construct()
-    //  {
-    //      $this->middleware('jwt.verify');
-    //  }
+    public function __construct()
+    {
+        $this->middleware('jwt.verify');
+    }
 
     public function index()
     {
@@ -171,22 +171,8 @@ class KeranjangController extends Controller
         foreach ($keranjangdetail as $keranjangdetails) {
             $produk = produks::where('id', $keranjangdetails->produk_id)->first();
             $produk->stok = $produk->stok - $keranjangdetails->jumlah_pesan;
-            try {
-                //code...
-                $produk->update();
-            } catch (\Throwable $th) {
-                return response()->json([
-                    'status' => 'Error',
-                    'Message' => $th->getMessage(),
-                    'data' => NULL, 402,
-                ]);
-            }
-            return response()->json([
-                'status' => 'Succes',
-                'Message' => 'Data Telah Terkirim Ke Penjual ',
-                'data' => $keranjangdetail, 200,
-            ]);
-
+            $produk->update();
+            
             $finish = new finish;
             $finish->qty = $keranjangdetails->jumlah_pesan;
             $finish->status = 0;
@@ -210,7 +196,6 @@ class KeranjangController extends Controller
                 'Message' => 'Data Akan Di Konfirmasi',
                 'data' => $finish, 200,
             ]);
-
         }
     }
 

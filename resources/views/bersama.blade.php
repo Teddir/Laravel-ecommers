@@ -17,7 +17,7 @@
 
         $content .= '
         <page>
-        <link rel="logo" href="tempat logo kamu">
+        <img src="/icon.jpg" alt="icon" srcset="">
         <div style="padding:4mm; border:1px solid;" align="center">
         <span style="font-size:25px;"> Menu Makanan Kedai Kamyusi </span>
         </div>

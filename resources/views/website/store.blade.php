@@ -469,7 +469,7 @@
 										<li><i class="fa fa-star-o"></i></li>
 										<li><i class="fa fa-star-o"></i></li>
 									</ul>
-								</div>
+								</div> 
 							</div>
 						</div>
 					</div>
