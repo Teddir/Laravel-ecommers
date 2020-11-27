@@ -9,6 +9,7 @@ use App\orders;
 use App\produks;
 use Illuminate\Http\Request;
 use Produk;
+use App\finish;
 
 class KeranjangController extends Controller
 {
@@ -86,7 +87,7 @@ class KeranjangController extends Controller
 
         //cek keranjang new
         $cek_keranjangdetail = keranjangdetail::where('produk_id', $produk->id)
-        ->where('keranjang_id', $keranjang_new->id)->first();
+            ->where('keranjang_id', $keranjang_new->id)->first();
 
         if (empty($cek_keranjangdetail)) {
             $keranjangdetail = new keranjangdetail;
@@ -95,23 +96,21 @@ class KeranjangController extends Controller
             $keranjangdetail->jumlah_pesan = $request->jumlah_pesan;
             $keranjangdetail->subtotal = $produk->harga * $request->jumlah_pesan;
             $keranjangdetail->save();
-    
-        } else
-        {
+        } else {
             $cek_keranjangdetail = keranjangdetail::where('produk_id', $produk->id)
-            ->where('keranjang_id', $keranjang_new->id)->first();
+                ->where('keranjang_id', $keranjang_new->id)->first();
 
-            $cek_keranjangdetail->jumlah_pesan = $cek_keranjangdetail->jumlah_pesan+$request->jumlah_pesan;
-            
+            $cek_keranjangdetail->jumlah_pesan = $cek_keranjangdetail->jumlah_pesan + $request->jumlah_pesan;
+
             //harga sekarang
-            $harga_keranjangdetail_new = $produk->harga*$request->jumlah_pesan;
-            $cek_keranjangdetail->subtotal = $cek_keranjangdetail->subtotal+$harga_keranjangdetail_new;
+            $harga_keranjangdetail_new = $produk->harga * $request->jumlah_pesan;
+            $cek_keranjangdetail->subtotal = $cek_keranjangdetail->subtotal + $harga_keranjangdetail_new;
             $cek_keranjangdetail->update();
         }
 
         //jumlah total
         $keranjang = keranjangs::where('user_id', auth()->user()->id)->where('status', 0)->first();
-        $keranjang->subtotal = $keranjang->subtotal+$produk->harga*$request->jumlah_pesan;
+        $keranjang->subtotal = $keranjang->subtotal + $produk->harga * $request->jumlah_pesan;
         try {
             $keranjang->update();
         } catch (\Throwable $th) {
@@ -134,31 +133,29 @@ class KeranjangController extends Controller
 
         // $produk = produks::where('id', $id)->first();
 
-         $keranjang = keranjangs::where('user_id', auth()->user()->id)->where('status', 0)->first();
-         
-         if (empty($keranjang->id)) {
+        $keranjang = keranjangs::where('user_id', auth()->user()->id)->where('status', 0)->first();
+
+        if (empty($keranjang->id)) {
             return response()->json([
                 'status' => 'Error',
                 'Message' => 'Maaf Anda Tidak Memiliki Daftar Barang Di Keranjang',
                 'data' => NULL, 402,
             ]);
         }
-         $keranjangdetail = keranjangdetail::where('keranjang_id', $keranjang->id, 'produk_id')->with('produks')->orderBy('created_at', 'DESC')->get();
+        $keranjangdetail = keranjangdetail::where('keranjang_id', $keranjang->id, 'produk_id')->with('produks')->orderBy('created_at', 'DESC')->get();
         //  dd($keranjangdetail);
-         return response()->json([
+        return response()->json([
             'status' => 'Succes',
             'Message' => 'Berhasil Menampilkan Keranjang',
             'data' => $keranjangdetail, 200,
         ]);
-         
-        
     }
 
     public function konfirmasi()
     {
-        
+
         $keranjang = keranjangs::where('user_id', auth()->user()->id)->where('status', 0)->first();
-        
+
         if (empty($keranjang->id)) {
             return response()->json([
                 'status' => 'Error',
@@ -171,9 +168,9 @@ class KeranjangController extends Controller
         $keranjang->update();
 
         $keranjangdetail = keranjangdetail::where('keranjang_id', $keranjang_id)->get();
-        foreach ($keranjangdetail as $keranjangdetail) {
-            $produk = produks::where('id', $keranjangdetail->produk_id)->first();
-            $produk->stok = $produk->stok - $keranjangdetail->jumlah_pesan;
+        foreach ($keranjangdetail as $keranjangdetails) {
+            $produk = produks::where('id', $keranjangdetails->produk_id)->first();
+            $produk->stok = $produk->stok - $keranjangdetails->jumlah_pesan;
             try {
                 //code...
                 $produk->update();
@@ -186,9 +183,34 @@ class KeranjangController extends Controller
             }
             return response()->json([
                 'status' => 'Succes',
-                'Message' => 'Data Berhasil Di Konfirmasi',
+                'Message' => 'Data Telah Terkirim Ke Penjual ',
                 'data' => $keranjangdetail, 200,
             ]);
+
+            $finish = new finish;
+            $finish->qty = $keranjangdetails->jumlah_pesan;
+            $finish->status = 0;
+            $finish->pengiriman = 0;
+            $finish->produk_id = $keranjangdetails->produk_id;
+            $finish->user_id = auth()->user()->id;
+            $finish->penjual_id = $produk->penjual_id;
+            $finish->keranjangdetail_id = $keranjangdetails->keranjang_id;
+            try {
+                //code...
+                $finish->save();
+            } catch (\Throwable $th) {
+                return response()->json([
+                    'status' => 'Error',
+                    'Message' => $th->getMessage(),
+                    'data' => NULL, 402,
+                ]);
+            }
+            return response()->json([
+                'status' => 'Succes',
+                'Message' => 'Data Akan Di Konfirmasi',
+                'data' => $finish, 200,
+            ]);
+
         }
     }
 
@@ -198,12 +220,12 @@ class KeranjangController extends Controller
 
         $keranjang = keranjangs::where('id', $keranjangdetail->keranjang_id)->first();
         // dd($keranjang);
-        $keranjang->subtotal = $keranjang->subtotal-$keranjangdetail->subtotal;
+        $keranjang->subtotal = $keranjang->subtotal - $keranjangdetail->subtotal;
         $keranjang->update();
-            // dd($keranjang);
+        // dd($keranjang);
         try {
-                //code...
-                $keranjangdetail->delete();
+            //code...
+            $keranjangdetail->delete();
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => 'Error',
@@ -217,6 +239,4 @@ class KeranjangController extends Controller
             'data' => $keranjangdetail, 200,
         ]);
     }
-
-
 }

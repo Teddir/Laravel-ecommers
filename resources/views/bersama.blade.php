@@ -1,198 +1,64 @@
+<?php
+        require_once('../config/+koneksi.php');
+        require_once('../model/database.php');
+        include "../model/makanan/f_dessert.php";
 
-        <li>
-            <ul>
+        $connection = new Database($host, $user, $pass, $database);
+        $mn = new Food($connection); 
+        $content = "
+        <style type='text/css'>
+        .tabel { border-collapse:collapse;}
+        .tabel th { padding:8px 10px; background-color:grey; color:white; width:70px;}
+        .tabel td{padding:3px;}
+        img{width:70px;}
+        </style>
 
-                user =  [
-                    'name', 'email', 'password','alamat','phone_number','image','alamat','status',
-                    ];
-                </ul>
-            </li>
-            <li>
-                <ul>
-                    produk = [
-                        'name_produk', 'desc', 'harga','stok','image','diskon','status',
-                        'kategori_id','user_id', 'keranjang_id'
-                        ];
+        ";
 
-                </ul>
-            </li>
-            
-            <li>
-                <ul>
-                    
-                    order = [
-                        'invoice', 'subtotal', 'status','pengiriman','pesan',  
-                        'user_id','produk_id'
-                        
-                        ];
-                    
-                </ul>
-            </li>
+        $content .= '
+        <page>
+        <link rel="logo" href="tempat logo kamu">
+        <div style="padding:4mm; border:1px solid;" align="center">
+        <span style="font-size:25px;"> Menu Makanan Kedai Kamyusi </span>
+        </div>
 
-            <li>
-                <ul>
-                    penjual = [
-                        'name_toko','phone_number',
-                        'message_id','penjual_id', //---->user is penjual
-        ];
-                    
-                </ul>
-            </li>
+        <div style="padding:20px 0 10px 0; font-size:15px;">
+        Laporan Data Menu
+        </div>
 
-            <li>
-                <ul>
-                    
-                    
-                                        
-                        message = ['from', 'to', 'message', 'is_read'];
-                        
-                        
-                    
-                </ul>
-            </li>
-            <li>
-                <ul>
-                    keranjang = [
-                    'jumlah', 'qty', 'produk_name','produk_price','produk_image',
-                    'user_id','produk_id'
-                    ];
-                    
-                </ul>
-            </li>
-            <li>
-                <ul>
-                    KATEGORI = [
-                        'name_kategori',
-                        'parent_id'
-                        // 'tgl_posting'---> diganti sama created_at
-                        ];
-                    
-                </ul>
-            </li>
-            <li>
-                <ul>
-                    
-                    HUBUNGI = [
-                        'email', 'subjek', 'message',
-                        'hubungi_id',
-                        ];
-                        
-                    
-                </ul>
-            </li>
- <li>
-    <ul>
-        Route::post('register', 'UserController@register');
-    </ul> 
-    <ul>
-    
-        Route::post('login', 'UserController@login');
-    </ul>     
-    
-    <ul>
-        
-        Route::post('logout', 'UserController@logout');
-        
-    </ul>     
-    
-    <ul>
-        Route::get('/chat', 'ChatController@index')->name('home');
-        
-    </ul>    
-    <ul>
-        Route::get('user', 'UserController@index');  //-------->nampilin Semua User
-    </ul>
-    <ul>
+        <table border="1px" class="tabel">
+        <tr>
+        <th align="center">No.</th>
+        <th align="center">Kode Menu</th>
+        <th align="center">Nama Menu</th>
+        <th align="center">Harga</th>
+        <th align="center">Jumlah Menu</th>
+        <th align="center">Gambar Menu</th>
+        </tr>';
+        $no = 1;
+        $tampil = $mn->tampil();
+        while ($data = $tampil->fetch_object()) {
+        $content  .='
+        <tr>
+        <td align="center">'.$no++.'.'.'</td>
+        <td align="center">'.$data->kode_menu.'</td>
+        <td align="center">'.$data->nama_menu.'</td>
+        <td align="center">'.$data->harga.'</td>
+        <td align="center">'.$data->jumlah_menu.'</td>
+        <td><img src="../img_menu/makanan/'.$data->gambar.'"></td>
+        </tr>
+        ';
+        }
 
-        Route::put('user/{id}', 'UserController@update');           //----------update
-    </ul>
-    <ul>
+        $content .='
+        </table>
 
-        Route::delete('user/{id}', 'UserController@destroy');         //-------------delete
-    </ul>
-    <ul>
-        Route::get('user/{id}', 'UserController@show');         //-------------show dari ID
-    </ul>
-    
-        
-</li> 
+        </page>
+        ';
 
-<li>
-
-    <ul>
-        
-        //route produk
-
-        Route::get('/produk', 'ProdukController@index');
-    </ul>
-    <ul>
-        
-        Route::get('/produk/{id}', 'ProdukController@show');
-    </ul>
-                    
-<li>
-    <ul>
-        Route::get('/produkp', 'ProdukController@produkpenjual');      //------------->produkpenjualaja
-        </ul>
-        <ul>
-            Route::put('/produk/{id}', 'ProdukController@update');
-            </ul>
-            <ul>
-                Route::post('/produk', 'ProdukController@store');
-                </ul>   
-                <ul>
-                    Route::delete('/produk/{id}', 'ProdukController@destroy');
-                    </ul> 
-</li>    
-<li>
-    <ul>
-        
-        Route::get('/message/{id}', 'ChatController@getMessage');
-    </ul>
-    <ul>
-
-        Route::post('/message', 'ChatController@sendMessage');
-    </ul>
-</li>
-<li>
-    <ul>
-        Route::resource('/hubungi', 'HubungiController');
-    </ul>
-</li>
-<li>
-    <ul>
-        
-        Route::resource('/kategori', 'KategoriController');
-    </ul>
-</li>
-<li>
-    <ul>
-        Route::resource('/keranjang', 'KeranjangController');
-        Route::post('/tambah/keranjang/{id}', 'KeranjangController@addcart');    //-----------> addcart/tambah ke keranjang
-    </ul>
-</li>
-<li>
-    <ul>
-        
-        Route::resource('/mainMenu', 'MainMenuController');
-    </ul>
-</li>
-<li>
-    <ul>
-        Route::resource('/order', 'OrderController');
-        
-    </ul>
-</li>
-<li>
-    <ul>
-        
-        Route::resource('/penjual', 'PenjualController');
-    </ul>
-</li>
-<li>
-    <ul>
-        Route::resource('/chekout', 'ChekoutController');
-        
-    </ul>
-</li>
-
+        require DIR.'/html2pdf_v5.2-master/vendor/autoload.php';
+        use Spipu\Html2Pdf\Html2Pdf;
+        $html2pdf = new Html2Pdf('P','A4','en', true, 'UTF-8', array(15, 15, 15, 15), false); 
+        $html2pdf->writeHTML($content);
+        $html2pdf->output();
+        ?>

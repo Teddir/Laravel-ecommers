@@ -11,7 +11,6 @@ class FinishController extends Controller
   public function finish(Request $request)            //-------------------------------------------------------------->User
   {
     $finish = finish::get();
-    dd($finish);
     if (!$finish) {
       # code...
       return response()->json([
@@ -24,6 +23,7 @@ class FinishController extends Controller
       'status' => 'Succes',
       'Message' => 'Data Berhasil Di Tampilkan',
       'data' => $finish, 200,
+      // dd($finish),
   ]);
     //barang terjual
 
