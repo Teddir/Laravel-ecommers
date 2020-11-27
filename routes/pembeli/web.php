@@ -11,7 +11,7 @@ Route::group(['middleware' => 'auth'], function () {
   Route::delete('/destroy1/{id}', 'Produk\Web\ProdukController@destroy2');
 
   //--------------------------------------------------->tampilan E-Penjuals
-  Route::get('/index2', 'Produk\Web\ProdukController@penjualan');
+  Route::get('/index2', 'FinishController@penjualan');
   Route::get('/tambah2', 'Penjual\Web\PenjualController@show2');
   Route::get('/edit2/{id}', 'Penjual\Web\PenjualController@edit2');
   //--------------------------------------------------->crud  

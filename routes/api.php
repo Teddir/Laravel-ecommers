@@ -44,7 +44,7 @@ Route::group(['middleware' => 'jwt.verify'], function () {
     Route::get('/produkp', 'Produk\Api\ProdukController@produkpenjual');      //------------->produkpenjualaja
     Route::put('/produk/{id}', 'Produk\Api\ProdukController@update');    //-------------- Update Data
     Route::post('/produk', 'Produk\Api\ProdukController@store');          //------------------------Tambah Data
-    Route::delete('/produk/{id}', 'Produk\Api\ProdukController@destroy');  //----------> Delete data
+    Route::delete('/produk/delete/{id}', 'Produk\Api\ProdukController@destroy');  //----------> Delete data
     Route::post('/searc', 'Produk\Api\ProdukController@searc'); //-----------> Searching  Produk
 
     // -----------------------------------------------------> end produk

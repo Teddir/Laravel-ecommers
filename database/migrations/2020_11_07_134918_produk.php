@@ -17,8 +17,8 @@ class Produk extends Migration
             $table->bigIncrements('id');
             $table->string('name_produk');
             $table->text('desc');
-            $table->varchar('harga');
-            $table->varchar('stok');
+            $table->string('harga');
+            $table->string('stok');
             $table->string('image')->nullable();
             $table->timestamps();
         });

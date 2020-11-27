@@ -89,6 +89,18 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(keranjangs::class, 'id', 'user_id');
     }
 
+    public function keranjangdetails()
+    {
+        //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
+        return $this->hasMany(keranjangdetail::class, 'id');
+    }
+
+    public function finish()
+    {
+        //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
+        return $this->hasMany(finish::class, 'id');
+    }
+
     public function messages()
     {
         //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK

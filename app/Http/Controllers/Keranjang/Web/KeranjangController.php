@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\keranjangdetail;
 use App\keranjangs;
 use App\orders;
+use App\penjuals;
 use App\produks;
 use Illuminate\Http\Request;
 use Produk;
@@ -19,7 +20,7 @@ class KeranjangController extends Controller
         $produk = produks::where('id', $id)->first();
         // dd($produk);
 
-        if ($request->qty > $produk->stok) {
+        if ($request->jumlah_pesan > $produk->stok) {
             return redirect('/website')->with('status', 'Maaf Stok Tidak Cukup');
         }
         $cek_pesanan =  keranjangs::where('user_id', auth()->user()->id)->where('status', 0)->first();
@@ -44,8 +45,8 @@ class KeranjangController extends Controller
             $keranjangdetail = new keranjangdetail;
             $keranjangdetail->produk_id = $produk->id;
             $keranjangdetail->keranjang_id = $keranjang_new->id;
-            $keranjangdetail->jumlah_pesan = $request->qty;
-            $keranjangdetail->subtotal = $produk->harga * $request->qty;
+            $keranjangdetail->jumlah_pesan = $request->jumlah_pesan;
+            $keranjangdetail->subtotal = $produk->harga * $request->jumlah_pesan;
             $keranjangdetail->save();
     
         } else
@@ -53,17 +54,17 @@ class KeranjangController extends Controller
             $cek_keranjangdetail = keranjangdetail::where('produk_id', $produk->id)
             ->where('keranjang_id', $keranjang_new->id)->first();
 
-            $cek_keranjangdetail->jumlah_pesan = $cek_keranjangdetail->jumlah_pesan+$request->qty;
+            $cek_keranjangdetail->jumlah_pesan = $cek_keranjangdetail->jumlah_pesan+$request->jumlah_pesan;
             
             //harga sekarang
-            $harga_keranjangdetail_new = $produk->harga*$request->qty;
+            $harga_keranjangdetail_new = $produk->harga*$request->jumlah_pesan;
             $cek_keranjangdetail->subtotal = $cek_keranjangdetail->subtotal+$harga_keranjangdetail_new;
             $cek_keranjangdetail->update();
         }
 
         //jumlah total
         $keranjang = keranjangs::where('user_id', auth()->user()->id)->where('status', 0)->first();
-        $keranjang->subtotal = $keranjang->subtotal+$produk->harga*$request->qty;
+        $keranjang->subtotal = $keranjang->subtotal+$produk->harga*$request->jumlah_pesan;
         $keranjang->update();
         return redirect('/website')->with('status', 'Berhasil Memesan');
 
@@ -80,8 +81,8 @@ class KeranjangController extends Controller
         if (empty($keranjang->id)) {
             return redirect('/website');
         }
-        $keranjangdetail = keranjangdetail::where('keranjang_id', $keranjang->id)->get();
         // dd($keranjangdetail);
+        $keranjangdetail = keranjangdetail::where('keranjang_id', $keranjang->id)->get();
         return view('website.cart', compact('keranjang', 'keranjangdetail'));
         
     }
@@ -89,36 +90,35 @@ class KeranjangController extends Controller
     public function konfirmasi1(Request $request)
     {
         $keranjang = keranjangs::where('user_id', auth()->user()->id)->where('status', 0)->first();
+        if (empty($keranjang->id)) {
+            return redirect('/website')->with('status', 'Pesanan Tidak Terdaftar');
+        }
         $keranjang_id = $keranjang->id;
         $keranjang->status = 1;
         $keranjang->update();
 
-        if ($keranjang->id = null) {
-            return response('asas');
-        }
+
         $keranjangdetail = keranjangdetail::where('keranjang_id', $keranjang_id)->get();
         foreach ($keranjangdetail as $keranjangdetails) {
-            
-            
-            
             $produk = produks::where('id', $keranjangdetails->produk_id)->first();
             $produk->stok = $produk->stok - $keranjangdetails->jumlah_pesan;
-            
             $produk->update();
+            // dd($produk);
+                # code...
+                $finish = new finish;
+                $finish->qty = $keranjangdetails->jumlah_pesan;
+                $finish->status = 0;
+                $finish->pengiriman = 0;  
+                $finish->produk_id = $keranjangdetails->produk_id;
+                $finish->user_id = auth()->user()->id;
+                $finish->penjual_id = $produk->penjual_id;
+                $finish->keranjangdetail_id = $keranjangdetails->keranjang_id;
+                $finish->save();
             
-            $finish = new finish;
-            $finish->qty = $keranjangdetails->jumlah_pesan;
-            $finish->status = 0;
-            $finish->pengiriman = 0;  
-            $finish->produk_id = $keranjangdetails->produk_id;
-            $finish->user_id = auth()->user()->id;
-            $finish->keranjangdetail_id = $keranjangdetails->keranjang_id;
-            $finish->save();
-
+        }
             return redirect('/website')->with('status', 'Pesanan Akan Di Proses');
 
         
-        }
         
     }
 

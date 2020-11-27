@@ -15,7 +15,7 @@ class penjuals extends Model
 
     public function penjuals()
     {
-        return $this->hasMany(penjuals::class, 'id', 'penjual_id');
+        return $this->hasMany(penjuals::class, 'penjual_id');
     }
 
     public function messages()
@@ -32,7 +32,19 @@ class penjuals extends Model
     public function produks()
     {
         //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
-        return $this->hasMany(produks::class,'id',  'penjual_id' );
+        return $this->belongsTo(produks::class, 'id', 'penjual_id' );
+    }
+
+    public function keranjangdetails()
+    {
+        //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
+        return $this->belongsTo(keranjangdetail::class, 'id' );
+    }
+
+    public function finish()
+    {
+        //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
+        return $this->belongsTo(finish::class, 'penjual_id' );
     }
 
 }

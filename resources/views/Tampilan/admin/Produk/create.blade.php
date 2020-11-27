@@ -17,36 +17,11 @@
         <p class="text-danger">{{ $errors->first('name_produk') }}</p>
     </div>
     <div class="form-group">
-        <label for="status">Status</label>
-        <select name="status" class="form-control" required>
-            <option value="0" {{ old('status') == 'Publish' ? 'selected':'' }}>Publish</option>
-            <option value="1" {{ old('status') == 'Draft' ? 'selected':'' }}>Draft</option>
-        </select>
-        <p class="text-danger">{{ $errors->first('status') }}</p>
-    </div>
-    <div class="form-group">
-        <label for="diskon">diskon</label>
-        <input type="number" name="diskon" class="form-control" required>
-        <p class="text-danger">{{ $errors->first('diskon') }}</p>
-    </div>
-    <div class="form-group">
         <label for="desc">Deskripsi</label>
 
         <!-- TAMBAHKAN ID YANG NNTINYA DIGUNAKAN UTK MENGHUBUNGKAN DENGAN CKEDITOR -->
         <textarea name="desc" id="description" class="form-control">{{ old('desc') }}</textarea>
         <p class="text-danger">{{ $errors->first('desc') }}</p>
-    </div>
-    <div class="form-group">
-        <label for="kategori_id">Kategori</label>
-
-        <!-- DATA KATEGORI DIGUNAKAN DISINI, SEHINGGA SETIAP PRODUK USER BISA MEMILIH KATEGORINYA -->
-        <select class="form-control @error('kategori_id') is-invalid  @enderror" id="kategori_id" name="kategori_id">
-            <option selected disabled>Pilih</option>
-            @foreach ($kategori as $item)
-          <option value="{{ $item->id }}">{{ $item->name_kategori  }}</option>
-            @endforeach
-          </select>
-        <p class="text-danger">{{ $errors->first('kategori_id') }}</p>
     </div>
     <div class="form-group">
         <label for="harga">harga</label>

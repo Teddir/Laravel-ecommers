@@ -7,16 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 class produks extends Model
 {
     protected $fillable = [
-        'name_produk', 'desc', 'harga','stok','image','diskon','status',
-        'kategori_id','user_id'
+        'name_produk', 'desc', 'harga', 'stok', 'image', 'diskon', 'status',
+        'kategori_id', 'penjual_id'
 
-        
+
     ];
 
     public function produks()
     {
         //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
-        return $this->hasMany(produks::class, 'id','produk_id');
+        return $this->hasMany(produks::class, 'id', 'produk_id');
     }
 
 
@@ -38,16 +38,11 @@ class produks extends Model
         return $this->hasMany(keranjangs::class, 'id', 'produk_id');
     }
 
-    public function keranjangdetails()
-    {
-        //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
-        return $this->belongsTo(keranjangdetails::class, 'id','produk_id');
-    }
 
     public function finish()
     {
         //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
-        return $this->belongsTo(finish::class,  'id', 'produk_id');
+        return $this->belongsTo(finish::class, 'penjual_id');
     }
 
     public function chekouts()
@@ -59,15 +54,6 @@ class produks extends Model
     public function penjuals()
     {
         //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
-        return $this->belongsTo(penjuals::class, 'produk_id', 'id');
+        return $this->belongsTo(penjuals::class,'id');
     }
-
-
-
-
-
-
-
-
-
 }

@@ -18,8 +18,6 @@ class Finishes extends Migration
             $table->string('qty')->default(1);
             $table->integer('status')->default(0)->comment('0 = confirm, 1 = prosses, 2 = finish');
             $table->integer('pengiriman')->default(0)->comment('0 = standar, 1 = kilat');
-            $table->integer('produk_id');
-            $table->integer('user_id');
             $table->timestamps();
         });
 

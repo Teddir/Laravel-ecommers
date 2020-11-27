@@ -15,7 +15,7 @@
     <tr>
       <th scope="col">No</th>
       <th scope="col">Foto</th>
-      <th scope="col">Customer</th>
+      <th scope="col">Name</th>
       <th scope="col">Alamat</th>
       <th scope="col">Email</th>
       <th colspan="3"></th>       
@@ -31,7 +31,7 @@
       <td>{{ $item->alamat }}</td>
       <td>{{ $item->email }}</td>
       <td>
-        <a href="{{ url('/admin/edit3', $item->id) }}"><button class="btn btn-primary"><i class="fa fa-wrench" aria-hidden="true"></i></button></a> 
+        <a href="{{ url('/user/edit3', $item->id) }}"><button class="btn btn-primary"><i class="fa fa-wrench" aria-hidden="true"></i></button></a> 
         <form action="{{ url('/user/destroy3', $item->id) }}" method="post">@method('delete') @csrf
         <button class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
         </form>

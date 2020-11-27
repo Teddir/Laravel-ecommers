@@ -25,47 +25,32 @@ class ProdukController extends Controller
     public function index1(Request $request)       //-------------------------------------------------------------->Admin
 
     {
-        // $produk = produks::where('user_id', auth()->user()->id)->with('kategoris')->get();
-        // dd($produk);
-        $penjual = penjuals::get();
-        // dd($produk);
-        $produk = User::where('id', $penjual[0]->id)->with('produks')->get();
-        dd($produk);    
-        return view('Tampilan.admin.daftar_produk', compact('produk','penjual'));
+        $produks = produks::with('penjuals')->orderBy('created_at', 'Desc')->get();
+        // dd($produks);    
+        return view('Tampilan.admin.daftar_produk', compact('produks'));
     }
 
     public function index2(Request $request)            //-------------------------------------------------------------->User
     {
-        $produk = produks::where('user_id', auth()->user()->id)->with('kategoris')->get();
+        $produk = produks::where('penjual_id', auth()->user()->id)->get();
         // dd($produk);
         return view('Tampilan.user.Produk.produk', compact('produk'));
     }
 
-    public function penjualan(Request $request)            //-------------------------------------------------------------->User
-    {
-        $finish = finish::where('user_id', auth()->user()->id)->with('produks', 'keranjangdetails')->get();
-        // dd($finish);
-        return view('Tampilan.user.Produk.penjualan', compact('finish'));
-
-        //barang terjual
-
-    }
 
 
     public function show1(produks $produks)
     {
-        $kategori = kategoris::get();
         $user = User::get();
-        $produk = produks::with(['kategoris'])->orderBy('created_at', 'asc')->get();
-        return view('Tampilan.admin.Produk.create', compact('produk', 'kategori', 'user'));
+        $produk = produks::get();
+        return view('Tampilan.admin.Produk.create', compact('produk', 'user'));
     }
 
     public function show2(produks $produks)
     {
-        $kategori = kategoris::get();
         $user = User::get();
-        $produk = produks::with(['kategoris'])->orderBy('created_at', 'asc')->get();
-        return view('Tampilan.user.Produk.create', compact('produk', 'kategori', 'user'));
+        $produk = produks::get();
+        return view('Tampilan.user.Produk.create', compact('produk', 'user'));
     }
 
 
@@ -77,8 +62,6 @@ class ProdukController extends Controller
             'desc' => 'required',
             'harga' => 'required',
             'stok' => 'required',
-            'status' => 'required',
-            'diskon' => 'required',
         ]);
         $produk = new produks;
         $produk->name_produk = $request->name_produk;
@@ -103,8 +86,6 @@ class ProdukController extends Controller
         $image = $data->image->url;
 
         $produk->image = $image;
-        $produk->status = $request->status;
-        $produk->diskon = $request->diskon;
         $produk->save();
 
         return redirect('/admin/index1')->with(['success' => 'Kategori Diperbaharui!']);
@@ -118,15 +99,11 @@ class ProdukController extends Controller
             'desc' => 'required',
             'harga' => 'required',
             'stok' => 'required',
-            'status' => 'required',
-            'diskon' => 'required',
         ]);
         $produk = new produks;
         $produk->name_produk = $request->name_produk;
         $produk->user_id = auth()->user()->id;
         $produk->desc = $request->desc;
-        $produk->harga = $request->harga;
-        $produk->stok = $request->stok;
         $file = base64_encode(file_get_contents($request->image));
 
         $client = new \GuzzleHttp\Client();
@@ -144,8 +121,6 @@ class ProdukController extends Controller
         $image = $data->image->url;
 
         $produk->image = $image;
-        $produk->status = $request->status;
-        $produk->diskon = $request->diskon;
         $produk->save();
 
         return redirect('/user/index1')->with(['success' => 'Kategori Diperbaharui!']);
@@ -154,15 +129,15 @@ class ProdukController extends Controller
     public function edit1($id)
     {
         $produk = produks::find($id);
-        $kategori = kategoris::with('produks')->orderBy('created_at', 'asc')->get();
-        return view('Tampilan.admin.Produk.edit', compact('produk', 'kategori'));
+        // $kategori = ::with('produks')->orderBy('created_at', 'asc')->get();
+        return view('Tampilan.admin.Produk.edit', compact('produk'));
     }
 
     public function edit2($id)
     {
         $produk = produks::find($id);
-        $kategori = kategoris::with('produks')->orderBy('created_at', 'asc')->get();
-        return view('Tampilan.user.Produk.edit', compact('produk', 'kategori'));
+        // $kategori = kategoris::with('produks')->orderBy('created_at', 'asc')->get();
+        return view('Tampilan.user.Produk.edit', compact('produk'));
     }
 
     public function update1(Request $request, $id)
@@ -172,8 +147,6 @@ class ProdukController extends Controller
             'desc' => 'required',
             'harga' => 'required',
             'stok' => 'required|integer',
-            'status' => 'required',
-            'diskon' => 'required',
         ]);
 
 
@@ -201,8 +174,6 @@ class ProdukController extends Controller
         $image = $data->image->url;
 
         $produk->image = $image;
-        $produk->status = $request->status;
-        $produk->diskon = $request->diskon;
         $produk->save();
 
         return redirect('/admin/index1')->with(['success' => 'Kategori Diperbaharui!']);
@@ -215,8 +186,6 @@ class ProdukController extends Controller
             'desc' => 'required',
             'harga' => 'required',
             'stok' => 'required|integer',
-            'status' => 'required',
-            'diskon' => 'required',
         ]);
 
 
@@ -244,8 +213,6 @@ class ProdukController extends Controller
         $image = $data->image->url;
 
         $produk->image = $image;
-        $produk->status = $request->status;
-        $produk->diskon = $request->diskon;
         $produk->save();
 
         return redirect('/user/index1')->with(['success' => 'Kategori Diperbaharui!']);

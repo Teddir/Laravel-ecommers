@@ -29,13 +29,13 @@ use Illuminate\Support\Str;
 
 $factory->define(User::class, function (Faker $faker) {
     return [
-        'id' => 2,
+        'id' => 3,
         'name' => $faker->name,
         'avatar' => 'https://via.placeholder.com/150',
         'email' => $faker->unique()->safeEmail,
         'email_verified_at' => now(),
         'alamat' => $faker->streetAddress,
-        'phone_number' => 1234567,
+        'phone_number' => 12345679,
         'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
         'remember_token' => Str::random(10),
     ];
@@ -66,14 +66,12 @@ $factory->define(hubungis::class, function (Faker $faker) {
 $factory->define(produks::class, function (Faker $faker) {
     return [
         // 'id_kategori' => $faker->buildingNumber,
-        'user_id' => 1,
+        'penjual_id' => 2,
         'name_produk' => $faker->name,
         'desc' => $faker->text,
         'harga' => 7800,
         'stok' => 8,
         'image' => 'https://via.placeholder.com/150',
-        'status' => 0,
-        'diskon' => 12,
     ];
 });
 $factory->define(orders::class, function (Faker $faker) {
@@ -97,7 +95,7 @@ $factory->define(keranjangs::class, function (Faker $faker) {
 });
 $factory->define(penjuals::class, function (Faker $faker) {
     return [
-        'penjual_id' => 2,
+        'user_id' => 2,
         'name_toko' => $faker->name,
         'phone_number' => 756876725,
     ];

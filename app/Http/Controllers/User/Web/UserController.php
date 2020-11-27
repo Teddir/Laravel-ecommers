@@ -89,6 +89,13 @@ class UserController extends Controller
         return view('Tampilan.admin.Pembeli.edit', compact('user'));
     }
 
+    public function edit2($id)
+    {
+        // $user = User::with(['penjuals'])->orderBy('created_at', 'asc')->get();
+        $user = user::find($id);
+        return view('Tampilan.user.Pembeli.edit', compact('user'));
+    }
+
     public function update1(Request $request, $id)
     {
         $user = User::find($id);

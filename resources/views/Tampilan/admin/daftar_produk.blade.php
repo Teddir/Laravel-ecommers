@@ -18,7 +18,6 @@
       <th scope="col">Name Toko</th>
       <th scope="col">Name Produk</th>
       <th scope="col">harga</th>
-      <th scope="col">diskon</th>
       <th scope="col">Tanggal Masuk</th>
       <th scope="col">image</th>
       <th colspan="3"></th>       
@@ -27,14 +26,14 @@
   <tbody>
     {{-- {{$item}} --}}
     <tr>
-      @foreach ($produk as $item)
+      @foreach ($produks as $item)
+      {{-- {{dd($item)}} --}}
       <th scope="row">{{ $loop->iteration }}</th>    
-      <td>{{ $item->penjuals[0]->name_toko }}</td>
-      <td>{{ $item->produks[0]->name_produk }}</td>
-      <td>{{ number_format($item->produks[0]->harga) }}</td>
-      <td>{{ $item->produks[0]->diskon }}%</td>
+      <td>{{ $item->penjuals->name_toko }}</td>
+      <td>{{ $item->name_produk }}</td>
+      <td>{{ number_format($item->harga) }}</td>
       <td>{{ $item->created_at }}</td>
-      <td><img class="card-img-top" src="{{ $item->produks[0]->image }}" alt="{{ $item->image }}" height="200" widht="40"></td>
+      <td><img class="card-img-top" src="{{ $item->image }}" alt="{{ $item->image }}" height="200" widht="40"></td>
       <td>
         <a href="{{ url('/admin/edit1', $item->id) }}"><button class="btn btn-primary"><i class="fa fa-wrench" aria-hidden="true"></i></button></a>
       

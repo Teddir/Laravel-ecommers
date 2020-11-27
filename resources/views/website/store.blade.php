@@ -780,7 +780,7 @@
 															<div class="quick-desc">
 																Jumlah Pesanan
 																<form action="{{ url('/website/pesan', $item->id) }}" method="post"> @csrf
-																<input type="number" name="qty" required>
+																<input type="number" name="jumlah_pesan" required>
 														</div>																		                              
 															
 															<div class="addtocart-btn">

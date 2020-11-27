@@ -69,7 +69,7 @@ class ProdukController extends Controller
 
     public function produkpenjual()
     {
-        $produk = produks::where('user_id', auth()->user()->id, 'kategori_id')->with('kategoris')->get();
+        $produk = produks::where('penjual_id', auth()->user()->id)->with('penjuals')->get();
         // dd($produk);
         if (!$produk) {
             # code...
@@ -124,13 +124,10 @@ class ProdukController extends Controller
 
         $produk = new produks;
         $produk->name_produk = $request->name_produk;
-        $produk->user_id = auth()->user()->id;
-        $produk->kategori_id = $request->kategori_id;
+        $produk->penjual_id = auth()->user()->id;
         $produk->desc = $request->desc;
         $produk->harga = $request->harga;
         $produk->stok = $request->stok;
-        $produk->status = $request->status;
-        $produk->diskon = $request->diskon;
         $file = base64_encode(file_get_contents($request->image));
         $client = new \GuzzleHttp\Client();
         $response = $client->request('POST', 'https://freeimage.host/api/1/upload', [
@@ -195,7 +192,6 @@ class ProdukController extends Controller
      */
     public function edit($id)
     {
-        $produk = produks::with(['kategoris'])->orderBy('created_at', 'asc')->find($id);
         $produk = produks::find($id);
         if (!$produk) {
             return response()->json([

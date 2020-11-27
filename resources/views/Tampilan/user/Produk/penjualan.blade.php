@@ -22,12 +22,13 @@
   </thead>
   <tbody>
     <tr>
+      
       <th scope="row">{{ $loop->iteration }}</th>    
-      <td>{{ $item->produks[0]->name_produk }}</td>
+      <td>{{ $item->produks->name_produk }}</td>
       <td>{{ $item->qty  }}</td>
-      <td>{{ $item->produks[0]->harga }}</td>
+      <td>{{ number_format($item->produks->harga) }}</td>
       <td>{{ $item->status }}</td>
-      <td>{{ number_format($item->keranjangdetails[0]->subtotal) }}</td>
+      <td>{{number_format($subtotal = $item->produks->harga *  $item->qty)}}</td>
       <td>{{ $item->created_at }}</td>
       <td>
       <td>
@@ -38,9 +39,10 @@
 </table>
 <h5 class="card-title">Keterangan</h5>
 <p class="card-text">status : 0 = Confirm, 1 = proses, 3 = finish</p>
-<a href="#" class="btn btn-primary">Confirm</a>
 </div>
 </div>
 @endforeach
+
+<a class="btn btn-warning mt-3">Keutungan : {{number_format($untung = $subtotal +=+ $item->produks->harga)}} </a>
 
 @endsection

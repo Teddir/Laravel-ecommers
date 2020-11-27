@@ -35,4 +35,11 @@ class keranjangs extends Model
         //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
         return $this->belongsTo(chekouts::class,  'keranjang_id', 'id');
     }
+
+    public function finish()
+    {
+        //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
+        return $this->belongs(finish::class, 'id');
+    }
+
 }
