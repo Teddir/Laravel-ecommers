@@ -16,8 +16,10 @@ class Finishes extends Migration
         Schema::create('finishes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('qty')->default(1);
+            $table->string('subtotal')->default(1);
             $table->integer('status')->default(0)->comment('0 = confirm, 1 = prosses, 2 = finish');
             $table->integer('pengiriman')->default(0)->comment('0 = standar, 1 = kilat');
+
             $table->timestamps();
         });
 

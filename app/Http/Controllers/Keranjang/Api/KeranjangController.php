@@ -47,27 +47,16 @@ class KeranjangController extends Controller
         $produk = produks::where('id', $id)->first();
         // dd($produk);
 
-        if (empty($produk)) {
-            # code..
-            return response()->json([
-                'status' => 'Error',
-                'Message' => 'Maaf barang KadalWarsa Silahkan Pilih Barang Lain',
-                'data' => NULL, 402,
-            ]);
-        }
-        $keranjang = $request->jumlah_pesan;
+        $request->validate([
+            'jumlah_pesan' => 'required',
 
-        if (empty($request->jumlah_pesan)) {
-            return response()->json([
-                'status' => 'Error',
-                'Message' => 'Anda Belum Mengisi Jumlah Pesan',
-                'data' => NULL, 402,
-            ]);
-        }
+        ]);
+
+
         if ($request->jumlah_pesan > $produk->stok) {
             return response()->json([
                 'status' => 'Error',
-                'Message' => 'Maaf Setok Tidak Ada',
+                'Message' => 'Stok Mencapai Batas',
                 'data' => NULL, 402,
             ]);
         }
@@ -112,20 +101,23 @@ class KeranjangController extends Controller
         $keranjang = keranjangs::where('user_id', auth()->user()->id)->where('status', 0)->first();
         $keranjang->subtotal = $keranjang->subtotal + $produk->harga * $request->jumlah_pesan;
         try {
+            //code...
             $keranjang->update();
         } catch (\Throwable $th) {
+            //throw $th;
             return response()->json([
                 'status' => 'Error',
-                'Message' => $th->getMessage(),
+                'Message' => 'Data Gagal Di Tampilkan',
                 'data' => NULL, 402,
             ]);
         }
         return response()->json([
             'status' => 'Succes',
-            'Message' => 'Data Berhasil Di Masukan Ke Keranjang',
+            'Message' => 'Data Berhasil Di Tampilkan',
             'data' => $keranjang, 200,
         ]);
     }
+
 
 
     public function detailkeranjang()
@@ -151,28 +143,24 @@ class KeranjangController extends Controller
         ]);
     }
 
-    public function konfirmasi()
+    public function konfirmasi(Request $request)
     {
-
         $keranjang = keranjangs::where('user_id', auth()->user()->id)->where('status', 0)->first();
-
         if (empty($keranjang->id)) {
-            return response()->json([
-                'status' => 'Error',
-                'Message' => 'Maaf Anda Tidak Memiliki Daftar Barang Untuk Di Konfirmasi',
-                'data' => NULL, 402,
-            ]);
+            return redirect('/website')->with('status', 'Pesanan Tidak Terdaftar');
         }
         $keranjang_id = $keranjang->id;
         $keranjang->status = 1;
         $keranjang->update();
+
 
         $keranjangdetail = keranjangdetail::where('keranjang_id', $keranjang_id)->get();
         foreach ($keranjangdetail as $keranjangdetails) {
             $produk = produks::where('id', $keranjangdetails->produk_id)->first();
             $produk->stok = $produk->stok - $keranjangdetails->jumlah_pesan;
             $produk->update();
-            
+            // dd($produk);
+            # code...
             $finish = new finish;
             $finish->qty = $keranjangdetails->jumlah_pesan;
             $finish->status = 0;
@@ -181,22 +169,13 @@ class KeranjangController extends Controller
             $finish->user_id = auth()->user()->id;
             $finish->penjual_id = $produk->penjual_id;
             $finish->keranjangdetail_id = $keranjangdetails->keranjang_id;
-            try {
-                //code...
-                $finish->save();
-            } catch (\Throwable $th) {
-                return response()->json([
-                    'status' => 'Error',
-                    'Message' => $th->getMessage(),
-                    'data' => NULL, 402,
-                ]);
-            }
-            return response()->json([
-                'status' => 'Succes',
-                'Message' => 'Data Akan Di Konfirmasi',
-                'data' => $finish, 200,
-            ]);
+            $finish->save();
         }
+        return response()->json([
+            'status' => 'Succes',
+            'Message' => 'Data Berhasil Di Tampilkan',
+            'data' => $finish, 200,
+        ]);
     }
 
     public function destroy($id)
