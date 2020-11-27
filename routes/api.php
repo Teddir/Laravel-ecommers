@@ -79,4 +79,5 @@ Route::group(['middleware' => 'jwt.verify'], function () {
     Route::get('/get/pesan', 'ChatController@getMessage'); //-----------> Nampilin  Message
     Route::post('/send/pesan', 'ChatController@sendMessage'); //-----------> Kirim  Message
 
+    Route::get('finish', 'FinishController@penjualan');         //-------------delete
 });
