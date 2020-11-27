@@ -11,7 +11,7 @@ class FinishController extends Controller
   public function finish(Request $request)            //-------------------------------------------------------------->User
   {
     $finish = finish::get();
-    // dd($finish);    
+    dd($finish);
     if (!$finish) {
       # code...
       return response()->json([
