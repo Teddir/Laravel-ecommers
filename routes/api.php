@@ -66,12 +66,12 @@ Route::group(['middleware' => 'jwt.verify'], function () {
     //route Penjual
     Route::resource('/penjual', 'Penjual\Api\PenjualController');
 
-    Route::get('user', 'User\Api\UserController@index');  //-------->nampilin semua user
-    Route::get('useraja', 'User\Api\UserController@getAuthenticatedUser');  //-------->nampilin 1 user
-    Route::get('userp', 'User\Api\UserController@userp');         //-------------data si user aja
-    Route::put('user/update', 'User\Api\UserController@update');           //----------update
-    Route::delete('user/{id}', 'User\Api\UserController@destroy');         //-------------delete
-    Route::get('user/{id}', 'User\Api\UserController@show');         //-------------delete
+    Route::get('/user', 'User\Api\UserController@index');  //-------->nampilin semua user
+    Route::get('/useraja', 'User\Api\UserController@getAuthenticatedUser');  //-------->nampilin 1 user
+    Route::get('/userp', 'User\Api\UserController@userp');         //-------------data si user aja
+    Route::put('/user/update', 'User\Api\UserController@update');           //----------update
+    Route::delete('/user/{id}', 'User\Api\UserController@destroy');         //-------------delete
+    Route::get('/user/{id}', 'User\Api\UserController@show');         //-------------delete
 
     Route::get('/allchat', 'ChatController@allchat');  //---------->menampilkan semua chat
     Route::get('/chat/{id}', 'ChatController@index1');    //----------------------->menampilkan setiap ada chat
@@ -79,5 +79,5 @@ Route::group(['middleware' => 'jwt.verify'], function () {
     Route::get('/get/pesan', 'ChatController@getMessage'); //-----------> Nampilin  Message
     Route::post('/send/pesan', 'ChatController@sendMessage'); //-----------> Kirim  Message
 
-    Route::get('finish', 'FinishController@penjualan');         //-------------delete
+    Route::get('/finish', 'FinishController@finish');         //-------------finish
 });
