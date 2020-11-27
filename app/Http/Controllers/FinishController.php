@@ -21,7 +21,7 @@ class FinishController extends Controller
   }
   return response()->json([
       'status' => 'Succes',
-      'Message' => 'Data Berhasil Di Tampilkan',
+      'Message' => 'Invoice Berhasil Di Cetak',
       'data' => $finish, 200,
       // dd($finish),
   ]);
