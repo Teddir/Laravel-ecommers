@@ -80,5 +80,6 @@ Route::group(['middleware' => 'jwt.verify'], function () {
     Route::post('/send/pesan', 'ChatController@sendMessage'); //-----------> Kirim  Message
 
     Route::get('/finish', 'FinishController@finish');         //-------------finish
-    Route::get('/finishp', 'FinishController@finishp');         //-------------finish
+    Route::get('/finishp', 'FinishController@finishp');         //-------------finish penjual
+    Route::get('/finishb', 'FinishController@finishb');         //-------------finish pembeli
 });
