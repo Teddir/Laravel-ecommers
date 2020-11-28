@@ -116,7 +116,7 @@ class KeranjangController extends Controller
                 $finish->save();
             
         }
-            return redirect('/website')->with('status', 'Pesanan Akan Di Proses');
+            return redirect('/penjualan')->with('status', 'Pesanan Akan Di Proses');
 
         
         

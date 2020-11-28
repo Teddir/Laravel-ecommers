@@ -31,9 +31,9 @@ Route::get('/', function () {
 //     return view('welcome');
 // });
 
-// Route::get('/Doc', function () {
-//     return view('bersama');
-// });
+Route::get('/penjualan', function () {
+    return view('send_email');
+});
 
 
 
@@ -47,6 +47,7 @@ Auth::routes();
 Route::get('admin/login', 'Auth\AdminAuthController@getLogin')->name('admin.login');
 Route::post('admin/login', 'Auth\AdminAuthController@postLogin');
 Route::get('/website', 'Produk\Web\ProdukController@newproduk');
+
 
 //route Chat
 Route::group(['middleware' => 'auth'], function () {

@@ -302,7 +302,7 @@
                                                         <tbody>
                                                         <tr>
                                                             <td> <div class="container">
-                                                                    <center><p>Pesanmu Yaitu :</p></center>
+                                                                    <center><p>Pesananmu Yaitu :</p></center>
                                                                     <hr>
                                                                     <center><p>{{ $pesan }}</p></center>
                                                                     <hr>
@@ -332,13 +332,13 @@
                     <table border="0" cellpadding="0" cellspacing="0">
                         <tr>
                             <td class="content-block">
-                                <span class="apple-link">Anak IT Inc</span>
+                                <span class="apple-link">Faedah Store</span>
                                 {{--<br> Don't like these emails? <a href="http://i.imgur.com/CScmqnj.gif">Unsubscribe</a>.--}}
                             </td>
                         </tr>
                         <tr>
                             <td class="content-block powered-by">
-                                Powered by <a href="http://medium.com/@kiddy.xyz">Anak IT</a>.
+                                Powered by <a href="http://faedah.herokuapp.com/">Faedah Store</a>.
                             </td>
                         </tr>
                     </table>

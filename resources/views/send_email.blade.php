@@ -1,11 +1,12 @@
 @extends('home')
 @section('content')
     <!-- Main Section -->
+    <div class="container">
     <section class="main-section">
         <!-- Add Your Content Inside -->
         <div class="content">
             <!-- Remove This Before You Start -->
-            <h1>Anak IT -  Send Email</h1>
+            <h1>Send Email</h1>
             @if(\Session::has('alert-failed'))
                 <div class="alert alert-failed">
                     <div>{{Session::get('alert-failed')}}</div>
@@ -41,5 +42,6 @@
         </div>
         <!-- /.content -->
     </section>
+</div>
     <!-- /.main-section -->
 @endsection
