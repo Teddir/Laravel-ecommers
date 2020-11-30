@@ -19,35 +19,6 @@ class ProdukController extends Controller
      * @return \Illuminate\Http\Response
      */
     //-------------------------------------------------------------->Produk    
-
-    public function searc(Request $request)
-    {
-        $cari = new produks;
-        $dataRequest = $request->all();
-        $dataResult = array_filter($dataRequest);
-        // dd($cari);
-        if (empty($dataRequest)) {
-            # code...
-            return response()->json([
-                'status' => 'Error',
-                'Message' => 'Name Barang Belum Terisi',
-                'data' => NULL, 402,
-            ]);
-        }
-        $result =  produks::WHERE('name_produk', 'like', '%' . $cari . '%')->paginate(10);
-        if (empty($result)) {
-            return response()->json([
-                'status' => 'Error',
-                'Message' => 'Name Barang Tidak Di Temukan',
-                'data' => NULL, 402,
-            ]);
-        }
-        return response()->json([
-            'status' => 'Succes',
-            'Message' => 'Barang Berhasil Di Temukan',
-            'data' => $result, 200,
-        ]);
-    }
     public function index()
     {
         $produk = produks::get();
@@ -277,18 +248,26 @@ class ProdukController extends Controller
     //-------------------------------------------------------------->WEB
     public function render(Request $request)
     {
-        $produk =  produks::WHERE('name', 'like', '%' . $request->cari . '%');
-        // return view('dashbord', compact('produk'));
-        if (!$produk) {
-            # code...
+        $cari = $request->get('cari');
+        if (empty($cari)) {
+            # code..
+            return response()->json([
+                'Message' => 'Anda Belum Mengisi Apa Yang Harus Di cari',
+            ]);
+        }
+        $result =  produks::WHERE('name_produk', 'like', '%' . $cari . '%')->paginate(10);
+        if (empty($result)) {
             return response()->json([
                 'status' => 'Error',
-                'Message' => 'Data Not Pound',
+                'Message' => 'Name Barang Tidak Di Temukan',
                 'data' => NULL, 402,
             ]);
         }
         return response()->json([
-            'data' => $produk, 200,
+            'status' => 'Succes',
+            'Message' => 'Barang Berhasil Di Temukan',
+            'data' => $result, 200,
         ]);
+
     }
 }

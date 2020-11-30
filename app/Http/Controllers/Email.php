@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
+use App\keranjangdetail;
 
 class Email extends Controller
 {
@@ -21,5 +22,7 @@ class Email extends Controller
         catch (Exception $e){
             return response (['status' => false,'errors' => $e->getMessage()]);
         }
+
+
     }
 }
