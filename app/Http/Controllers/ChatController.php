@@ -145,12 +145,13 @@ class ChatController extends Controller
         return view('messages.index', ['messages' => $messages]);
     }
 
-    public function sendMessage(Request $request)
+    public function sendMessage1(Request $request)
     {
         $from = Auth::id();
         $to = $request->receiver_id;
+        // dd($to);
         if (empty($to)) {
-            response()->json([
+            return response()->json([
                 'Message' => 'Anda Belum Mengisi Penerima(to)'
             ]);
         }
@@ -158,11 +159,43 @@ class ChatController extends Controller
         $message = $request->message;
 
         if (empty($message)) {
-            response()->json([
+            return response()->json([
                 'Message' => 'Anda Belum Mengisi Pesan(message)'
             ]);
         }
 
+
+        $data = new messages();
+        $data->from = $from;
+        $data->to = $to;
+        $data->message = $message;
+        $data->is_read = 0;
+        $data->save();
+
+        //Pusher    
+        $options  = array(
+            'cluster' => 'ap1',
+            'useTLS' => true
+        );
+
+        $pusher = new Pusher(
+            env('65cc2e5ff5fbd2addc7a'),
+            env('d09c21c29430d3efc39b'),
+            env('1104140'),
+            $options
+        );
+
+        // $data = ['from' => $from, 'to' => $to];
+        $pusher->trigger('my-channel', 'my-event', $data);
+
+        return response()->json(['status' => 'succes', 'Message' => 'Chat Berhasil Terkirim', 'data' => $data]);
+    }
+
+    public function sendMessage(Request $request)
+    {
+        $from = Auth::id();
+        $to = $request->receiver_id;
+        $message = $request->message;
 
         $data = new messages();
         $data->from = $from;
