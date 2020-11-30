@@ -149,7 +149,20 @@ class ChatController extends Controller
     {
         $from = Auth::id();
         $to = $request->receiver_id;
+        if (empty($to)) {
+            response()->json([
+                'Message' => 'Anda Belum Mengisi Penerima(to)'
+            ]);
+        }
+
         $message = $request->message;
+
+        if (empty($message)) {
+            response()->json([
+                'Message' => 'Anda Belum Mengisi Pesan(message)'
+            ]);
+        }
+
 
         $data = new messages();
         $data->from = $from;
