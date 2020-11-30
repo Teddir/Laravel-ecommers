@@ -50,13 +50,13 @@ class ChatController extends Controller
         if (empty($messages)) {
             return response()->json([
                 'status' => 'Error',
-                'Message' => 'Name User Tidak Di Temukan',
+                'Message' => 'Belum Ada Message Di Antara User',
                 'data' => NULL, 402,
             ]);
         }
         return response()->json([
             'status' => 'Succes',
-            'Message' => 'User Berhasil Di Temukan',
+            'Message' => 'All Chat Berhasil Di Tampilkan',
             'data' => $messages, 200,
         ]);
     }
@@ -79,13 +79,13 @@ class ChatController extends Controller
         if (empty($users)) {
             return response()->json([
                 'status' => 'Error',
-                'Message' => 'Tidak Ada Chat',
+                'Message' => 'Halaman Chat Tidak Di Temukan',
                 'data' => NULL, 402,
             ]);
         }
         return response()->json([
             'status' => 'Succes',
-            'Message' => 'Berhasil Menampilkan Chat',
+            'Message' => 'Berhasil Menampilkan Hal Chat',
             'data' => $users, 200,  
         ]);
     }
@@ -124,9 +124,10 @@ class ChatController extends Controller
             'status' => 'Succes',
             'Message' => 'Berhasil Menampilkan Chat',
             'data' => $messages, 200,  
-        ]);    }
+        ]);    
+    }
 
-        
+
     public function getMessage($user_id)
     {
 
