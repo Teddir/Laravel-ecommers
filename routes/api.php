@@ -76,7 +76,7 @@ Route::group(['middleware' => 'jwt.verify'], function () {
     Route::get('/allchat', 'ChatController@allchat');  //---------->menampilkan semua chat
     Route::get('/chat/{id}', 'ChatController@index1');    //----------------------->menampilkan setiap ada chat
     Route::post('/searc/pesan', 'ChatController@searc'); //-----------> Searching  Message
-    Route::get('/get/pesan', 'ChatController@getMessage'); //-----------> Nampilin  Message
+    Route::get('/get/pesan', 'ChatController@getMessage1'); //-----------> Nampilin  Message
     Route::post('/send/pesan', 'ChatController@sendMessage'); //-----------> Kirim  Message
 
     Route::get('/finish', 'FinishController@finish');         //-------------finish

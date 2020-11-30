@@ -166,7 +166,7 @@
 											<form action="/cari" method="get">
 												<input type="text" class="searching" name="cari" placeholder="Search for...">
 											</form>
-							<li class="wishlist"><i class="fa fa-heart" aria-hidden="true"></i></li>
+							<li class="wishlist"><i class="fa fa-comments" aria-hidden="true"></i></li>
 							<a  class="shopcart" href="{{url('/website/chekout')}}"><i class="fa fa-shopping-cart" aria-hidden="true"></i></a>	
 								<!-- Start Shopping Cart -->
 								<div class="block-minicart minicart__active">
