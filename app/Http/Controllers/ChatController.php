@@ -78,6 +78,10 @@ class ChatController extends Controller
             ->where('users.id', '!=', auth()->user()->id)
             ->where('messages.to', '=', auth()->user()->id)
             ->select('users.id', 'users.name', 'users.avatar', 'users.email')
+            ->select('COUNT(messages.is_read) as unread')
+            ->where('messages.to', auth()->user()->id)
+            ->where('messages.is_read', 0)
+            ->first()
             ->distinct()->get()->toArray();
 
         $to = DB::table('users')
@@ -87,14 +91,14 @@ class ChatController extends Controller
             ->select('users.id', 'users.name', 'users.avatar', 'users.email')
             ->distinct()->get()->toArray();
 
-        $chat = messages::select(DB::raw('COUNT(is_read) as unread'))->where('to', auth()->user()->id)->where('is_read', 0)->first();
-
-        $contact = array_unique(array_merge($from, $to, $chat), SORT_REGULAR);
-
-        //     $users =  User::select('users.id', 'users.name', 'users.avatar', 'users.email')->leftJoin('messages', 'users.id', '=', 'messages.from')
-        //     ->groupBy('users.id', 'users.name', 'users.avatar', 'users.email');
-        // // count(is_read) as unread FROM users LEFT JOIN messages ON users.id = messages.from AND is_read = 0  
-        // // WHERE users.id !=  $user_id   GROUP BY ');
+            
+            $contact = array_unique(array_merge($from, $to,), SORT_REGULAR);
+            
+            //     $users =  User::select('users.id', 'users.name', 'users.avatar', 'users.email')->leftJoin('messages', 'users.id', '=', 'messages.from')
+            //     ->groupBy('users.id', 'users.name', 'users.avatar', 'users.email');
+            // // count(is_read) as unread FROM users LEFT JOIN messages ON users.id = messages.from AND is_read = 0  
+            // // WHERE users.id !=  $user_id   GROUP BY ');
+            // $chat = messages::select(DB::raw('COUNT(message.is_read) as unread'))->where('to', auth()->user()->id)->where('is_read', 0)->first();
         if (empty($contact)) {
             return response()->json([
                 'status' => 'Error',
