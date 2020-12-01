@@ -87,13 +87,14 @@ class ChatController extends Controller
             ->select('users.id', 'users.name', 'users.avatar', 'users.email')
             ->distinct()->get()->toArray();
 
-        $contact = array_unique(array_merge($from, $to), SORT_REGULAR);
+        $chat = messages::select(DB::raw('COUNT(is_read) as unread'))->where('to', auth()->user()->id)->where('is_read', 0)->first();
+
+        $contact = array_unique(array_merge($from, $to, $chat), SORT_REGULAR);
 
         //     $users =  User::select('users.id', 'users.name', 'users.avatar', 'users.email')->leftJoin('messages', 'users.id', '=', 'messages.from')
         //     ->groupBy('users.id', 'users.name', 'users.avatar', 'users.email');
         // // count(is_read) as unread FROM users LEFT JOIN messages ON users.id = messages.from AND is_read = 0  
         // // WHERE users.id !=  $user_id   GROUP BY ');
-        // $chat = messages::select(DB::raw('COUNT(is_read) as unread'))->where('to');
         if (empty($contact)) {
             return response()->json([
                 'status' => 'Error',
