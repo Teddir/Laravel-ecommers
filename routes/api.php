@@ -4,8 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Controller;
 
-$route = 
-/*
+$route =
+    /*
 |--------------------------------------------------------------------------
 | API Routes
 |--------------------------------------------------------------------------
@@ -18,9 +18,9 @@ $route =
 
 
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+    Route::middleware('auth:api')->get('/user', function (Request $request) {
+        return $request->user();
+    });
 // Route::get('/', function () {
 //     return view('welcome');
 // });
@@ -37,10 +37,10 @@ Route::get('/produk', 'Produk\Api\ProdukController@index');
 Route::get('/produk/{id}', 'Produk\Api\ProdukController@show');
 
 Route::group(['middleware' => 'jwt.verify'], function () {
-    
-    
+
+
     // -----------------------------------------------------> produk
-    
+
     Route::get('/produkp', 'Produk\Api\ProdukController@produkpenjual');      //------------->produkpenjualaja
     Route::put('/produk/{id}', 'Produk\Api\ProdukController@update');    //-------------- Update Data
     Route::post('/produk', 'Produk\Api\ProdukController@store');          //------------------------Tambah Data
@@ -74,7 +74,7 @@ Route::group(['middleware' => 'jwt.verify'], function () {
     Route::get('/user/{id}', 'User\Api\UserController@show');         //-------------delete
 
     Route::get('/allchat', 'ChatController@allchat');  //---------->menampilkan semua chat
-    Route::get('/chat/{id}', 'ChatController@index1');    //----------------------->menampilkan setiap ada chat
+    Route::get('/chat', 'ChatController@index1');    //----------------------->menampilkan setiap ada chat
     Route::post('/searc/pesan', 'ChatController@searc'); //-----------> Searching  Message
     Route::get('/pesan/{id}', 'ChatController@getMessage1'); //-----------> Nampilin  Message
     Route::post('/send/pesan/{id}', 'ChatController@sendMessage1'); //-----------> Kirim  Message

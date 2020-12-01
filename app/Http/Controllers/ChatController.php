@@ -67,7 +67,7 @@ class ChatController extends Controller
      * @return \Illuminate\Contracts\Support\Renderable
      */
 
-    public function index1($user_id)
+    public function index1()
     {
         // $users = User::where('id', '!=', Auth::id())->get();
         // return view('home', ['users' => $users ]);
