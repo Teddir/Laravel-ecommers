@@ -87,7 +87,7 @@ class ChatController extends Controller
             ->select('users.id', 'users.name', 'users.avatar', 'users.email')
             ->distinct()->get()->toArray();
 
-        $contact = array_unique(array_merge($from, $to), SORT_REGULAR)
+        $contact = array_unique(array_merge($from, $to), SORT_REGULAR);
 
         //     $users =  User::select('users.id', 'users.name', 'users.avatar', 'users.email')->leftJoin('messages', 'users.id', '=', 'messages.from')
         //     ->groupBy('users.id', 'users.name', 'users.avatar', 'users.email');
