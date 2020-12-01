@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\messages;
+use GuzzleHttp\Psr7\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -72,11 +73,28 @@ class ChatController extends Controller
         // $users = User::where('id', '!=', Auth::id())->get();
         // return view('home', ['users' => $users ]);
 
-        $users =  DB::select('SELECT users.id, users.name, users.avatar, users.email, 
-        count(is_read) as unread FROM users LEFT JOIN messages ON users.id = messages.from AND is_read = 0  
-        WHERE users.id <>  messages.to   GROUP BY users.id, users.name, users.avatar, users.email');
+        $from = DB::table('users')
+            ->join('messages', 'users.id', '=', 'messages.from')
+            ->where('users.id', '!=', auth()->user()->id)
+            ->where('messages.to', '=', auth()->user()->id)
+            ->select('users.id', 'users.name', 'users.avatar', 'users.email')
+            ->distinct()->get()->toArray();
 
-        if (empty($users)) {
+        $to = DB::table('users')
+            ->join('messages', 'users.id', '=', 'messages.to')
+            ->where('users.id', '!=', auth()->user()->id)
+            ->where('messages.from', '=', auth()->user()->id)
+            ->select('users.id', 'users.name', 'users.avatar', 'users.email')
+            ->distinct()->get()->toArray();
+
+        $contact = array_unique(array_merge($from, $to), SORT_REGULAR)
+
+        //     $users =  User::select('users.id', 'users.name', 'users.avatar', 'users.email')->leftJoin('messages', 'users.id', '=', 'messages.from')
+        //     ->groupBy('users.id', 'users.name', 'users.avatar', 'users.email');
+        // // count(is_read) as unread FROM users LEFT JOIN messages ON users.id = messages.from AND is_read = 0  
+        // // WHERE users.id !=  $user_id   GROUP BY ');
+        // $chat = messages::select(DB::raw('COUNT(is_read) as unread'))->where('to');
+        if (empty($contact)) {
             return response()->json([
                 'status' => 'Error',
                 'Message' => 'Halaman Chat Tidak Di Temukan',
@@ -86,7 +104,7 @@ class ChatController extends Controller
         return response()->json([
             'status' => 'Succes',
             'Message' => 'Berhasil Menampilkan Hal Chat',
-            'data' => $users, 200,  
+            'data' => $contact, 200,
         ]);
     }
 
@@ -125,8 +143,8 @@ class ChatController extends Controller
         return response()->json([
             'status' => 'Succes',
             'Message' => 'Berhasil Menampilkan Chat',
-            'data' => $messages, 200,  
-        ]);    
+            'data' => $messages, 200,
+        ]);
     }
 
 
