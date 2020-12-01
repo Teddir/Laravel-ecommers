@@ -78,7 +78,7 @@ class ChatController extends Controller
             ->where('users.id', '!=', auth()->user()->id)
             ->where('messages.to', '=', auth()->user()->id)
             ->where('messages.is_read', 0)
-            ->select('users.id', 'users.name', 'users.avatar', 'users.email','COUNT(messages.is_read) as unread')
+            ->select('users.id', 'users.name', 'users.avatar', 'users.email')
             ->distinct()->get()->toArray();
 
         $to = DB::table('users')
