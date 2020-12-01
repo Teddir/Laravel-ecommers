@@ -18,7 +18,6 @@
       <th scope="col">Name Produk</th>
       {{-- <th scope="col">Kategori</th> --}}
       <th scope="col">Stok</th>
-      <th scope="col">Status</th>
       <th scope="col">harga</th>
       <th scope="col">diskon</th>
       <th scope="col">Tanggal Masuk</th>
@@ -33,7 +32,6 @@
       <td>{{ $item->name_produk }}</td>
       {{-- <td>{{ $item->kategoris->name_kategori }}</td> --}}
       <td>{{ $item->stok  }}</td>
-      <td>{{ $item->status }}</td>
       <td>{{ number_format($item->harga) }}</td>
       <td>{{ $item->diskon }}%</td>
       <td>{{ $item->created_at }}</td>

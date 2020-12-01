@@ -28,7 +28,7 @@
         <p class="text-danger">{{ $errors->first('alamat') }}</p>
     </div>
     <div class="form-group">
-        <label for="image">Foto Produk</label>
+        <label for="image">Foto</label>
         <input type="file" name="avatar" class="form-control" value="{{ old('avatar') }}" required>
         <p class="text-danger">{{ $errors->first('avatar') }}</p>
     </div>

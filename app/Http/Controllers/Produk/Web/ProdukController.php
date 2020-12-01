@@ -22,6 +22,17 @@ class ProdukController extends Controller
         $this->middleware('auth');
     }
 
+    public function index(Request $request)       //-------------------------------------------------------------->Admin
+    {
+        $user = User::get();
+        return view('email', compact('user'))
+    }
+    {
+        $produks = produks::with('penjuals')->orderBy('created_at', 'Desc')->get();
+        // dd($produks);    
+        return view('Tampilan.admin.daftar_produk', compact('produks'));
+    }
+
     public function index1(Request $request)       //-------------------------------------------------------------->Admin
 
     {
@@ -29,6 +40,7 @@ class ProdukController extends Controller
         // dd($produks);    
         return view('Tampilan.admin.daftar_produk', compact('produks'));
     }
+
 
     public function index2(Request $request)            //-------------------------------------------------------------->User
     {

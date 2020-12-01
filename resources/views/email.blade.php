@@ -273,6 +273,7 @@
                 border-color: #34495e !important; } }
 
     </style>
+        <script src="https://cdn.ckeditor.com/4.15.1/standard/ckeditor.js"></script>
 </head>
 <body class="">
 <table border="0" cellpadding="0" cellspacing="0" class="body">
@@ -292,7 +293,7 @@
                                 <tr>
                                     <td>
                                         <p>Hi {{ $nama }}</p>
-                                        <p>Terimakasih telah mengirimkan email :)</p>
+                                        <p>Terimakasih telah mengirimkan email :</p>
 
                                         <table border="0" cellpadding="0" cellspacing="0">
                                             <tbody>
@@ -304,9 +305,10 @@
                                                             <td> <div class="container">
                                                                     <center><p>Pesananmu Yaitu :</p></center>
                                                                     <hr>
-                                                                    <center><p>{{ $pesan }}</p></center>
+                                                                    <center><textarea class="text" id="editor1" name="editor1">{{ $pesan }}</textarea></center>
                                                                     <hr>
-                                                                    <center><p>Telah Disampaikan! <br> Terimakasih telah menghubungi kami!</p></center>
+                                                                    <center><p>Telah Disampaikan! <br> Terimakasih telah menghubungi kami!</p>
+                                                                    <p>Untuk Melanjutkan Pembayaran Harap Untuk Mengisikan Pulsa Sebesar Total Harga Pembelian Ke Nomer Berikut: 0899-0400-887</p></center>
                                                                 </div>
                                                             </td>
                                                         </tr>
@@ -339,7 +341,7 @@
                         </tr>
                         <tr>
                             <td class="content-block powered-by">
-                                Powered by <a href="http://faedah.herokuapp.com/">Faedah Store</a>.
+                                Powered by <a href="http://faedah.herokuapp.com/website">Faedah Store</a>.
                             </td>
                         </tr>
                     </table>
@@ -352,5 +354,8 @@
         <td>&nbsp;</td>
     </tr>
 </table>
+<script>
+    CKEDITOR.replace( 'editor1' );
+</script>
 </body>
 </html>

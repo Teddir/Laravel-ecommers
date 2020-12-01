@@ -1,12 +1,12 @@
-@extends('home')
-@section('content')
+@extends('dashbord_seller')
+@section('dashbord1')
     <!-- Main Section -->
     <div class="container">
     <section class="main-section">
         <!-- Add Your Content Inside -->
         <div class="content">
             <!-- Remove This Before You Start -->
-            <h1>Send Email</h1>
+            <h1>Konfirmasi</h1>
             @if(\Session::has('alert-failed'))
                 <div class="alert alert-failed">
                     <div>{{Session::get('alert-failed')}}</div>
@@ -17,31 +17,36 @@
                     <div>{{Session::get('alert-success')}}</div>
                 </div>
             @endif
-            <form action="{{ url('/sendEmail') }}" method="post">
+            <form action="{{ url('/user/sendEmail') }}" method="post">
                 {{ csrf_field() }}
                 <div class="form-group">
-                    <label for="email">Email:</label>
-                    <input type="email" class="form-control" id="email" name="email">
+                    <label for="email">Email</label>
+                    <input type="email" class="form-control" id="email" name="email" placeholder="{{$user->email}}" value="{{$user->email}}" required>
                 </div>
                 <div class="form-group">
-                    <label for="nama">Nama:</label>
-                    <input type="text" class="form-control" id="name" name="nama"/>
+                <input hidden  type="text" class="form-control" id="name" name="nama" value="{{$user->name}}" placeholder="{{$user->name}}" required>
                 </div>
                 <div class="form-group">
-                    <label for="judul">Judul:</label>
-                    <input type="text" class="form-control" id="judul" name="judul"/>
+                    <input hidden  type="text" class="form-control" id="judul" name="judul" value="Assalamualaikum Bapak/Ibu" placeholder="Assalamualaikum Bapak/Ibu" required>
                 </div>
                 <div class="form-group">
-                    <label for="pesan">Pesan:</label>
-                    <textarea class="form-control" id="pesan" name="pesan"></textarea>
+                <textarea hidden class="form-control" id="editor1" name="pesan" value="{{$user->finish}}" placeholder="{{$user->finish}}"  required>
+                <p>Name Barang :{{$user->produks[0]->name_produk}}</p>             
+                <p>Harga Barang: {{$user->produks[0]->harga}}</p>
+                <p>Jumlah Pesanan: {{$user->finish[0]->qty}}</p>
+                <p>Subtotal: {{$subtotal = $user->finish[0]->qty*$user->produks[0]->harga}}</p>
+                </textarea>
                 </div>
                 <div class="form-group">
-                    <button type="submit" class="btn btn-md btn-primary">Send Email</button>
+                    <button type="submit" class="btn btn-md btn-primary">Confirmasi</button>
                 </div>
             </form>
         </div>
         <!-- /.content -->
     </section>
 </div>
+<script>
+    CKEDITOR.replace( 'editor1' );
+</script>
     <!-- /.main-section -->
 @endsection

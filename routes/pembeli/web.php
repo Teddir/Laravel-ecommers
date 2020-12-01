@@ -21,6 +21,14 @@ Route::group(['middleware' => 'auth'], function () {
 
   //--------------------------------------------------->tampilan E-Pembeli
   Route::get('/index3', 'User\Web\UserController@index2');
+  Route::get('/edit3/{id}', 'User\Web\UserController@edit2');
+  Route::get('/invoice/{id}', 'User\Web\UserController@show2');
   //--------------------------------------------------->crud  
   Route::delete('/destroy3/{id}', 'User\Web\UserController@destroy2');
 });
+
+Route::get('/email', function () {
+  return view('send_email');
+});
+Route::post('/sendEmail', 'Email@sendEmail');
+

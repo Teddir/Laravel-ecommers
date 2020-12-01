@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User\Web;
 
+use App\finish;
 use App\Http\Controllers\Controller;
 use App\penjuals;
 use App\User;
@@ -45,6 +46,16 @@ class UserController extends Controller
         $penjual = penjuals::get();
         $user = User::get();
         return view('Tampilan.admin.Pembeli.create', compact('penjual', 'user'));
+    }
+
+    public function show2(User $User, $id)
+    {
+        // $kategori = kategoris::get();
+        // $user = User::with(['penjuals'])->orderBy('created_at', 'asc')->get(); //-------------> USER
+        $user = User::with('finish')->find($id);
+        // dd($user);
+        return view('send_email', compact('user'));
+
     }
 
 
@@ -93,6 +104,7 @@ class UserController extends Controller
     {
         // $user = User::with(['penjuals'])->orderBy('created_at', 'asc')->get();
         $user = user::find($id);
+        // return view('Tampilan.user.Pembeli.edit', compact('user'));
         return view('Tampilan.user.Pembeli.edit', compact('user'));
     }
 

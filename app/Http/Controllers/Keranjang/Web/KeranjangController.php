@@ -108,6 +108,7 @@ class KeranjangController extends Controller
                 $finish = new finish;
                 $finish->qty = $keranjangdetails->jumlah_pesan;
                 $finish->status = 0;
+                $finish->subtotal = $keranjangdetails->subtotal;
                 $finish->pengiriman = 0;  
                 $finish->produk_id = $keranjangdetails->produk_id;
                 $finish->user_id = auth()->user()->id;

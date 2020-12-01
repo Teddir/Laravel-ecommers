@@ -76,8 +76,4 @@ Route::group(['middleware' => 'auth'], function () {
 });
 
 //email
-Route::get('/email', function () {
-    return view('send_email');
-});
-Route::post('/sendEmail', 'Email@sendEmail');
 

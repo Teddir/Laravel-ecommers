@@ -28,11 +28,13 @@
       <td>{{ $item->qty  }}</td>
       <td>{{ number_format($item->produks->harga) }}</td>
       <td>{{ $item->status }}</td>
-      <td>{{number_format($subtotal = $item->produks->harga *  $item->qty)}}</td>
+      <td>{{ number_format($subtotal = $item->produks->harga *  $item->qty)}}</td>
       <td>{{ $item->created_at }}</td>
       <td>
-      <td>
         <a href="{{ url('/user/destroy1', $item->id) }}"><button class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button></a>
+      </td>
+      <td>
+          <a href="{{ url('user/invoice', $item->user_id) }}"><button class="btn btn-warning"><i class="fa fa-info-circle" aria-hidden="true"></i></button></a>
       </td>
     </tr>
   </tbody>
