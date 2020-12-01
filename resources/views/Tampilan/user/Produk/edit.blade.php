@@ -4,9 +4,14 @@
 
 @section('dashbord1')
 
-@if (session('status'))
+@if(\Session::has('alert-failed'))
+<div class="alert alert-failed">
+    <div>{{Session::get('alert-failed')}}</div>
+</div>
+@endif
+@if(\Session::has('alert-success'))
 <div class="alert alert-success">
-    {{ session('status') }}
+    <div>{{Session::get('alert-success')}}</div>
 </div>
 @endif
 <form action="{{ url('/user/update1', $produk->id) }}" method="post" enctype="multipart/form-data">
@@ -39,7 +44,7 @@
     </div>
     <div class="form-group">
         <label for="desc">desc</label>
-        <input type="text" name="desc" class="form-control" value="{{$produk->desc}}" required>
+        <input type="text" id="description" name="desc" class="form-control" value="{{$produk->desc}}" required>
         <p class="text-danger">{{ $errors->first('desc') }}</p>
     </div>
     <div class="form-group">
@@ -52,4 +57,10 @@
         <button class="btn btn-primary btn-sm">Update</button>
     </div>
 </form>
+
+<script>
+    //TERAPKAN CKEDITOR PADA TEXTAREA DENGAN ID DESCRIPTION
+    CKEDITOR.replace('description');
+
+</script>
 @endsection

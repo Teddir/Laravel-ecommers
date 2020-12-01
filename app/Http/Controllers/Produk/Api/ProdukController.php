@@ -21,7 +21,7 @@ class ProdukController extends Controller
     //-------------------------------------------------------------->Produk    
     public function index()
     {
-        $produk = produks::get();
+        $produk = produks::where('stok', '>', 0)->with('penjuals')->get();
         // dd($produk);
         if (!$produk) {
             # code...

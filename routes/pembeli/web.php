@@ -25,10 +25,8 @@ Route::group(['middleware' => 'auth'], function () {
   Route::get('/invoice/{id}', 'User\Web\UserController@show2');
   //--------------------------------------------------->crud  
   Route::delete('/destroy3/{id}', 'User\Web\UserController@destroy2');
+  
+  Route::post('/sendEmail', 'Email@sendEmail');
 });
 
-Route::get('/email', function () {
-  return view('send_email');
-});
-Route::post('/sendEmail', 'Email@sendEmail');
 

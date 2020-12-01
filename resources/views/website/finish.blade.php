@@ -17,8 +17,9 @@
 
   <iframe src="https://assets.pinterest.com/ext/embed.html?id=852447035709379175" height="550" width="1000" frameborder="0" scrolling="no" ></iframe>
   <h5 class="text-uppercase">&nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp 
-    &nbsp &nbsp &nbsp &nbsp &nbsp &nbsp   &nbsp &nbsp &nbsp 
-    Terimakasih Telah Percaya Dengan Kami <a href="/website">Back</a></h5>
+    &nbsp &nbsp &nbsp   &nbsp &nbsp &nbsp 
+    Silahkan Periksa Email Kamu Untuk Melanjutkan 
+    Pembayaran <a href="/website">Terimakasi :)</a></h5>
 
 </body>
 </html>

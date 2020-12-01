@@ -4,9 +4,14 @@
 
 @section('dashbord1')
 
-@if (session('status'))
+@if(\Session::has('alert-failed'))
+<div class="alert alert-failed">
+    <div>{{Session::get('alert-failed')}}</div>
+</div>
+@endif
+@if(\Session::has('alert-success'))
 <div class="alert alert-success">
-    {{ session('status') }}
+    <div>{{Session::get('alert-success')}}</div>
 </div>
 @endif
 <form action="{{ url('/admin/update3', $user->id) }}" method="post" enctype="multipart/form-data">

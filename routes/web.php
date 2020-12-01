@@ -32,7 +32,7 @@ Route::get('/', function () {
 // });
 
 Route::get('/penjualan', function () {
-    return view('send_email');
+    return view('website.finish');
 });
 
 
@@ -55,25 +55,21 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/message/{id}', 'ChatController@getMessage');
     Route::post('/message', 'ChatController@sendMessage');
     // Route::get('/create', 'ProdukController@index1'); 
-    
-    
+
+
     Route::get('/cari', 'Produk\Web\ProdukController@render');
     Route::get('/login/facebook', 'Auth\LoginController@redirectToProvider');
     Route::get('/login/facebook/callback', 'Auth\LoginController@handleProviderCallback');
-    
-    
+
+
     Route::get('/edit3/{id}', 'Keranjang\Web\KeranjangController@edit1');
-    
+
     //---------------------------------------------------------->website
     Route::post('/website/pesan/{id}', 'Keranjang\Web\KeranjangController@pesan1');
     Route::get('/website/chekout', 'Keranjang\Web\KeranjangController@chekout1');
     Route::get('/website/chekout/delete/{id}', 'Keranjang\Web\KeranjangController@destroy1');
     Route::get('/website/chekout/konfirmasi', 'Keranjang\Web\KeranjangController@konfirmasi1');
     Route::get('/cari', 'Keranjang\Web\KeranjangController@cari');
-    
-    
-    
 });
 
 //email
-

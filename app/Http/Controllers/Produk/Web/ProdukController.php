@@ -22,11 +22,12 @@ class ProdukController extends Controller
         $this->middleware('auth');
     }
 
-    public function index(Request $request)       //-------------------------------------------------------------->Admin
+    public function index3(Request $request)       //-------------------------------------------------------------->Admin
     {
         $user = User::get();
-        return view('email', compact('user'))
+        return view('email', compact('user'));
     }
+    public function index(Request $request)       //-------------------------------------------------------------->Admin
     {
         $produks = produks::with('penjuals')->orderBy('created_at', 'Desc')->get();
         // dd($produks);    
@@ -248,7 +249,7 @@ class ProdukController extends Controller
     public function produkall()
     {
         // $produk = produks::where('user_id', auth()->user()->id())->with('produks', 'keranjangs', 'users');
-        $produk = produks::with('penjuals')->get;
+        $produk = produks::where('stok', '<', 1)->with('penjuals')->get;
         // $produkdetail = produks::find($id);
         return view('website.store', compact('produk'));
     }
@@ -261,7 +262,7 @@ class ProdukController extends Controller
     public function newproduk()
     {
         $penjual = penjuals::get();
-        $produk = produks::get();
+        $produk = produks::where('stok', '>', 0)->with('penjuals')->get();
         // $produk = produks::find($id);
         // dd($produk);
         return view('website.store', compact('produk','penjual'));

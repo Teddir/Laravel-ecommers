@@ -70,16 +70,13 @@ class ChatController extends Controller
 
     public function index1()
     {
-        // $users = User::where('id', '!=', Auth::id())->get();
-        // return view('home', ['users' => $users ]);
-
         $from = DB::table('users')
             ->join('messages', 'users.id', '=', 'messages.from')
             ->where('users.id', '!=', auth()->user()->id)
             ->where('messages.to', '=', auth()->user()->id)
             ->where('messages.is_read', 0)
             ->select('users.id', 'users.name', 'users.avatar', 'users.email')
-            ->distinct()->get()->toArray();
+            ->distinct()->get()->toArray();  //---> guna distinct digunakan untuk memastikan tidak ada dua baris data atau lebih yang menampilkan nilai yang sama
 
         $to = DB::table('users')
             ->join('messages', 'users.id', '=', 'messages.to')
@@ -87,15 +84,8 @@ class ChatController extends Controller
             ->where('messages.from', '=', auth()->user()->id)
             ->select('users.id', 'users.name', 'users.avatar', 'users.email')
             ->distinct()->get()->toArray();
-
             
-            $contact = array_unique(array_merge($from, $to,), SORT_REGULAR);
-            
-            //     $users =  User::select('users.id', 'users.name', 'users.avatar', 'users.email')->leftJoin('messages', 'users.id', '=', 'messages.from')
-            //     ->groupBy('users.id', 'users.name', 'users.avatar', 'users.email');
-            // // count(is_read) as unread FROM users LEFT JOIN messages ON users.id = messages.from AND is_read = 0  
-            // // WHERE users.id !=  $user_id   GROUP BY ');
-            // $chat = messages::select(DB::raw('COUNT(message.is_read) as unread'))->where('to', auth()->user()->id)->where('is_read', 0)->first();
+            $contact = array_unique(array_merge($from, $to,), SORT_REGULAR);            
         if (empty($contact)) {
             return response()->json([
                 'status' => 'Error',
