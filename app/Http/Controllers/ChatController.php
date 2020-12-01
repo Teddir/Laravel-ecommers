@@ -96,7 +96,9 @@ class ChatController extends Controller
         // $users = User::where('id', '!=', Auth::id())->get();
         // return view('home', ['users' => $users ]);
 
-        $users =  DB::select('SELECT users.id, users.name, users.avatar, users.email, count(is_read) as unread FROM users LEFT JOIN messages ON users.id = messages.from AND is_read = 0 AND messages.to = ' . Auth::id() . ' WHERE users.id != ' . Auth::id() . ' GROUP BY users.id, users.name, users.avatar, users.email');
+        $users =  DB::select('SELECT users.id, users.name, users.avatar, users.email, 
+        count(is_read) as unread FROM users LEFT JOIN messages ON users.id = messages.from AND is_read = 0  
+        WHERE users.id <>  messages.to   GROUP BY users.id, users.name, users.avatar, users.email');
         return view('halchat', compact('users'));
     }
 
@@ -145,14 +147,14 @@ class ChatController extends Controller
         return view('messages.index', ['messages' => $messages]);
     }
 
-    public function sendMessage1(Request $request)
+    public function sendMessage1(Request $request, $id)
     {
         $from = Auth::id();
-        $to = $request->receiver_id;
+        $to = $id;
         // dd($to);
         if (empty($to)) {
             return response()->json([
-                'Message' => 'Anda Belum Mengisi Penerima(to)'
+                'Message' => 'Anda Belum Mengisi Penerima(receiver_id)'
             ]);
         }
 

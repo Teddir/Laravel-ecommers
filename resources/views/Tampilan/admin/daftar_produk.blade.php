@@ -29,7 +29,7 @@
       @foreach ($produks as $item)
       {{-- {{dd($item)}} --}}
       <th scope="row">{{ $loop->iteration }}</th>    
-      <td>{{ $item->penjuals->name_toko }}</td>
+      <td>{{ $item->penjuals }}</td>
       <td>{{ $item->name_produk }}</td>
       <td>{{ number_format($item->harga) }}</td>
       <td>{{ $item->created_at }}</td>

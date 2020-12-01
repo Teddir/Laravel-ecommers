@@ -25,7 +25,7 @@ class ProdukController extends Controller
     public function index1(Request $request)       //-------------------------------------------------------------->Admin
 
     {
-        $produks = produks::with('penjuals')->orderBy('created_at', 'Desc')->get();
+        $produks = produks::with('penjuals')->get();
         // dd($produks);    
         return view('Tampilan.admin.daftar_produk', compact('produks'));
     }

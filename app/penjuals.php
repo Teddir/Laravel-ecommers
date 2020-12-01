@@ -32,7 +32,7 @@ class penjuals extends Model
     public function produks()
     {
         //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
-        return $this->belongsTo(produks::class, 'id', 'penjual_id' );
+        return $this->hasMany(produks::class, 'penjual_id' );
     }
 
     public function keranjangdetails()
