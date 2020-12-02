@@ -194,12 +194,19 @@ class ProdukController extends Controller
      */
     public function update(Request $request, $id)
     {
-
+        
+        $id = auth()->user()->id;
         $produk = produks::find($id);
         $dataRequest = $request->except(['image']);
         $dataResult = array_filter($dataRequest);
         $image = $request->file('image');
-        $file = base64_encode(file_get_contents($image));
+        // dd($dataRequest);
+        if (empty($image)) {
+            return response([
+                'message' => 'Anda Belum Mengisi Foto Barang',
+            ]);
+        }
+        $file = addslashes(file_get_contents($image));
 
         $client = new \GuzzleHttp\Client();
         $response = $client->request('POST', 'https://freeimage.host/api/1/upload', [
