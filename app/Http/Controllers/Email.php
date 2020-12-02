@@ -18,14 +18,17 @@ class Email extends Controller
         // return view('email', compact('user'));
 
         try{
-            Mail::send('email', ['nama' => $request->nama, 'pesan' => $request->pesan], function ($message) use ($request)
+            Mail::send('email', [
+                'nama' => $request->nama, 
+                'pesan' => $request->pesan
+            ], 
+            function ($message) use ($request)
             {
                 
                 $message->subject($request->judul);
                 $message->from('faedah@store.com', 'Faedah.Store');
                 $message->to($request->email);
 
-                
             });
             return back()->with('alert-success','Berhasil Kirim Email');
         }
