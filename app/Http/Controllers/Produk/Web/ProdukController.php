@@ -117,6 +117,8 @@ class ProdukController extends Controller
         $produk->name_produk = $request->name_produk;
         $produk->penjual_id = auth()->user()->id;
         $produk->desc = $request->desc;
+        $produk->harga = $request->harga;
+        $produk->stok = $request->stok;
         $file = base64_encode(file_get_contents($request->image));
 
         $client = new \GuzzleHttp\Client();
