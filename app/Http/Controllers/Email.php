@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\finish;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\keranjangdetail;
@@ -19,9 +20,12 @@ class Email extends Controller
         try{
             Mail::send('email', ['nama' => $request->nama, 'pesan' => $request->pesan], function ($message) use ($request)
             {
+                
                 $message->subject($request->judul);
                 $message->from('faedah@store.com', 'Faedah.Store');
                 $message->to($request->email);
+
+                
             });
             return back()->with('alert-success','Berhasil Kirim Email');
         }

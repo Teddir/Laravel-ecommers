@@ -78,7 +78,7 @@ class ProdukController extends Controller
         ]);
         $produk = new produks;
         $produk->name_produk = $request->name_produk;
-        $produk->user_id = auth()->user()->id;
+        $produk->penjual_id = auth()->user()->id;
         $produk->desc = $request->desc;
         $produk->harga = $request->harga;
         $produk->stok = $request->stok;
@@ -115,7 +115,7 @@ class ProdukController extends Controller
         ]);
         $produk = new produks;
         $produk->name_produk = $request->name_produk;
-        $produk->user_id = auth()->user()->id;
+        $produk->penjual_id = auth()->user()->id;
         $produk->desc = $request->desc;
         $file = base64_encode(file_get_contents($request->image));
 
@@ -265,8 +265,6 @@ class ProdukController extends Controller
         $produk = produks::where('stok', '>', 0)->with('penjuals')->get();
         // $produk = produks::find($id);
         // dd($produk);
-        return view('website.store', compact('produk','penjual'));
+        return view('website.store', compact('produk', 'penjual'));
     }
-
-    
 }
