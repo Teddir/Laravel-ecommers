@@ -3,9 +3,10 @@
 namespace App\Http\Controllers\Produk\Api;
 
 use App\Http\Controllers\Controller;
+use App\penjuals;
 use Illuminate\Http\Request;
 use App\produks;
-
+use Illuminate\Support\Facades\Auth;
 
 class ProdukController extends Controller
 {
@@ -86,6 +87,8 @@ class ProdukController extends Controller
      */
     public function store(Request $request)
     {
+        $penjual  = penjuals::where('id', auth()->user()->id)->get();
+        // dd($penjual);
         $request->validate([
             'name_produk' => 'required',
             'desc' => 'required',
@@ -95,7 +98,13 @@ class ProdukController extends Controller
 
         $produk = new produks;
         $produk->name_produk = $request->name_produk;
-        $produk->penjual_id = auth()->user()->id;
+        if (empty($penjual[0]->id)) {
+            # code...
+            return response([
+                'message' => 'Maaf Anda Bukan Penjual',
+            ]);
+        }
+        $produk->penjual_id = $penjual[0]->id;
         $produk->desc = $request->desc;
         $produk->harga = $request->harga;
         $produk->stok = $request->stok;

@@ -43,8 +43,8 @@
 <p class="card-text">status : 0 = Confirm, 1 = proses, 3 = finish</p>
 </div>
 </div>
-@endforeach
 
-<a class="btn btn-warning mt-3">Keutungan : {{number_format($untung = $subtotal +=+ $item->produks->harga)}} </a>
+{{-- <a class="btn btn-warning mt-3">Keutungan : {{number_format($untung = $subtotal +=+ $item->produks->harga)}} </a> --}}
+@endforeach
 
 @endsection
