@@ -74,7 +74,7 @@ class User extends Authenticatable implements JWTSubject
     public function penjuals()
     {
         //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
-        return $this->hasMany(penjuals::class, 'id', 'user_id');
+        return $this->hasMany(penjuals::class, 'user_id');
     }
 
     public function orders()
