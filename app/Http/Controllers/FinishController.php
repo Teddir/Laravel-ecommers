@@ -31,7 +31,9 @@ class FinishController extends Controller
 
   public function finishp(Request $request)            //-------------------------------------------------------------->User
   {
+
     $finish = finish::where('penjual_id', auth()->user()->id)->with( 'produks', 'keranjangs')->get();
+    // dd($finish);
     if (!$finish) {
       # code...
       return response()->json([
@@ -52,7 +54,8 @@ class FinishController extends Controller
 
   public function finishb(Request $request)            //-------------------------------------------------------------->User
   {
-    $finish = finish::where('user_id  ', auth()->user()->id)->with( 'produks', 'keranjangs')->get();
+    $finish = finish::where('user_id', auth()->user()->id)->with( 'produks', 'keranjangs')->get();
+    // dd($finish);
     if (!$finish) {
       # code...
       return response()->json([

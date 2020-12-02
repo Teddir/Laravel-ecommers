@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\messages;
+use App\penjuals;
 use GuzzleHttp\Psr7\Message;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -22,10 +23,17 @@ class ChatController extends Controller
     //     $this->middleware('auth');
     // }
 
-    public function searc(Request $request)
+    public function searcToko(Request $request)
     {
-        $cari = $request->all();
-        $result =  User::WHERE('name', 'like', '%' . $cari . '%')->paginate(10);
+        $cari = $request->get('cari');
+        if (empty($cari)) {
+            # code...
+            return response()->json([
+                'Message' => 'Anda Belum Mengisi Nama Akun(cari)',
+            ]);
+        }
+        $result =  penjuals::WHERE('name_toko', 'like', '%' . $cari . '%')->paginate(10);
+
         if (empty($result)) {
             return response()->json([
                 'status' => 'Error',
@@ -39,6 +47,30 @@ class ChatController extends Controller
             'data' => $result, 200,
         ]);
     }
+
+    public function searcpesan(Request $request)
+    {
+        $cari = $request->get('cari');
+        if (empty($cari)) {
+            # code...
+            return response()->json([
+                'Message' => 'Anda Belum Mengisi Nama Akun(cari)',
+            ]);
+        }        $result =  messages::WHERE('message', 'like', '%' . $cari . '%')->paginate(10);
+        if (empty($result)) {
+            return response()->json([
+                'status' => 'Error',
+                'Message' => 'Name User Tidak Di Temukan',
+                'data' => NULL, 402,
+            ]);
+        }
+        return response()->json([
+            'status' => 'Succes',
+            'Message' => 'User Berhasil Di Temukan',
+            'data' => $result, 200,
+        ]);
+    }
+
 
     public function allchat()
     {
