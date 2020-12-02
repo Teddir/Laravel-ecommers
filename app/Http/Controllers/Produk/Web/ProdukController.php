@@ -107,6 +107,8 @@ class ProdukController extends Controller
 
     public function store2(Request $request)
     {
+        $penjual  = penjuals::where('id', auth()->user()->id)->get();
+
         $request->validate([
             'name_produk' => 'required',
             'desc' => 'required',
@@ -115,7 +117,7 @@ class ProdukController extends Controller
         ]);
         $produk = new produks;
         $produk->name_produk = $request->name_produk;
-        $produk->penjual_id = auth()->user()->id;
+        $produk->penjual_id = $penjual[0]->id;
         $produk->desc = $request->desc;
         $produk->harga = $request->harga;
         $produk->stok = $request->stok;
