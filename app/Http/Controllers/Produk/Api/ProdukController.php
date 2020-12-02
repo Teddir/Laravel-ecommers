@@ -195,7 +195,6 @@ class ProdukController extends Controller
     public function update(Request $request, $id)
     {
         
-        $id = auth()->user()->id;
         $produk = produks::find($id);
         $dataRequest = $request->except(['image']);
         $dataResult = array_filter($dataRequest);
