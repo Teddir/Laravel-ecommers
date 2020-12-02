@@ -15,6 +15,7 @@
 </div>
 @endif
 <form action="{{ url('/user/create1') }}" method="post" enctype="multipart/form-data">
+    @method('post')
     @csrf
     <div class="form-group">
         <label for="name_produk">Name Produk</label>
