@@ -87,7 +87,7 @@ class ProdukController extends Controller
      */
     public function store(Request $request)
     {
-        $penjual  = penjuals::where('id', auth()->user()->id)->get();
+        $penjual  = penjuals::where('user_id', auth()->user()->id)->get();
         // dd($penjual);
         $request->validate([
             'name_produk' => 'required',
