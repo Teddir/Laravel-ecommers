@@ -19,7 +19,7 @@ class Produk extends Migration
             $table->text('desc');
             $table->string('harga');
             $table->string('stok');
-            $table->string('image')->nullable();
+            $table->string('image');
             $table->timestamps();
         });
     }

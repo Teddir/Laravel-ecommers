@@ -200,29 +200,27 @@ class ProdukController extends Controller
         $dataRequest = $request->except(['image']);
         $dataResult = array_filter($dataRequest);
         $image = $request->file('image');
-        // dd($dataRequest);
-        if (empty($image)) {
-            return response([
-                'message' => 'Anda Belum Mengisi Foto Barang',
-            ]);
-        }
-        $file = addslashes(file_get_contents($image));
-
-        $client = new \GuzzleHttp\Client();
-        $response = $client->request('POST', 'https://freeimage.host/api/1/upload', [
-            'form_params' => [
-                'key' => '6d207e02198a847aa98d0a2a901485a5',
-                'action' => 'upload',
-                'source' => $file,
-                'format' => 'json'
-            ]
-        ]);
-
-        $data = $response->getBody()->getContents();
+        if ($image) {
+            # code...
+            $file = base64_encode(file_get_contents($image));
+            
+            $client = new \GuzzleHttp\Client();
+            $response = $client->request('POST', 'https://freeimage.host/api/1/upload', [
+                'form_params' => [
+                    'key' => '6d207e02198a847aa98d0a2a901485a5',
+                    'action' => 'upload',
+                    'source' => $file,
+                    'format' => 'json'
+                    ]
+                    ]);
+                    
+                    $data = $response->getBody()->getContents();
         $data = json_decode($data);
         $image = $data->image->url;
-
+        
         $produk->image = $image;
+        }else
+        $image = $produk->image;
         try {
             $produk->update($dataResult);
         } catch (\Throwable $th) {

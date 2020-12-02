@@ -160,24 +160,27 @@ class UserController extends Controller
         $dataRequest = $request->except(['avatar']);
         $dataResult = array_filter($dataRequest);
         $avatar = $request->file('avatar');
-        $file = base64_encode(file_get_contents($avatar));
+        if ($avatar) {
+            # code...
+            $file = base64_encode(file_get_contents($avatar));
 
-        $client = new \GuzzleHttp\Client();
-        $response = $client->request('POST', 'https://freeimage.host/api/1/upload', [
-            'form_params' => [
-                'key' => '6d207e02198a847aa98d0a2a901485a5',
-                'action' => 'upload',
-                'source' => $file,
-                'format' => 'json'
-            ]
-        ]);
+            $client = new \GuzzleHttp\Client();
+            $response = $client->request('POST', 'https://freeimage.host/api/1/upload', [
+                'form_params' => [
+                    'key' => '6d207e02198a847aa98d0a2a901485a5',
+                    'action' => 'upload',
+                    'source' => $file,
+                    'format' => 'json'
+                ]
+            ]);
 
-        $data = $response->getBody()->getContents();
-        $data = json_decode($data);
-        $image = $data->image->url;
-        
-        $user->avatar = $image;
-        // dd($user);
+            $data = $response->getBody()->getContents();
+            $data = json_decode($data);
+            $image = $data->image->url;
+
+            $user->avatar = $image;
+        }else
+        $avatar = $request->avatar;
         try {
             $user->update($dataResult);
         } catch (\Throwable $th) {
@@ -218,5 +221,4 @@ class UserController extends Controller
             'data' => $user, 200,
         ]);
     }
-
 }
