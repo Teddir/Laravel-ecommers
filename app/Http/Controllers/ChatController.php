@@ -124,7 +124,7 @@ class ChatController extends Controller
             $query->where('from', $my_id)->where('to', $user_id);
         })->orwhere(function ($query) use ($user_id, $my_id) {
             $query->where('from', $user_id)->where('to', $my_id);
-        })->orderBy('created_at', 'DESC')->get();
+        })->orderBy('created_at', 'ASC')->get();
         if (empty($messages)) {
             return response()->json([
                 'status' => 'Error',
