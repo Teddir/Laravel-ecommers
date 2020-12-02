@@ -41,8 +41,10 @@ class ProdukController extends Controller
 
     public function produkpenjual()
     {
-        $produk = produks::where('penjual_id', auth()->user()->id)->with('penjuals')->get();
-        // dd($produk);
+        $penjual = penjuals::where('user_id', auth()->user()->id)->get();
+
+        $produk = produks::where('penjual_id', $penjual[0]->id)->get();
+        dd($produk);
         if (!$produk) {
             # code...
             return response()->json([
