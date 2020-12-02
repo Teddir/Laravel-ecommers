@@ -14,17 +14,17 @@ class FinishController extends Controller
     if (!$finish) {
       # code...
       return response()->json([
-          'status' => 'Error',
-          'Message' => 'Data Gagal Di Tampilkan',
-          'data' => NULL, 402,
+        'status' => 'Error',
+        'Message' => 'Data Gagal Di Tampilkan',
+        'data' => NULL, 402,
       ]);
-  }
-  return response()->json([
+    }
+    return response()->json([
       'status' => 'Succes',
       'Message' => 'Invoice Berhasil Di Cetak',
       'data' => $finish, 200,
       // dd($finish),
-  ]);
+    ]);
     //barang terjual
 
   }
@@ -32,51 +32,51 @@ class FinishController extends Controller
   public function finishp(Request $request)            //-------------------------------------------------------------->User
   {
 
-    $finish = finish::where('penjual_id', auth()->user()->id)->with( 'produks', 'keranjangs')->get();
+    $finish = finish::where('penjual_id', auth()->user()->id)->with('produks', 'keranjangs')->get();
     // dd($finish);
     if (!$finish) {
       # code...
       return response()->json([
-          'status' => 'Error',
-          'Message' => 'Data Gagal Di Tampilkan',
-          'data' => NULL, 402,
+        'status' => 'Error',
+        'Message' => 'Data Gagal Di Tampilkan',
+        'data' => NULL, 402,
       ]);
-  }
-  return response()->json([
+    }
+    return response()->json([
       'status' => 'Succes',
       'Message' => 'Invoice Berhasil Di Cetak',
       'data' => $finish, 200,
       // dd($finish),
-  ]);
+    ]);
     //barang terjual
 
   }
 
   public function finishb(Request $request)            //-------------------------------------------------------------->User
   {
-    $finish = finish::where('user_id', auth()->user()->id)->with( 'produks', 'keranjangs')->get();
+    $finish = finish::where('user_id', auth()->user()->id)->with('produks', 'keranjangs')->get();
     // dd($finish);
     if (!$finish) {
       # code...
       return response()->json([
-          'status' => 'Error',
-          'Message' => 'Data Gagal Di Tampilkan',
-          'data' => NULL, 402,
+        'status' => 'Error',
+        'Message' => 'Data Gagal Di Tampilkan',
+        'data' => NULL, 402,
       ]);
-  }
-  return response()->json([
+    }
+    return response()->json([
       'status' => 'Succes',
       'Message' => 'Invoice Berhasil Di Cetak',
       'data' => $finish, 200,
       // dd($finish),
-  ]);
+    ]);
     //barang terjual
 
   }
 
   public function penjualan(Request $request)            //-------------------------------------------------------------->User
   {
-    $finish = finish::where('penjual_id', auth()->user()->id)->with( 'produks', 'keranjangs')->get();
+    $finish = finish::where('user_id', auth()->user()->id)->with('produks', 'keranjangs')->get();
     // dd($finish);    
     return view('Tampilan.user.Produk.penjualan', compact('finish'));
 
