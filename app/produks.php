@@ -54,6 +54,6 @@ class produks extends Model
     public function penjuals()
     {
         //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
-        return $this->hasOne(penjuals::class,'id', 'penjual_id');
+        return $this->hasOne(penjuals::class,'id', 'penjual_id')->with('users');
     }
 }
