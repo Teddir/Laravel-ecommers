@@ -106,7 +106,7 @@ class ChatController extends Controller
             ->join('messages', 'users.id', '=', 'messages.from')
             ->where('users.id', '!=', auth()->user()->id)
             ->where('messages.to', '=', auth()->user()->id)
-            ->where('messages.is_read', 0)
+            // ->where('messages.is_read', 0)
             ->select('users.id', 'users.name', 'users.avatar', 'users.email')
             ->distinct()->get()->toArray();  //---> guna distinct digunakan untuk memastikan tidak ada dua baris data atau lebih yang menampilkan nilai yang sama
 
