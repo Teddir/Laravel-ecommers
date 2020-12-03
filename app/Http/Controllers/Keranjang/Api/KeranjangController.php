@@ -161,16 +161,17 @@ class KeranjangController extends Controller
             $produk->update();
             // dd($produk);
             # code...
-            $finish = new finish;
-            $finish->qty = $keranjangdetails->jumlah_pesan;
-            $finish->status = 0;
-            $finish->pengiriman = 0;
-            $finish->produk_id = $keranjangdetails->produk_id;
-            $finish->user_id = auth()->user()->id;
-            $finish->penjual_id = $produk->penjual_id;
-            $finish->keranjangdetail_id = $keranjangdetails->keranjang_id;
-            $finish->save();
         }
+        $finish = new finish;
+        $finish->qty = $keranjangdetails->jumlah_pesan;
+        $finish->status = 0;
+        $finish->pengiriman = 0;
+        $finish->produk_id = $keranjangdetails->produk_id;
+        $finish->user_id = auth()->user()->id;
+        $finish->penjual_id = $produk->penjual_id;
+        $finish->keranjangdetail_id = $keranjangdetails->keranjang_id;
+        $finish->save();
+        
         return response()->json([
             'status' => 'Succes',
             'Message' => 'Data Berhasil Di Tampilkan',
