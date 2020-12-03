@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\finish;
 use App\keranjangdetail;
+use App\penjuals;
 
 class FinishController extends Controller
 {
@@ -31,8 +32,8 @@ class FinishController extends Controller
 
   public function finishp(Request $request)            //-------------------------------------------------------------->User
   {
-
-    $finish = finish::where('penjual_id', auth()->user()->id)->with('produks', 'keranjangs')->get();
+    $penjual = penjuals::get();
+    $finish = finish::where('penjual_id', $penjual[0]->id)->with('produks', 'keranjangs')->get();
     // dd($finish);
     if (!$finish) {
       # code...
