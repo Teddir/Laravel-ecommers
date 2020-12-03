@@ -32,7 +32,7 @@ class FinishController extends Controller
 
   public function finishp(Request $request)            //-------------------------------------------------------------->User
   {
-    $penjual = penjuals::get();
+    $penjual = penjuals::where('user_id', auth()->user()->id)->get();
     $finish = finish::where('penjual_id', $penjual[0]->id)->with('produks', 'keranjangs')->get();
     // dd($finish);
     if (!$finish) {
