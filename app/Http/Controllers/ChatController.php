@@ -56,7 +56,8 @@ class ChatController extends Controller
             return response()->json([
                 'Message' => 'Anda Belum Mengisi Nama Akun(cari)',
             ]);
-        }        $result =  messages::WHERE('message', 'like', '%' . $cari . '%')->paginate(10);
+        }
+        $result =  messages::WHERE('message', 'like', '%' . $cari . '%')->paginate(10);
         if (empty($result)) {
             return response()->json([
                 'status' => 'Error',
@@ -116,8 +117,8 @@ class ChatController extends Controller
             ->where('messages.from', '=', auth()->user()->id)
             ->select('users.id', 'users.name', 'users.avatar', 'users.email')
             ->distinct()->get()->toArray();
-            
-            $contact = array_unique(array_merge($from, $to,), SORT_REGULAR);            
+
+        $contact = array_unique(array_merge($from, $to,), SORT_REGULAR);
         if (empty($contact)) {
             return response()->json([
                 'status' => 'Error',
@@ -193,13 +194,6 @@ class ChatController extends Controller
     {
         $from = Auth::id();
         $to = $id;
-        // dd($to);
-        if (empty($to)) {
-            return response()->json([
-                'Message' => 'Anda Belum Mengisi Penerima(receiver_id)'
-            ]);
-        }
-
         $message = $request->message;
 
         if (empty($message)) {
@@ -217,15 +211,14 @@ class ChatController extends Controller
         $data->save();
 
         //Pusher    
-        $options  = array(
+        $options = array(
             'cluster' => 'ap1',
             'useTLS' => true
         );
-
         $pusher = new Pusher(
-            env('65cc2e5ff5fbd2addc7a'),
-            env('d09c21c29430d3efc39b'),
-            env('1104140'),
+            '65cc2e5ff5fbd2addc7a',
+            'd09c21c29430d3efc39b',
+            '1104140',
             $options
         );
 
