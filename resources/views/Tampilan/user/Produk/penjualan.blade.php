@@ -1,11 +1,17 @@
 @extends('dashbord_seller')
 
-@section('title', 'Data Produk')
+@section('title', 'Data Penjualan')
 
 @section('dashbord1')
-    
+
 
 @foreach ($finish as $item)
+@if (empty($item)){
+<img src="{{asset('/image/Empty.png')}}" alt="">
+}
+@else
+
+    
 <div class="card" style="width: 50rem;">
   <div class="card-body">
 <table class="table table-striped mt-1">
@@ -31,7 +37,9 @@
       <td>{{ number_format($subtotal = $item->produks->harga *  $item->qty)}}</td>
       <td>{{ $item->created_at }}</td>
       <td>
-        <a href="{{ url('/user/destroy1', $item->id) }}"><button class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button></a>
+        <form action="{{ url('/user/destroy1', $item->id) }}" method="post">@csrf @method('delete')
+          <button class="btn btn-danger"><i class="fa fa-trash" aria-hidden="true"></i></button>
+        </form>
       </td>
       <td>
           <a href="{{ url('user/invoice', $item->user_id) }}"><button class="btn btn-warning"><i class="fa fa-info-circle" aria-hidden="true"></i></button></a>
@@ -43,8 +51,8 @@
 <p class="card-text">status : 0 = Confirm, 1 = proses, 3 = finish</p>
 </div>
 </div>
-
 {{-- <a class="btn btn-warning mt-3">Keutungan : {{number_format($untung = $subtotal +=+ $item->produks->harga)}} </a> --}}
+@endif
 @endforeach
 
 @endsection

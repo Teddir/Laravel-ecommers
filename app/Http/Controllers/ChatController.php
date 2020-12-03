@@ -223,9 +223,9 @@ class ChatController extends Controller
         );
 
         $pusher = new Pusher(
-            env('1104140'),
             env('65cc2e5ff5fbd2addc7a'),
             env('d09c21c29430d3efc39b'),
+            env('1104140'),
             $options
         );
 

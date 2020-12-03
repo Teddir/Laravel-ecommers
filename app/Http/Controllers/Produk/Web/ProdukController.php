@@ -243,8 +243,8 @@ class ProdukController extends Controller
 
     public function destroy2($id)
     {
-        $produk = produks::destroy($id);
-        return redirect('/user/index1')->with(['success' => 'Kategori Diperbaharui!']);
+        $produk = finish::destroy($id);
+        return redirect('/user/index1')->with(['success' => 'Kategori DiHapus!']);
     }
 
 
