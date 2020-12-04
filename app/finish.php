@@ -32,4 +32,11 @@ class finish extends Model
         //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
         return $this->hasMany(penjuals::class, 'id');
     }
+
+    public function users()
+    {
+        //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
+        return $this->hasMany(User::class, 'id', 'user_id');
+    }
+
 }

@@ -50,7 +50,7 @@ class User extends Authenticatable implements JWTSubject
     public function users()
     {
         //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
-        return $this->hasOne(User::class, 'id', );
+        return $this->hasOne(User::class, 'id' );
     }
 
     public function kategoris()
@@ -65,6 +65,14 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(produks::class, 'id' );
     }
 
+    public function produk()
+    {
+        //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
+        return $this->hasMany(produks::class, 'penjual_id' )->with('penjuals');
+    }
+
+
+
     public function kotas()
     {
         //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
@@ -74,8 +82,9 @@ class User extends Authenticatable implements JWTSubject
     public function penjuals()
     {
         //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
-        return $this->hasMany(penjuals::class, 'user_id');
+        return $this->hasMany(penjuals::class, 'user_id')->with('produks');
     }
+
 
     public function orders()
     {
@@ -98,8 +107,15 @@ class User extends Authenticatable implements JWTSubject
     public function finish()
     {
         //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
-        return $this->hasMany(finish::class, 'id')->with('produks');
+        return $this->hasMany(finish::class, 'user_id')->with('produks');
     }
+
+    public function finis()
+    {
+        //JENIS RELASINYA ADALAH ONE TO MANY, YANG BERARTI produk INI BISA DIGUNAKAN OLEH BANYAK PRODUK
+        return $this->hasMany(finish::class, 'produk_id')->with('produks');
+    }
+
 
     public function messages()
     {

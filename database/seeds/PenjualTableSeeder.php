@@ -14,13 +14,13 @@ class PenjualTableSeeder extends Seeder
     {
         //
         penjuals::create([
-            'user_id' => 2,
+            'user_id' => 1,
             'name_toko' => 'Kalangan.store',
             'phone_number' => 87907578,
         ]);
 
         penjuals::create([
-            'user_id' => 1,
+            'user_id' => 2,
             'name_toko' => 'Bukune.store',
             'phone_number' => 756876725,
         ]);

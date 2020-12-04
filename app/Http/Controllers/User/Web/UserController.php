@@ -48,16 +48,6 @@ class UserController extends Controller
         return view('Tampilan.admin.Pembeli.create', compact('penjual', 'user'));
     }
 
-    public function show2(User $User, $id)
-    {
-        // $kategori = kategoris::get();
-        // $user = User::with(['penjuals'])->orderBy('created_at', 'asc')->get(); //-------------> USER
-        $user = User::with('finish')->find($id);
-        // dd($user);
-        return view('send_email', compact('user'));
-
-    }
-
 
     public function store1(Request $request)
     {

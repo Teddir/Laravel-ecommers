@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\finish;
 use App\keranjangdetail;
 use App\penjuals;
+use App\User;
 
 class FinishController extends Controller
 {
@@ -77,11 +78,26 @@ class FinishController extends Controller
 
   public function penjualan(Request $request)            //-------------------------------------------------------------->User
   {
-    $finish = finish::where('user_id', auth()->user()->id)->with('produks', 'keranjangs')->get();
+    $penjual = penjuals::where('user_id', auth()->user()->id)->get();
+
+    $finish = finish::where('penjual_id', $penjual[0]->id)->with('produks', 'keranjangs')->get();
     // dd($finish);    
     return view('Tampilan.user.Produk.penjualan', compact('finish'));
 
     //barang terjual
+
+  }
+
+
+  public function invoice($id)
+  {
+      // $kategori = kategoris::get();
+      // $user = User::with(['penjuals'])->orderBy('created_at', 'asc')->get(); //-------------> USER
+      // $finish = finish::where('user_id', auth()->user()->id)->get();
+      $user = User::with('users','finis','finish')->find($id);
+      $finish = finish::find($id);
+      // dd($user);
+      return view('send_email', compact('user', 'finish'));
 
   }
 }

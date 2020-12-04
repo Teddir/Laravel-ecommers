@@ -46,7 +46,7 @@ Route::group(['middleware' => 'jwt.verify'], function () {
     Route::post('/produk', 'Produk\Api\ProdukController@store');          //------------------------Tambah Data
     Route::delete('/produk/delete/{id}', 'Produk\Api\ProdukController@destroy');  //----------> Delete data
     Route::post('/searc', 'Produk\Api\ProdukController@render'); //-----------> Searching  Produk
-    Route::get('/toko/{id}', 'Produk\Api\ProdukController@toko');         //-------------data si user aja
+    Route::get('/toko/{id}', 'Produk\Api\ProdukController@toko');         //-------------Toko Orang Lain 
 
     // -----------------------------------------------------> end produk
 

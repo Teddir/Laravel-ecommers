@@ -30,11 +30,7 @@
                     <input hidden  type="text" class="form-control" id="judul" name="judul" value="Assalamualaikum Bapak/Ibu" placeholder="Assalamualaikum Bapak/Ibu" required>
                 </div>
                 <div class="form-group">
-                <textarea hidden class="form-control" id="editor1" name="pesan" value="{{$user->finish}}" placeholder="{{$user->finish}}"  required>
-                <p>Name Barang :{{$user->produks[0]->name_produk}}</p>             
-                <p>Harga Barang: {{$user->produks[0]->harga}}</p>
-                <p>Jumlah Pesanan: {{$user->finish[0]->qty}}</p>
-                <p>Subtotal: {{$subtotal = $user->finish[0]->qty*$user->produks[0]->harga}}</p>
+                <textarea hidden class="form-control" id="editor1" name="pesan" value="" placeholder="{{$user->finish}}"  required>
                 </textarea>
                 </div>
                 <div class="form-group">

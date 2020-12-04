@@ -29,13 +29,13 @@ use Illuminate\Support\Str;
 
 $factory->define(User::class, function (Faker $faker) {
     return [
-        'id' => 5,
+        'id' => 3,
         'name' => $faker->name,
         'avatar' => 'https://via.placeholder.com/150',
         'email' => $faker->unique()->safeEmail,
         'email_verified_at' => now(),
         'alamat' => $faker->streetAddress,
-        'phone_number' => 98945654,
+        'phone_number' => 98944564,
         'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
         'remember_token' => Str::random(10),
     ];

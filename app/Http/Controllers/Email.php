@@ -6,6 +6,8 @@ use App\finish;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 use App\keranjangdetail;
+use App\penjuals;
+use App\produks;
 use App\User;
 
 class Email extends Controller
@@ -30,6 +32,14 @@ class Email extends Controller
                     $message->subject($request->judul);
                     $message->from('faedah@store.com', 'Faedah.Store');
                     $message->to($request->email);
+
+                    
+                    $finish_id = finish::where('penjual_id', auth()->user()->id)->where('status', 0)->first();
+                    $finish = $finish_id; 
+                    $finish->status = 1;
+                    $finish->update();
+                    // dd($finish_id);
+                    // dd($finish);
                 }
             );
             return back()->with('alert-success', 'Berhasil Kirim Email');
