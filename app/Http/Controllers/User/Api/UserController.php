@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use illuminate\Support\Str;
+use App\produks;
 
 class UserController extends Controller
 {
@@ -81,24 +82,6 @@ class UserController extends Controller
     public function userp()  //---->userpenjual
     {
         $user = User::where('id', auth()->user()->id)->with('penjuals')->get();
-        // dd($user);
-        if (!$user) {
-            return response()->json([
-                'status' => 'Error',
-                'Message' => 'Data Gagal Di Hapus',
-                'data' => NULL, 402,
-            ]);
-        }
-        return response()->json([
-            'status' => 'Succes',
-            'Message' => 'Data Berhasil Di Tampilkan',
-            'data' => $user, 200,
-        ]);
-    }
-
-    public function toko($id)  //---->userpenjual
-    {
-        $user = penjuals::where('id', $id)->with('users')->get();
         // dd($user);
         if (!$user) {
             return response()->json([

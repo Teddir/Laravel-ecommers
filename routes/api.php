@@ -46,6 +46,7 @@ Route::group(['middleware' => 'jwt.verify'], function () {
     Route::post('/produk', 'Produk\Api\ProdukController@store');          //------------------------Tambah Data
     Route::delete('/produk/delete/{id}', 'Produk\Api\ProdukController@destroy');  //----------> Delete data
     Route::post('/searc', 'Produk\Api\ProdukController@render'); //-----------> Searching  Produk
+    Route::get('/toko/{id}', 'Produk\Api\ProdukController@toko');         //-------------data si user aja
 
     // -----------------------------------------------------> end produk
 
@@ -69,7 +70,6 @@ Route::group(['middleware' => 'jwt.verify'], function () {
     Route::get('/user', 'User\Api\UserController@index');  //-------->nampilin semua user
     Route::get('/useraja', 'User\Api\UserController@getAuthenticatedUser');  //-------->nampilin 1 user
     Route::get('/userp', 'User\Api\UserController@userp');         //-------------data si user aja
-    Route::get('/toko/{id}', 'User\Api\UserController@toko');         //-------------data si user aja
     Route::put('/user/update', 'User\Api\UserController@update');           //----------update
     Route::delete('/user/{id}', 'User\Api\UserController@destroy');         //-------------delete
     Route::get('/user/{id}', 'User\Api\UserController@show');         //-------------delete

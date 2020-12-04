@@ -60,6 +60,24 @@ class ProdukController extends Controller
         ]);
     }
 
+    public function toko($id)  //---->userpenjual
+    {
+        $user = produks::where('penjual_id', $id)->with('penjuals')->get();
+        // dd($user);
+        if (!$user) {
+            return response()->json([
+                'status' => 'Error',
+                'Message' => 'Data Gagal Di Hapus',
+                'data' => NULL, 402,
+            ]);
+        }
+        return response()->json([
+            'status' => 'Succes',
+            'Message' => 'Data Berhasil Di Tampilkan',
+            'data' => $user, 200,
+        ]);
+    }
+
     //-------------------------------------------------------------->END Produk    
 
     /**
