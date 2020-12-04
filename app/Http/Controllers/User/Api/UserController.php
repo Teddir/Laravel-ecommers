@@ -96,6 +96,25 @@ class UserController extends Controller
         ]);
     }
 
+    public function toko($id)  //---->userpenjual
+    {
+        $user = penjuals::where('id', $id)->with('users')->get();
+        // dd($user);
+        if (!$user) {
+            return response()->json([
+                'status' => 'Error',
+                'Message' => 'Data Gagal Di Hapus',
+                'data' => NULL, 402,
+            ]);
+        }
+        return response()->json([
+            'status' => 'Succes',
+            'Message' => 'Data Berhasil Di Tampilkan',
+            'data' => $user, 200,
+        ]);
+    }
+
+
     public function index()
     {
 

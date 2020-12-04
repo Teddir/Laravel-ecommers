@@ -69,6 +69,7 @@ Route::group(['middleware' => 'jwt.verify'], function () {
     Route::get('/user', 'User\Api\UserController@index');  //-------->nampilin semua user
     Route::get('/useraja', 'User\Api\UserController@getAuthenticatedUser');  //-------->nampilin 1 user
     Route::get('/userp', 'User\Api\UserController@userp');         //-------------data si user aja
+    Route::get('/toko/{id}', 'User\Api\UserController@toko');         //-------------data si user aja
     Route::put('/user/update', 'User\Api\UserController@update');           //----------update
     Route::delete('/user/{id}', 'User\Api\UserController@destroy');         //-------------delete
     Route::get('/user/{id}', 'User\Api\UserController@show');         //-------------delete
