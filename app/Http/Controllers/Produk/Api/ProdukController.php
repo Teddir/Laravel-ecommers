@@ -288,7 +288,7 @@ class ProdukController extends Controller
                 'Message' => 'Anda Belum Mengisi Apa Yang Harus Di cari',
             ]);
         }
-        $result =  produks::WHERE('name_produk', 'like', '%' . $cari . '%')->paginate(10);
+        $result =  produks::WHERE('name_produk', 'like', '%' . $cari . '%')->with('penjuals')->paginate(10);
         if (empty($result)) {
             return response()->json([
                 'status' => 'Error',
