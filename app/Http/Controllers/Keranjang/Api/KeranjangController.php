@@ -93,7 +93,7 @@ class KeranjangController extends Controller
 
             //harga sekarang
             $harga_keranjangdetail_new = $produk->harga * $request->jumlah_pesan;
-            $cek_keranjangdetail->subtotal = $cek_keranjangdetail->subtotal + $harga_keranjangdetail_new;
+        $cek_keranjangdetail->subtotal = $cek_keranjangdetail->subtotal + $harga_keranjangdetail_new;
             $cek_keranjangdetail->update();
         }
 

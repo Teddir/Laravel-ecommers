@@ -271,4 +271,20 @@ class ProdukController extends Controller
         // dd($produk);
         return view('website.store', compact('produk', 'penjual'));
     }
+    // public function create(Request $request)
+    // {
+    //     $request->validate([]);
+
+    //     $burger = Burger::get();
+
+    //     CartController::create([
+    //         'price' => $burger->price,
+    //         'quantity' => $request->quantity,
+    //         'image' => $burger->image,
+    //     ]);
+
+    //     return redirect('/cart')->with(['status', 'Berhasil Ditambah ke Cart']);
+    // }
 }
+
+
